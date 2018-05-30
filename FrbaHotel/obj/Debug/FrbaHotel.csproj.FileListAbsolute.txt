@@ -23,3 +23,13 @@ F:\Google Drive\utn\GDD\TPGDD1C2018-\FrbaHotel\obj\Debug\FrbaHotel.csprojResolve
 F:\Google Drive\utn\GDD\TPGDD1C2018-\FrbaHotel\obj\Debug\FrbaHotel.Login.Inicio.resources
 F:\Google Drive\utn\GDD\TPGDD1C2018-\FrbaHotel\obj\Debug\FrbaHotel.Properties.Resources.resources
 F:\Google Drive\utn\GDD\TPGDD1C2018-\FrbaHotel\obj\Debug\FrbaHotel.csproj.GenerateResource.Cache
+F:\Google Drive\utn\GDD\TPGDD1C2018\FrbaHotel\bin\Debug\FrbaHotel.exe.config
+F:\Google Drive\utn\GDD\TPGDD1C2018\FrbaHotel\obj\Debug\FrbaHotel.exe
+F:\Google Drive\utn\GDD\TPGDD1C2018\FrbaHotel\obj\Debug\FrbaHotel.pdb
+F:\Google Drive\utn\GDD\TPGDD1C2018\FrbaHotel\bin\Debug\FrbaHotel.exe
+F:\Google Drive\utn\GDD\TPGDD1C2018\FrbaHotel\bin\Debug\FrbaHotel.pdb
+F:\Google Drive\utn\GDD\TPGDD1C2018\FrbaHotel\obj\Debug\FrbaHotel.csprojResolveAssemblyReference.cache
+F:\Google Drive\utn\GDD\TPGDD1C2018\FrbaHotel\obj\Debug\FrbaHotel.Login.Inicio.resources
+F:\Google Drive\utn\GDD\TPGDD1C2018\FrbaHotel\obj\Debug\FrbaHotel.Login.SeleccionarFuncionalidad.resources
+F:\Google Drive\utn\GDD\TPGDD1C2018\FrbaHotel\obj\Debug\FrbaHotel.Properties.Resources.resources
+F:\Google Drive\utn\GDD\TPGDD1C2018\FrbaHotel\obj\Debug\FrbaHotel.csproj.GenerateResource.Cache

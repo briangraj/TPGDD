@@ -123,6 +123,9 @@
     <EmbeddedResource Include="Login\Inicio.resx">
       <DependentUpon>Inicio.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Login\SeleccionarFuncionalidad.resx">
+      <DependentUpon>SeleccionarFuncionalidad.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

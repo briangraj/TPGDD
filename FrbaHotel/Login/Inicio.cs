@@ -29,17 +29,20 @@ namespace FrbaHotel.Login
                 DB.ejecutarProcedimiento("LA_QUERY_DE_PAPEL.procedure_login", "usuario", textBoxUser.Text, "contrasenia", pass);
 
                 Usuario usuario = new Usuario(textBoxUser.Text);
-                
+
+                this.Hide();
+
                 SeleccionarFuncionalidad form = new SeleccionarFuncionalidad(usuario);
                 form.ShowDialog();
             }
             catch (SqlException ex)
             {
-                if (ex.Message == "Error usuario")
-                {
-
-                }
-                MessageBox.Show("hola"); 
+                if(ex.Message == "Usuario incorrecto")
+                    errorProviderInicio.SetError(textBoxUser, "Usuario incorrecto");
+                else if(ex.Message == "Usuario inhabilitado")
+                    errorProviderInicio.SetError(textBoxUser, "Usuario inhabilitado");
+                else
+                    errorProviderInicio.SetError(textBoxPass, ex.Message);
             }
         }
     }

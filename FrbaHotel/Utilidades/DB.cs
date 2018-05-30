@@ -12,15 +12,6 @@ namespace FrbaHotel.Utilidades
     {
         public static SqlConnection conexionDB = new SqlConnection("Data Source=LOCALHOST\\SQLSERVER2012;Initial Catalog=GD1C2018;User ID=gdHotel2018; Password=gd2018");
 
-        public static void ejecutarProcedimiento(String nombre, params object[] args)
-        {
-            SqlCommand comando = nuevoComando(nombre, args);
-
-            comando.CommandType = CommandType.StoredProcedure;
-
-            ejecutarProcedimiento(comando);
-        }
-
         private static SqlCommand nuevoComando(String query, params object[] args)
         {
             SqlCommand comando = new SqlCommand(query, conexionDB);
@@ -33,7 +24,16 @@ namespace FrbaHotel.Utilidades
             return comando;
         }
 
-        public static void ejecutarProcedimiento(SqlCommand comando)
+        public static void ejecutarProcedimiento(String nombre, params object[] args)
+        {
+            SqlCommand comando = nuevoComando(nombre, args);
+
+            comando.CommandType = CommandType.StoredProcedure;
+
+            ejecutarComandoProcedimiento(comando);
+        }
+
+        public static void ejecutarComandoProcedimiento(SqlCommand comando)
         {
             try
             {
@@ -46,6 +46,18 @@ namespace FrbaHotel.Utilidades
                 throw ex;
             }
 
+            conexionDB.Close();
+        }
+
+        public static void ejecutarReader(String query, Action<SqlDataReader> usarReader)
+        {
+            SqlCommand comando = nuevoComando(query);
+
+            comando.CommandType = CommandType.Text;
+
+            conexionDB.Open();
+            SqlDataReader reader = comando.ExecuteReader();
+            usarReader(reader);
             conexionDB.Close();
         }
     }
