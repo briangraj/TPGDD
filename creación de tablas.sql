@@ -1,7 +1,7 @@
 --Esquema
 USE [GD1C2018]
 GO
-CREATE SCHEMA [LA_QUERY_DE_PAPEL] 
+--CREATE SCHEMA [LA_QUERY_DE_PAPEL] 
 GO
 
 CREATE TABLE [LA_QUERY_DE_PAPEL].[Rol] ( 
@@ -27,10 +27,10 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Usuario] (
 	Tipo_Documento varchar(20) NOT NULL,
 	Nro_Documento INT NOT NULL,
 	Username nvarchar(255) NOT NULL UNIQUE,
-	Password nvarchar(255) NOT NULL,	
+	Password varbinary(255) NOT NULL,	
 	Id_Rol INT NOT NULL,
 	Cant_fallos INT DEFAULT 0 NOT NULL,
-	Inhabilitacion_login bit DEFAULT 0 NOT NULL,
+	login_habilitado bit DEFAULT 1 NOT NULL,
 
 	FOREIGN KEY (Tipo_Documento, Nro_Documento) REFERENCES [LA_QUERY_DE_PAPEL].[Persona] (Tipo_Documento, Nro_Documento),
 	FOREIGN KEY (Id_Rol) REFERENCES [LA_QUERY_DE_PAPEL].[Rol] (Id_Rol)
@@ -143,3 +143,61 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[FuncionalidadxRol] (
 	FOREIGN KEY (Id_Rol) REFERENCES [LA_QUERY_DE_PAPEL].[Rol] (Id_Rol));
 	--Conviene crear otra entidad Forma de Pago con id y descripcion??
 	--
+
+GO
+
+INSERT INTO LA_QUERY_DE_PAPEL.Rol (Nombre)
+VALUES ('Administrador General')
+
+INSERT INTO LA_QUERY_DE_PAPEL.Persona (Tipo_Documento, Nro_Documento, Apellido, Nombre,	Direccion, Fecha_Nacimiento, Telefono, Habilitado)
+VALUES ('', 1, '', '', '', GETDATE(), '', 1)
+
+INSERT INTO LA_QUERY_DE_PAPEL.Usuario (Tipo_Documento, Nro_Documento, Username,	Password, Id_Rol)
+VALUES ('', 1, 'admin', CONVERT(varbinary(255),HASHBYTES('SHA2_256','w23e' ),2), 1)
+
+GO
+
+CREATE PROCEDURE LA_QUERY_DE_PAPEL.procedure_login
+	@usuario nvarchar(20),
+	@contrasenia varbinary(255)
+AS
+BEGIN
+
+	DECLARE @pass varbinary(255), @intentos INT, @habilitado BIT
+
+	SELECT @pass=Password, @intentos=Cant_fallos, @habilitado = login_habilitado
+	FROM LA_QUERY_DE_PAPEL.Usuario
+	WHERE Username = @usuario
+
+	IF (@pass IS NULL) 
+	BEGIN
+		RAISERROR ('Usuario incorrecto', 16, 1)
+		RETURN
+	END
+
+	IF (@habilitado = 0) 
+	BEGIN
+		RAISERROR ('Usuario inhabilitado', 16, 1)
+		RETURN
+	END
+
+	IF (@pass <> @contrasenia) 
+	BEGIN
+		UPDATE LA_QUERY_DE_PAPEL.Usuario SET Cant_fallos = @intentos + 1
+		WHERE Username = @usuario
+		DECLARE @error varchar(100)= 'Contraseña incorrecta. Le quedan ' + str(2 - @intentos) + ' intentos'
+		RAISERROR (@error, 16, 1)
+
+		IF(@intentos = 2)
+		BEGIN
+			UPDATE LA_QUERY_DE_PAPEL.Usuario SET login_habilitado = 0
+			WHERE Username = @usuario
+		END
+		RETURN
+	END
+
+	UPDATE LA_QUERY_DE_PAPEL.Usuario SET Cant_fallos = 0
+	WHERE Username = @usuario
+
+END
+GO
