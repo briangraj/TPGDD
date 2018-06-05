@@ -10,11 +10,17 @@ using System.Windows.Forms;
 
 namespace FrbaHotel.AbmRol
 {
-    public partial class Form1 : Form
+    public partial class AbmRol : Form
     {
-        public Form1()
+        public AbmRol()
         {
             InitializeComponent();
+        }
+
+        private void buttonAlta_Click(object sender, EventArgs e)
+        {
+            DatosRol datosRol = new DatosRol();
+            datosRol.Show();
         }
     }
 }

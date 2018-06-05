@@ -18,6 +18,8 @@ namespace FrbaHotel.Login
         public Inicio()
         {
             InitializeComponent();
+            textBoxUser.Text = "admin";
+            textBoxPass.Text = "w23e";
         }
 
         private void buttonLogin_Click(object sender, EventArgs e)

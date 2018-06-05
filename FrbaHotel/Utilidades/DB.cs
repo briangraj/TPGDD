@@ -57,7 +57,10 @@ namespace FrbaHotel.Utilidades
 
             conexionDB.Open();
             SqlDataReader reader = comando.ExecuteReader();
-            usarReader(reader);
+            while (reader.Read())
+            {
+                usarReader(reader);
+            }
             conexionDB.Close();
         }
     }

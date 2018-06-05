@@ -23,21 +23,41 @@ namespace FrbaHotel.Login
             InitializeComponent();
 
             DB.ejecutarReader(
-                "SELECT F.descripcion " +
+                "SELECT F.Descripcion " +
                 "FROM LA_QUERY_DE_PAPEL.Funcionalidad F " +
                     "JOIN LA_QUERY_DE_PAPEL.FuncionalidadxRol FR " +
                     "ON F.Id_Funcion = FR.Id_Funcion " +
-                        "AND FR.Id_Rol = " + "1" //TODO hay que ver que rol tiene el usuario
-            , this.cargarComboBox);
+                        "AND FR.Id_Rol = " + "1", //TODO hay que ver que rol tiene el usuario
+            cargarComboBox);
 
             
         }
 
         public void cargarComboBox(SqlDataReader reader)
         {
-            while (reader.Read())
+            comboBoxFuncionalidades.Items.Add(reader.GetString(0));
+        }
+
+        private void buttonSeleccionar_Click(object sender, EventArgs e)
+        {
+            if (comboBoxFuncionalidades.SelectedIndex < 0)
             {
-                comboBoxFuncionalidades.Items.Add(reader.GetString(0));
+                MessageBox.Show("SELECCIONE FUNCIONALIDAD");
+            }
+            else
+            {
+                Form form;
+                switch (comboBoxFuncionalidades.SelectedItem.ToString())
+                {
+                    case "ABM de Rol":
+                        form = new AbmRol.AbmRol();
+                        break;
+                    default:
+                        form = new AbmRol.AbmRol();
+                        break;
+                }
+
+                form.Show();
             }
         }
     }
