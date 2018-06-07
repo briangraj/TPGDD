@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Data;
 
+using System.Windows.Forms;
+
 namespace FrbaHotel.Utilidades
 {
     class DB
@@ -43,6 +45,7 @@ namespace FrbaHotel.Utilidades
             catch (SqlException ex)
             {
                 conexionDB.Close();
+                MessageBox.Show(ex.Message);
                 throw ex;
             }
 
@@ -76,6 +79,7 @@ namespace FrbaHotel.Utilidades
             catch (SqlException ex)
             {
                 conexionDB.Close();
+                MessageBox.Show(ex.Message);
                 throw ex;
             }
 
@@ -95,6 +99,7 @@ namespace FrbaHotel.Utilidades
             catch (SqlException ex)
             {
                 conexionDB.Close();
+                MessageBox.Show(ex.Message);
                 throw ex;
             }
 
@@ -115,10 +120,11 @@ namespace FrbaHotel.Utilidades
                     adapter.Fill(tabla);
                 }
             }
-            catch (SqlException exception)
+            catch (SqlException ex)
             {
                 conexionDB.Close();
-                throw exception;
+                MessageBox.Show(ex.Message);
+                throw ex;
             }
 
             conexionDB.Close();

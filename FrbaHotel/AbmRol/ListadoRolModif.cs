@@ -9,13 +9,13 @@ using FrbaHotel.Utilidades;
 
 namespace FrbaHotel.AbmRol
 {
-    class ListadoRolBaja : ListadoRol
+    class ListadoRolModif : ListadoRol
     {
         protected override void agregarColumna()
         {
             DataGridViewButtonColumn columna = new DataGridViewButtonColumn();
             columna.HeaderText = "Seleccionar";
-            columna.Text = "Eliminar";
+            columna.Text = "Modificar";
             columna.Name = "columnaBoton";
             columna.UseColumnTextForButtonValue = true;
 
@@ -24,11 +24,9 @@ namespace FrbaHotel.AbmRol
 
         protected override void accionBoton(DataGridViewCellEventArgs e)
         {
-            DB.correrQuery(
-                "DELETE FROM LA_QUERY_DE_PAPEL.Rol " +
-                "WHERE Nombre = '" + dataGridViewRoles.CurrentRow.Cells["Nombre"].Value.ToString() + "'");
-
-            MessageBox.Show("Rol eliminado");
+            DatosRol datosRol = new DatosRol(dataGridViewRoles.CurrentRow.Cells["Nombre"].Value.ToString());
+            Hide();
+            datosRol.Show();
         }
     }
 }

@@ -28,5 +28,11 @@ namespace FrbaHotel.AbmRol
             ListadoRolBaja listadoBaja = new ListadoRolBaja();
             listadoBaja.Show();
         }
+
+        private void buttonModificacion_Click(object sender, EventArgs e)
+        {
+            ListadoRolModif listadoModif = new ListadoRolModif();
+            listadoModif.Show();
+        }
     }
 }

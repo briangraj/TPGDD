@@ -17,6 +17,7 @@ namespace FrbaHotel.AbmRol
     {
         private bool modificacion;
         private List<Funcionalidad> funcionalidades = new List<Funcionalidad>();
+        private int idRolModif;
 
         public DatosRol()
         {
@@ -24,6 +25,16 @@ namespace FrbaHotel.AbmRol
             modificacion = false;
             cargarFuncionalidades();
             checkBoxHabilitado.Checked = true;
+        }
+
+        public DatosRol(String nombre)
+        {
+            InitializeComponent();
+            modificacion = true;
+            textBoxNombreRol.Text = nombre;
+            idRolModif = buscarIdRol();
+            cargarFuncionalidades();
+            cargarRol();
         }
 
         private void cargarFuncionalidades()
@@ -46,18 +57,11 @@ namespace FrbaHotel.AbmRol
             validarDatos();
             if (Validaciones.errorProviderConError(errorProviderDatos, Controls))
                 return;
-            try
-            {
-                insertarRol();
 
-                insertarFuncionalidadxRol();
-
-                MessageBox.Show("Se creo el rol");
-            }
-            catch(SqlException ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            if (modificacion)
+                atenderModificacion();
+            else
+                atenderAlta();
         }
 
         private void validarDatos()
@@ -69,12 +73,40 @@ namespace FrbaHotel.AbmRol
                 errorProviderDatos.SetError(checkedListBoxFuncionalidades, "Debe elegir al menos una funcionalidad");
         }
 
+        private void buttonLimpiar_Click(object sender, EventArgs e)
+        {
+            Limpiador.LimpiarTextBox(this.Controls);
+            checkedListBoxFuncionalidades.ClearSelected();
+        }
+
+        private int buscarIdRol()
+        {
+            return (int)DB.correrQueryEscalar(
+                "SELECT Id_Rol " +
+                "FROM LA_QUERY_DE_PAPEL.Rol " +
+                "WHERE Nombre = '" + textBoxNombreRol.Text + "'");
+        }
+
+        private int checkBoxHabilitadoInt()
+        {
+            return checkBoxHabilitado.Checked ? 1 : 0;
+        }
+
+        /////////////////////ALTA///////////////////////////
+        private void atenderAlta()
+        {
+            insertarRol();
+
+            insertarFuncionalidadxRol();
+
+            MessageBox.Show("Se creo el rol");
+        }
+
         private int insertarRol()
         {
-            int habilitado = checkBoxHabilitado.Checked ? 1 : 0;
             return DB.correrQuery(
                     "INSERT INTO LA_QUERY_DE_PAPEL.Rol (Nombre, Habilitado) " +
-                    "VALUES ('" + textBoxNombreRol.Text + "', " + habilitado.ToString() + ")");
+                    "VALUES ('" + textBoxNombreRol.Text + "', " + checkBoxHabilitadoInt().ToString() + ")");
         }
 
         private void insertarFuncionalidadxRol()
@@ -92,12 +124,45 @@ namespace FrbaHotel.AbmRol
             }
         }
 
-        private int buscarIdRol()
+        /////////////////////MODIFICACION///////////////////////////
+        private void cargarRol()
         {
-            return (int)DB.correrQueryEscalar(
-                "SELECT Id_Rol " +
+            //int idRol = buscarIdRol();
+            checkBoxHabilitado.Checked = (bool)DB.correrQueryEscalar(
+                "SELECT Habilitado " +
                 "FROM LA_QUERY_DE_PAPEL.Rol " +
-                "WHERE Nombre = '" + textBoxNombreRol.Text + "'");
+                    "WHERE Nombre = '" + textBoxNombreRol.Text + "'");
+
+            DB.ejecutarReader(
+                "SELECT Id_Funcion " +
+                "FROM LA_QUERY_DE_PAPEL.FuncionalidadxRol " +
+                    "WHERE Id_rol = " + idRolModif.ToString(), cargarFuncionalidad);
         }
+
+        public void cargarFuncionalidad(SqlDataReader reader)
+        {
+            string descripcion = funcionalidades.Find(funcionalidad => funcionalidad.id == reader.GetInt32(0).ToString()).descripcion;
+
+            int indice = checkedListBoxFuncionalidades.Items.IndexOf(descripcion);
+
+            checkedListBoxFuncionalidades.SetItemChecked(indice, true);
+        }
+
+        private void atenderModificacion()
+        {
+            //actualizo rol
+            DB.correrQuery(
+                "UPDATE LA_QUERY_DE_PAPEL.Rol " +
+                "SET Nombre = '" + textBoxNombreRol.Text + "', " +
+                    "Habilitado = " + checkBoxHabilitadoInt().ToString() +
+                "WHERE Id_Rol = " + idRolModif.ToString());
+
+            //borro funcionalidades anteriores
+            DB.correrQuery(
+                "DELETE FROM LA_QUERY_DE_PAPEL.FuncionalidadxRol " +
+                "WHERE Id_Rol = " + idRolModif.ToString());
+
+            insertarFuncionalidadxRol();
+        } 
     }
 }

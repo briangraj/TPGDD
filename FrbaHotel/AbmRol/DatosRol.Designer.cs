@@ -34,7 +34,7 @@
             this.labelFuncionalidades = new System.Windows.Forms.Label();
             this.textBoxNombreRol = new System.Windows.Forms.TextBox();
             this.checkBoxHabilitado = new System.Windows.Forms.CheckBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.buttonLimpiar = new System.Windows.Forms.Button();
             this.buttonAceptar = new System.Windows.Forms.Button();
             this.errorProviderDatos = new System.Windows.Forms.ErrorProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.errorProviderDatos)).BeginInit();
@@ -70,7 +70,7 @@
             // 
             this.textBoxNombreRol.Location = new System.Drawing.Point(45, 62);
             this.textBoxNombreRol.Name = "textBoxNombreRol";
-            this.textBoxNombreRol.Size = new System.Drawing.Size(100, 20);
+            this.textBoxNombreRol.Size = new System.Drawing.Size(213, 20);
             this.textBoxNombreRol.TabIndex = 4;
             // 
             // checkBoxHabilitado
@@ -83,14 +83,15 @@
             this.checkBoxHabilitado.Text = "Habilitado";
             this.checkBoxHabilitado.UseVisualStyleBackColor = true;
             // 
-            // button1
+            // buttonLimpiar
             // 
-            this.button1.Location = new System.Drawing.Point(45, 481);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 6;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
+            this.buttonLimpiar.Location = new System.Drawing.Point(45, 481);
+            this.buttonLimpiar.Name = "buttonLimpiar";
+            this.buttonLimpiar.Size = new System.Drawing.Size(75, 23);
+            this.buttonLimpiar.TabIndex = 6;
+            this.buttonLimpiar.Text = "Limpiar";
+            this.buttonLimpiar.UseVisualStyleBackColor = true;
+            this.buttonLimpiar.Click += new System.EventHandler(this.buttonLimpiar_Click);
             // 
             // buttonAceptar
             // 
@@ -112,7 +113,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(312, 530);
             this.Controls.Add(this.buttonAceptar);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.buttonLimpiar);
             this.Controls.Add(this.checkBoxHabilitado);
             this.Controls.Add(this.textBoxNombreRol);
             this.Controls.Add(this.labelFuncionalidades);
@@ -133,7 +134,7 @@
         private System.Windows.Forms.Label labelFuncionalidades;
         private System.Windows.Forms.TextBox textBoxNombreRol;
         private System.Windows.Forms.CheckBox checkBoxHabilitado;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button buttonLimpiar;
         private System.Windows.Forms.Button buttonAceptar;
         private System.Windows.Forms.ErrorProvider errorProviderDatos;
     }

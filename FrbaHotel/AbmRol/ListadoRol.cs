@@ -18,6 +18,7 @@ namespace FrbaHotel.AbmRol
         {
             InitializeComponent();
             llenarTabla();
+            agregarColumna();
         }
 
         private void buttonBuscar_Click(object sender, EventArgs e)
@@ -30,11 +31,28 @@ namespace FrbaHotel.AbmRol
             dataGridViewRoles.DataSource = DB.correrQueryTabla(
                 "SELECT Nombre " +
                 "FROM LA_QUERY_DE_PAPEL.Rol " +
-                    "WHERE Nombre like '%" + textBoxNombreRol.Text + "%'");
+                    "WHERE Nombre like '%" + textBoxNombreRol.Text + "%'" +
+                        "AND Habilitado = 1");
 
-            agregarColumna();
         }
 
         protected abstract void agregarColumna();
+
+        private void dataGridViewRoles_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == 1 && e.RowIndex != -1)
+                return;
+
+            accionBoton(e);
+            llenarTabla();
+        }
+
+        protected abstract void accionBoton(DataGridViewCellEventArgs e);
+
+        private void buttonLimpiar_Click(object sender, EventArgs e)
+        {
+            Limpiador.LimpiarTextBox(Controls);
+            llenarTabla();
+        }
     }
 }

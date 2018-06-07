@@ -64,6 +64,7 @@
             this.buttonModificacion.TabIndex = 2;
             this.buttonModificacion.Text = "Modificacion";
             this.buttonModificacion.UseVisualStyleBackColor = true;
+            this.buttonModificacion.Click += new System.EventHandler(this.buttonModificacion_Click);
             // 
             // AbmRol
             // 
