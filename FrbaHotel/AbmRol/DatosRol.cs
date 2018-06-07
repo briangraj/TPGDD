@@ -48,17 +48,15 @@ namespace FrbaHotel.AbmRol
                 return;
             try
             {
-                int filasAfectadas = DB.correrQuery(
-                    "INSERT INTO LA_QUERY_DE_PAPEL.Rol (nombre) " +
-                    "VALUES ('" + textBoxNombreRol.Text + "')");
+                insertarRol();
 
-                if (filasAfectadas > 0)
-                    MessageBox.Show("Se creo el rol");
-                else
-                    MessageBox.Show("No se pudo crear el rol");
+                insertarFuncionalidadxRol();
+
+                MessageBox.Show("Se creo el rol");
             }
             catch(SqlException ex)
             {
+                MessageBox.Show(ex.Message);
             }
         }
 
@@ -69,6 +67,37 @@ namespace FrbaHotel.AbmRol
 
             if (checkedListBoxFuncionalidades.CheckedItems.Count == 0)
                 errorProviderDatos.SetError(checkedListBoxFuncionalidades, "Debe elegir al menos una funcionalidad");
+        }
+
+        private int insertarRol()
+        {
+            int habilitado = checkBoxHabilitado.Checked ? 1 : 0;
+            return DB.correrQuery(
+                    "INSERT INTO LA_QUERY_DE_PAPEL.Rol (Nombre, Habilitado) " +
+                    "VALUES ('" + textBoxNombreRol.Text + "', " + habilitado.ToString() + ")");
+        }
+
+        private void insertarFuncionalidadxRol()
+        {
+            int idRol = buscarIdRol();
+            string id;
+
+            foreach(string desc in checkedListBoxFuncionalidades.CheckedItems)
+            {
+                id = funcionalidades.Find(funcionalidad => funcionalidad.descripcion == desc).id;
+
+                DB.correrQuery(
+                    "INSERT INTO LA_QUERY_DE_PAPEL.FuncionalidadxRol (Id_Rol, Id_Funcion) " +
+                    "VALUES (" + idRol.ToString() + ", " + id + ")");
+            }
+        }
+
+        private int buscarIdRol()
+        {
+            return (int)DB.correrQueryEscalar(
+                "SELECT Id_Rol " +
+                "FROM LA_QUERY_DE_PAPEL.Rol " +
+                "WHERE Nombre = '" + textBoxNombreRol.Text + "'");
         }
     }
 }

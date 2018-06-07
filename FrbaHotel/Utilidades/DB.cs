@@ -82,5 +82,24 @@ namespace FrbaHotel.Utilidades
             conexionDB.Close();
             return filasAfectadas;
         }
+
+        public static Object correrQueryEscalar(String query)
+        {
+            SqlCommand comando = new SqlCommand(query, conexionDB);
+            Object retorno;
+            try
+            {
+                conexionDB.Open();
+                retorno = comando.ExecuteScalar();
+            }
+            catch (SqlException ex)
+            {
+                conexionDB.Close();
+                throw ex;
+            }
+
+            conexionDB.Close();
+            return retorno;
+        }
     }
 }
