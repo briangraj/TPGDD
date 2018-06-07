@@ -101,5 +101,28 @@ namespace FrbaHotel.Utilidades
             conexionDB.Close();
             return retorno;
         }
+
+        public static DataTable correrQueryTabla(String query)
+        {
+            SqlCommand comando = new SqlCommand(query, conexionDB);
+            DataTable tabla = new DataTable();
+
+            try
+            {
+                using (SqlDataAdapter adapter = new SqlDataAdapter(comando))
+                {
+                    conexionDB.Open();
+                    adapter.Fill(tabla);
+                }
+            }
+            catch (SqlException exception)
+            {
+                conexionDB.Close();
+                throw exception;
+            }
+
+            conexionDB.Close();
+            return tabla;
+        }
     }
 }

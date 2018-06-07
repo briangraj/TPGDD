@@ -74,6 +74,15 @@
     <Compile Include="AbmRol\DatosRol.Designer.cs">
       <DependentUpon>DatosRol.cs</DependentUpon>
     </Compile>
+    <Compile Include="AbmRol\ListadoRol.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmRol\ListadoRol.Designer.cs">
+      <DependentUpon>ListadoRol.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmRol\ListadoRolBaja.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="CancelarReserva\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -133,6 +142,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AbmRol\DatosRol.resx">
       <DependentUpon>DatosRol.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmRol\ListadoRol.resx">
+      <DependentUpon>ListadoRol.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Login\Inicio.resx">
       <DependentUpon>Inicio.cs</DependentUpon>

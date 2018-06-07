@@ -22,5 +22,11 @@ namespace FrbaHotel.AbmRol
             DatosRol datosRol = new DatosRol();
             datosRol.Show();
         }
+
+        private void buttonBaja_Click(object sender, EventArgs e)
+        {
+            ListadoRolBaja listadoBaja = new ListadoRolBaja();
+            listadoBaja.Show();
+        }
     }
 }
