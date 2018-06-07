@@ -63,5 +63,24 @@ namespace FrbaHotel.Utilidades
             }
             conexionDB.Close();
         }
+
+        public static int correrQuery(String query)
+        {
+            SqlCommand comando = new SqlCommand(query, conexionDB);
+            int filasAfectadas = 0;
+            try
+            {
+                conexionDB.Open();
+                filasAfectadas = comando.ExecuteNonQuery();
+            }
+            catch (SqlException ex)
+            {
+                conexionDB.Close();
+                throw ex;
+            }
+
+            conexionDB.Close();
+            return filasAfectadas;
+        }
     }
 }

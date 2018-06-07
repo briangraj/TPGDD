@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.checkedListBoxFuncionalidades = new System.Windows.Forms.CheckedListBox();
             this.labelNombreRol = new System.Windows.Forms.Label();
             this.labelFuncionalidades = new System.Windows.Forms.Label();
@@ -35,6 +36,8 @@
             this.checkBoxHabilitado = new System.Windows.Forms.CheckBox();
             this.button1 = new System.Windows.Forms.Button();
             this.buttonAceptar = new System.Windows.Forms.Button();
+            this.errorProviderDatos = new System.Windows.Forms.ErrorProvider(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.errorProviderDatos)).BeginInit();
             this.SuspendLayout();
             // 
             // checkedListBoxFuncionalidades
@@ -97,6 +100,11 @@
             this.buttonAceptar.TabIndex = 7;
             this.buttonAceptar.Text = "Aceptar";
             this.buttonAceptar.UseVisualStyleBackColor = true;
+            this.buttonAceptar.Click += new System.EventHandler(this.buttonAceptar_Click);
+            // 
+            // errorProviderDatos
+            // 
+            this.errorProviderDatos.ContainerControl = this;
             // 
             // DatosRol
             // 
@@ -112,6 +120,7 @@
             this.Controls.Add(this.checkedListBoxFuncionalidades);
             this.Name = "DatosRol";
             this.Text = "DatosRol";
+            ((System.ComponentModel.ISupportInitialize)(this.errorProviderDatos)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -126,5 +135,6 @@
         private System.Windows.Forms.CheckBox checkBoxHabilitado;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button buttonAceptar;
+        private System.Windows.Forms.ErrorProvider errorProviderDatos;
     }
 }

@@ -25,6 +25,7 @@ namespace FrbaHotel.Login
         private void buttonLogin_Click(object sender, EventArgs e)
         {
             byte[] pass = Usuario.encriptar(textBoxPass.Text);
+            errorProviderInicio.Clear();
 
             try
             {
