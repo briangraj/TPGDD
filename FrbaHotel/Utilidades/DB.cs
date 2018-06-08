@@ -107,9 +107,9 @@ namespace FrbaHotel.Utilidades
             return retorno;
         }
 
-        public static DataTable correrQueryTabla(String query)
+        public static DataTable correrQueryTabla(String query, params object[] args)
         {
-            SqlCommand comando = new SqlCommand(query, conexionDB);
+            SqlCommand comando = nuevoComando(query, args);
             DataTable tabla = new DataTable();
 
             try

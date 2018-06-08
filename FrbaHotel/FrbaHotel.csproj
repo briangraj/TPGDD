@@ -99,6 +99,18 @@
     <Compile Include="AbmUsuario\DatosUsuario.Designer.cs">
       <DependentUpon>DatosUsuario.cs</DependentUpon>
     </Compile>
+    <Compile Include="AbmUsuario\ListadoUsuario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmUsuario\ListadoUsuario.Designer.cs">
+      <DependentUpon>ListadoUsuario.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmUsuario\ListadoUsuarioBaja.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmUsuario\ListadoUsuarioModif.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="CancelarReserva\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -169,6 +181,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AbmUsuario\DatosUsuario.resx">
       <DependentUpon>DatosUsuario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmUsuario\ListadoUsuario.resx">
+      <DependentUpon>ListadoUsuario.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Login\Inicio.resx">
       <DependentUpon>Inicio.cs</DependentUpon>

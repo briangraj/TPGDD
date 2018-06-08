@@ -16,17 +16,24 @@ namespace FrbaHotel.AbmUsuario
 {
     public partial class DatosUsuario : Form
     {
-        private Usuario usuario;
         private bool alta;
         private List<Hotel> hoteles = new List<Hotel>();
 
-        public DatosUsuario(Usuario usuario)
+        public DatosUsuario()
         {
             InitializeComponent();
-            this.usuario = usuario;
             alta = true;
             cargarHoteles();
             cargarRoles();
+        }
+
+        public DatosUsuario(DataGridViewRow filaSeleccionada)
+        {
+            InitializeComponent();
+            alta = false;
+            cargarHoteles();
+            cargarRoles();
+            cargarUsuario(filaSeleccionada);
         }
 
         private void cargarHoteles()
@@ -92,7 +99,7 @@ namespace FrbaHotel.AbmUsuario
             int idRol = DB.buscarIdRol(comboBoxRoles.SelectedItem.ToString());
             DB.correrQuery(
                     "INSERT INTO LA_QUERY_DE_PAPEL.usuarios (Username, Password , Id_Rol, Nombre, Apellido, Tipo_Documento, Nro_Documento, Mail, Telefono, Direccion, Fecha_Nacimiento) " +
-                    "VALUES ('@username', '@password', @idRol, '@nombre', '@apellido', '@tipoDocumento', @nroDocumento, '@mail', '@telefono', '@direccion', @fechaNacimiento)",
+                    "VALUES (@username, @password, @idRol, @nombre, @apellido, @tipoDocumento, @nroDocumento, @mail, @telefono, @direccion, @fechaNacimiento)",
                     "username", textBoxUsername.Text, "password", Usuario.encriptar(textBoxPassword.Text), "idRol", idRol,
                     "nombre", textBoxNombre.Text, "apellido", textBoxApellido.Text, "tipoDocumento", textBoxTipoDocumento.Text, "nroDocumento", textBoxNroDocumento.Text,
                     "mail", textBoxMail.Text, "telefono", textBoxTelefono.Text, "direccion", textBoxDireccion.Text, "fechaNacimiento", dateTimePickerFechaNac.Value);
@@ -118,6 +125,21 @@ namespace FrbaHotel.AbmUsuario
         private void atenderModificacion()
         {
 
+        }
+
+        private void cargarUsuario(DataGridViewRow filaSeleccionada)
+        {
+            textBoxUsername.Text = filaSeleccionada.Cells["Username"].Value.ToString();
+            textBoxNombre.Text = filaSeleccionada.Cells["Nombre"].Value.ToString();
+            textBoxApellido.Text = filaSeleccionada.Cells["Apellido"].Value.ToString();
+            textBoxTipoDocumento.Text = filaSeleccionada.Cells["Tipo_Documento"].Value.ToString();
+            textBoxNroDocumento.Text = filaSeleccionada.Cells["Nro_Documento"].Value.ToString();
+            textBoxMail.Text = filaSeleccionada.Cells["Mail"].Value.ToString();
+            textBoxTelefono.Text = filaSeleccionada.Cells["Telefono"].Value.ToString();
+            textBoxDireccion.Text = filaSeleccionada.Cells["Direccion"].Value.ToString();
+            dateTimePickerFechaNac.Value = Convert.ToDateTime(filaSeleccionada.Cells["Fecha_Nacimiento"].Value.ToString());
+
+            //TODO cargar hoteles donde trabaja
         }
     }
 }

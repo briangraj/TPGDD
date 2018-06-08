@@ -120,6 +120,25 @@ namespace FrbaHotel.AbmRol
         }
 
         /////////////////////MODIFICACION///////////////////////////
+        private void atenderModificacion()
+        {
+            //actualizo rol
+            DB.correrQuery(
+                "UPDATE LA_QUERY_DE_PAPEL.Rol " +
+                "SET Nombre = '" + textBoxNombreRol.Text + "', " +
+                    "Habilitado = " + checkBoxHabilitadoInt().ToString() +
+                "WHERE Id_Rol = " + idRolModif.ToString());
+
+            //borro funcionalidades anteriores
+            DB.correrQuery(
+                "DELETE FROM LA_QUERY_DE_PAPEL.FuncionalidadxRol " +
+                "WHERE Id_Rol = " + idRolModif.ToString());
+
+            insertarFuncionalidadxRol();
+
+            MessageBox.Show("Se modifico el rol");
+        }
+
         private void cargarRol()
         {
             //int idRol = buscarIdRol();
@@ -142,24 +161,5 @@ namespace FrbaHotel.AbmRol
 
             checkedListBoxFuncionalidades.SetItemChecked(indice, true);
         }
-
-        private void atenderModificacion()
-        {
-            //actualizo rol
-            DB.correrQuery(
-                "UPDATE LA_QUERY_DE_PAPEL.Rol " +
-                "SET Nombre = '" + textBoxNombreRol.Text + "', " +
-                    "Habilitado = " + checkBoxHabilitadoInt().ToString() +
-                "WHERE Id_Rol = " + idRolModif.ToString());
-
-            //borro funcionalidades anteriores
-            DB.correrQuery(
-                "DELETE FROM LA_QUERY_DE_PAPEL.FuncionalidadxRol " +
-                "WHERE Id_Rol = " + idRolModif.ToString());
-
-            insertarFuncionalidadxRol();
-
-            MessageBox.Show("Se modifico el rol");
-        } 
     }
 }

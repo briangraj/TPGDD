@@ -13,6 +13,7 @@ namespace FrbaHotel.Entidades
     {
         public string username;
         public int id;
+        public int idHotel;
 
         public Usuario(string username)
         {

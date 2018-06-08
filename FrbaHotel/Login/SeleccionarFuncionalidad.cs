@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
 using FrbaHotel.Entidades;
 using FrbaHotel.Utilidades;
 using System.Data.SqlClient;
@@ -40,7 +41,7 @@ namespace FrbaHotel.Login
         {
             if (comboBoxFuncionalidades.SelectedIndex < 0)
             {
-                MessageBox.Show("SELECCIONE FUNCIONALIDAD");
+                MessageBox.Show("Seleccione una funcionalidad");
             }
             else
             {

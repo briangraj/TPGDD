@@ -274,6 +274,7 @@
             // 
             // comboBoxRoles
             // 
+            this.comboBoxRoles.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxRoles.FormattingEnabled = true;
             this.comboBoxRoles.Location = new System.Drawing.Point(167, 55);
             this.comboBoxRoles.Name = "comboBoxRoles";
@@ -341,7 +342,7 @@
             // checkedListBoxHoteles
             // 
             this.checkedListBoxHoteles.FormattingEnabled = true;
-            this.checkedListBoxHoteles.Location = new System.Drawing.Point(24, 365);
+            this.checkedListBoxHoteles.Location = new System.Drawing.Point(23, 365);
             this.checkedListBoxHoteles.Name = "checkedListBoxHoteles";
             this.checkedListBoxHoteles.Size = new System.Drawing.Size(502, 184);
             this.checkedListBoxHoteles.TabIndex = 34;

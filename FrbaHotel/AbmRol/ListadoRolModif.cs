@@ -12,15 +12,17 @@ namespace FrbaHotel.AbmRol
 {
     class ListadoRolModif : ListadoRol
     {
-        protected override void agregarColumna()
+        protected override void llenarTabla()
         {
-            DataGridViewButtonColumn columna = new DataGridViewButtonColumn();
-            columna.HeaderText = "Seleccionar";
-            columna.Text = "Modificar";
-            columna.Name = "columnaBoton";
-            columna.UseColumnTextForButtonValue = true;
+            dataGridViewRoles.DataSource = DB.correrQueryTabla(
+                "SELECT Nombre " +
+                "FROM LA_QUERY_DE_PAPEL.Rol " +
+                    "WHERE Nombre like '%" + textBoxNombreRol.Text + "%'");
+        }
 
-            dataGridViewRoles.Columns.Add(columna);
+        protected override String textoBoton()
+        {
+            return "Modificar";
         }
 
         protected override void accionBoton(DataGridViewCellEventArgs e)
@@ -28,14 +30,6 @@ namespace FrbaHotel.AbmRol
             DatosRol datosRol = new DatosRol(dataGridViewRoles.CurrentRow.Cells["Nombre"].Value.ToString());
             Hide();
             datosRol.Show();
-        }
-
-        protected override DataTable contenidoTabla()
-        {
-            return DB.correrQueryTabla(
-                "SELECT Nombre " +
-                "FROM LA_QUERY_DE_PAPEL.Rol " +
-                    "WHERE Nombre like '%" + textBoxNombreRol.Text + "%'");
         }
     }
 }

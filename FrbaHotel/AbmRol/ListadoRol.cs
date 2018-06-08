@@ -26,15 +26,20 @@ namespace FrbaHotel.AbmRol
             llenarTabla();
         }
 
-        private void llenarTabla()
-        {
-            dataGridViewRoles.DataSource = contenidoTabla();
+        protected abstract void llenarTabla();
 
+        private void agregarColumna()
+        {
+            DataGridViewButtonColumn columna = new DataGridViewButtonColumn();
+            columna.HeaderText = "Seleccionar";
+            columna.Text = textoBoton();
+            columna.Name = "columnaBoton";
+            columna.UseColumnTextForButtonValue = true;
+
+            dataGridViewRoles.Columns.Add(columna);
         }
 
-        protected abstract DataTable contenidoTabla();
-
-        protected abstract void agregarColumna();
+        protected abstract String textoBoton();
 
         private void dataGridViewRoles_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -42,7 +47,6 @@ namespace FrbaHotel.AbmRol
                 return;
 
             accionBoton(e);
-            llenarTabla();
         }
 
         protected abstract void accionBoton(DataGridViewCellEventArgs e);

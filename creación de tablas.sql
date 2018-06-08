@@ -17,7 +17,7 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Persona] (
 	Direccion nvarchar(255) NOT NULL,
 	Fecha_Nacimiento datetime NOT NULL,
 	Telefono nvarchar(50) NOT NULL,
-	Habilitado bit NOT NULL,
+	Habilitado bit DEFAULT 1 NOT NULL,
 	
 	PRIMARY KEY (Tipo_Documento, Nro_Documento),	
 );
@@ -147,16 +147,6 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[FuncionalidadxRol] (
 
 GO
 
-CREATE VIEW LA_QUERY_DE_PAPEL.usuarios
-AS
-SELECT Username, Password, Id_Rol, Nombre, Apellido, P.Tipo_Documento, P.Nro_Documento, Mail, Telefono, Direccion, Fecha_Nacimiento
-FROM LA_QUERY_DE_PAPEL.Persona P
-	JOIN LA_QUERY_DE_PAPEL.Usuario U
-	ON P.Tipo_Documento = U.Tipo_Documento
-		AND P.Nro_Documento = U.Nro_Documento
-
-GO
-
 INSERT INTO LA_QUERY_DE_PAPEL.Rol (Nombre)
 VALUES ('Administrador General')
 
@@ -171,6 +161,32 @@ VALUES ('', 1, '', '', '', GETDATE(), '', 1)
 
 INSERT INTO LA_QUERY_DE_PAPEL.Usuario (Tipo_Documento, Nro_Documento, Username,	Password, Id_Rol, Mail)
 VALUES ('', 1, 'admin', CONVERT(varbinary(255),HASHBYTES('SHA2_256','w23e' ),2), 1, '')
+
+GO
+
+--para usar en el abm de usuarios
+CREATE VIEW LA_QUERY_DE_PAPEL.usuarios
+AS
+SELECT Id_Usuario, Username, Password, Id_Rol, Nombre, Apellido, P.Tipo_Documento, P.Nro_Documento, Mail, Telefono, Direccion, Fecha_Nacimiento, Habilitado
+FROM LA_QUERY_DE_PAPEL.Persona P
+	JOIN LA_QUERY_DE_PAPEL.Usuario U
+	ON P.Tipo_Documento = U.Tipo_Documento
+		AND P.Nro_Documento = U.Nro_Documento
+
+GO
+
+CREATE TRIGGER LA_QUERY_DE_PAPEL.insertUsuarios ON LA_QUERY_DE_PAPEL.usuarios
+INSTEAD OF INSERT
+AS
+BEGIN
+INSERT INTO LA_QUERY_DE_PAPEL.Persona (Tipo_Documento, Nro_Documento, Apellido, Nombre, Direccion, Fecha_Nacimiento, Telefono)
+   SELECT Tipo_Documento, Nro_Documento, Apellido, Nombre, Direccion, Fecha_Nacimiento, Telefono
+   FROM inserted
+
+INSERT INTO LA_QUERY_DE_PAPEL.Usuario (Tipo_Documento, Nro_Documento, Username, Password, Id_Rol, Mail)
+	SELECT i.Tipo_Documento, i.Nro_Documento, i.Username, i.Password, i.Id_Rol, i.Mail
+	FROM inserted i
+END
 
 GO
 

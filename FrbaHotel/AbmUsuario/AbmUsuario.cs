@@ -24,8 +24,20 @@ namespace FrbaHotel.AbmUsuario
 
         private void buttonAlta_Click(object sender, EventArgs e)
         {
-            DatosUsuario datosUsuario = new DatosUsuario(usuario);
+            DatosUsuario datosUsuario = new DatosUsuario();
             datosUsuario.Show();
+        }
+
+        private void buttonBaja_Click(object sender, EventArgs e)
+        {
+            ListadoUsuarioBaja listadoBaja = new ListadoUsuarioBaja(usuario);
+            listadoBaja.Show();
+        }
+
+        private void buttonModificacion_Click(object sender, EventArgs e)
+        {
+            ListadoUsuarioModif listadoModif = new ListadoUsuarioModif(usuario);
+            listadoModif.Show();
         }
     }
 }
