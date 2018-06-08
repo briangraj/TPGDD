@@ -67,9 +67,9 @@ namespace FrbaHotel.Utilidades
             conexionDB.Close();
         }
 
-        public static int correrQuery(String query)
+        public static int correrQuery(String query, params object[] args)
         {
-            SqlCommand comando = new SqlCommand(query, conexionDB);
+            SqlCommand comando = nuevoComando(query, args);
             int filasAfectadas = 0;
             try
             {
@@ -87,9 +87,9 @@ namespace FrbaHotel.Utilidades
             return filasAfectadas;
         }
 
-        public static Object correrQueryEscalar(String query)
+        public static Object correrQueryEscalar(String query, params object[] args)
         {
-            SqlCommand comando = new SqlCommand(query, conexionDB);
+            SqlCommand comando = nuevoComando(query, args);
             Object retorno;
             try
             {
@@ -129,6 +129,22 @@ namespace FrbaHotel.Utilidades
 
             conexionDB.Close();
             return tabla;
+        }
+
+        public static int buscarIdRol(string nombre)
+        {
+            return (int)DB.correrQueryEscalar(
+                "SELECT Id_Rol " +
+                "FROM LA_QUERY_DE_PAPEL.Rol " +
+                "WHERE Nombre = @nombre", "nombre", nombre);
+        }
+
+        public static int buscarIdUsuario(string username)
+        {
+            return (int)DB.correrQueryEscalar(
+                "SELECT Id_Usuario " +
+                "FROM LA_QUERY_DE_PAPEL.Usuario " +
+                "WHERE Username = @username", "username", username);
         }
     }
 }

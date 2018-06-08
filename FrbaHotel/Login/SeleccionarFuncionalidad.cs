@@ -27,10 +27,8 @@ namespace FrbaHotel.Login
                 "FROM LA_QUERY_DE_PAPEL.Funcionalidad F " +
                     "JOIN LA_QUERY_DE_PAPEL.FuncionalidadxRol FR " +
                     "ON F.Id_Funcion = FR.Id_Funcion " +
-                        "AND FR.Id_Rol = " + "1", //TODO hay que ver que rol tiene el usuario
+                        "AND FR.Id_Rol = " + usuario.id.ToString(),
             cargarComboBox);
-
-            
         }
 
         public void cargarComboBox(SqlDataReader reader)

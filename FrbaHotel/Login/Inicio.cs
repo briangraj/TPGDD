@@ -32,7 +32,7 @@ namespace FrbaHotel.Login
                 DB.ejecutarProcedimiento("LA_QUERY_DE_PAPEL.procedure_login", "usuario", textBoxUser.Text, "contrasenia", pass);
 
                 Usuario usuario = new Usuario(textBoxUser.Text);
-
+                usuario.cargar();
                 this.Hide();
 
                 SeleccionarFuncionalidad form = new SeleccionarFuncionalidad(usuario);

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
 using FrbaHotel.Utilidades;
 using System.Data.SqlClient;
 using FrbaHotel.Entidades;
@@ -22,7 +23,7 @@ namespace FrbaHotel.AbmRol
         public DatosRol()
         {
             InitializeComponent();
-            alta = false;
+            alta = true;
             cargarFuncionalidades();
             checkBoxHabilitado.Checked = true;
         }
@@ -30,9 +31,9 @@ namespace FrbaHotel.AbmRol
         public DatosRol(String nombre)
         {
             InitializeComponent();
-            alta = true;
+            alta = false;
             textBoxNombreRol.Text = nombre;
-            idRolModif = buscarIdRol();
+            idRolModif = DB.buscarIdRol(textBoxNombreRol.Text);
             cargarFuncionalidades();
             cargarRol();
         }
@@ -66,9 +67,7 @@ namespace FrbaHotel.AbmRol
 
         private void validarDatos()
         {
-            if (textBoxNombreRol.Text == "")
-                errorProviderDatos.SetError(textBoxNombreRol, "No debe estar vacio");
-
+            Validaciones.textBoxsVacios(errorProviderDatos, Controls);
             if (checkedListBoxFuncionalidades.CheckedItems.Count == 0)
                 errorProviderDatos.SetError(checkedListBoxFuncionalidades, "Debe elegir al menos una funcionalidad");
         }
@@ -81,14 +80,6 @@ namespace FrbaHotel.AbmRol
             {
                 checkedListBoxFuncionalidades.SetItemCheckState(i, CheckState.Unchecked);
             }
-        }
-
-        private int buscarIdRol()
-        {
-            return (int)DB.correrQueryEscalar(
-                "SELECT Id_Rol " +
-                "FROM LA_QUERY_DE_PAPEL.Rol " +
-                "WHERE Nombre = '" + textBoxNombreRol.Text + "'");
         }
 
         private int checkBoxHabilitadoInt()
@@ -115,7 +106,7 @@ namespace FrbaHotel.AbmRol
 
         private void insertarFuncionalidadxRol()
         {
-            int idRol = buscarIdRol();
+            int idRol = DB.buscarIdRol(textBoxNombreRol.Text);
             string id;
 
             foreach(string desc in checkedListBoxFuncionalidades.CheckedItems)

@@ -5,28 +5,23 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
 
+using FrbaHotel.Utilidades;
+
 namespace FrbaHotel.Entidades
 {
     public class Usuario
     {
-        string username;
-        
-        public string Username
-        {
-            get
-            {
-                return username;
-            }
-
-            set
-            {
-                username = value;
-            }
-        }
+        public string username;
+        public int id;
 
         public Usuario(string username)
         {
             this.username = username;
+        }
+
+        public void cargar()
+        {
+            id = DB.buscarIdUsuario(username);
         }
 
         public static byte[] encriptar(string texto)    // encripto una contraseña
