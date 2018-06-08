@@ -15,11 +15,11 @@ namespace FrbaHotel.Login
 {
     public partial class SeleccionarFuncionalidad : Form
     {
-        Usuario user;
+        private Usuario usuario;
 
         public SeleccionarFuncionalidad(Usuario usuario)
         {
-            this.user = usuario;
+            this.usuario = usuario;
             InitializeComponent();
 
             DB.ejecutarReader(
@@ -49,12 +49,15 @@ namespace FrbaHotel.Login
                 Form form;
                 switch (comboBoxFuncionalidades.SelectedItem.ToString())
                 {
-                    case "ABM de Rol":
+                    case "ABM de rol":
                         form = new AbmRol.AbmRol();
+                        break;
+                    case "ABM de usuario":
+                        form = new AbmUsuario.AbmUsuario(usuario);
                         break;
                     default:
-                        form = new AbmRol.AbmRol();
-                        break;
+                        MessageBox.Show("Debe seleccionar una funcionalidad");
+                        return;
                 }
 
                 form.Show();

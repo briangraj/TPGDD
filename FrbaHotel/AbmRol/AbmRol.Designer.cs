@@ -75,7 +75,7 @@
             this.Controls.Add(this.buttonBaja);
             this.Controls.Add(this.buttonAlta);
             this.Name = "AbmRol";
-            this.Text = "ABM rol";
+            this.Text = "ABM de rol";
             this.ResumeLayout(false);
 
         }

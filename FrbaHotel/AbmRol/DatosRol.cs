@@ -15,14 +15,14 @@ namespace FrbaHotel.AbmRol
 {
     public partial class DatosRol : Form
     {
-        private bool modificacion;
+        private bool alta;
         private List<Funcionalidad> funcionalidades = new List<Funcionalidad>();
         private int idRolModif;
 
         public DatosRol()
         {
             InitializeComponent();
-            modificacion = false;
+            alta = false;
             cargarFuncionalidades();
             checkBoxHabilitado.Checked = true;
         }
@@ -30,7 +30,7 @@ namespace FrbaHotel.AbmRol
         public DatosRol(String nombre)
         {
             InitializeComponent();
-            modificacion = true;
+            alta = true;
             textBoxNombreRol.Text = nombre;
             idRolModif = buscarIdRol();
             cargarFuncionalidades();
@@ -58,10 +58,10 @@ namespace FrbaHotel.AbmRol
             if (Validaciones.errorProviderConError(errorProviderDatos, Controls))
                 return;
 
-            if (modificacion)
-                atenderModificacion();
-            else
+            if (alta)
                 atenderAlta();
+            else
+                atenderModificacion();
         }
 
         private void validarDatos()

@@ -17,5 +17,17 @@ namespace FrbaHotel.Utilidades
                     return true;
             return false;
         }
+
+        public static void textBoxsVacios(ErrorProvider errorProvider, Control.ControlCollection controls)
+        {
+            foreach (Control control in controls)
+            {
+                if (control is TextBox)
+                    if(((TextBox)control).Text == "")
+                        errorProvider.SetError(control, "No puede estar vacio");
+
+                textBoxsVacios(errorProvider, control.Controls);
+            }
+        }
     }
 }
