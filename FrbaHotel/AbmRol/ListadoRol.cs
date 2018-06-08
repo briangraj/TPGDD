@@ -28,13 +28,11 @@ namespace FrbaHotel.AbmRol
 
         private void llenarTabla()
         {
-            dataGridViewRoles.DataSource = DB.correrQueryTabla(
-                "SELECT Nombre " +
-                "FROM LA_QUERY_DE_PAPEL.Rol " +
-                    "WHERE Nombre like '%" + textBoxNombreRol.Text + "%'" +
-                        "AND Habilitado = 1");
+            dataGridViewRoles.DataSource = contenidoTabla();
 
         }
+
+        protected abstract DataTable contenidoTabla();
 
         protected abstract void agregarColumna();
 

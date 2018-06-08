@@ -75,8 +75,12 @@ namespace FrbaHotel.AbmRol
 
         private void buttonLimpiar_Click(object sender, EventArgs e)
         {
-            Limpiador.LimpiarTextBox(this.Controls);
-            checkedListBoxFuncionalidades.ClearSelected();
+            Limpiador.LimpiarTextBox(Controls);
+            Limpiador.LimpiarCheckBox(Controls);
+            foreach (int i in checkedListBoxFuncionalidades.CheckedIndices)
+            {
+                checkedListBoxFuncionalidades.SetItemCheckState(i, CheckState.Unchecked);
+            }
         }
 
         private int buscarIdRol()
@@ -163,6 +167,8 @@ namespace FrbaHotel.AbmRol
                 "WHERE Id_Rol = " + idRolModif.ToString());
 
             insertarFuncionalidadxRol();
+
+            MessageBox.Show("Se modifico el rol");
         } 
     }
 }

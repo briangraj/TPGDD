@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using System.Windows.Forms;
+using System.Data;
 using FrbaHotel.Utilidades;
 
 namespace FrbaHotel.AbmRol
@@ -29,6 +30,15 @@ namespace FrbaHotel.AbmRol
                 "WHERE Nombre = '" + dataGridViewRoles.CurrentRow.Cells["Nombre"].Value.ToString() + "'");
 
             MessageBox.Show("Rol eliminado");
+        }
+
+        protected override DataTable contenidoTabla()
+        {
+            return DB.correrQueryTabla(
+                "SELECT Nombre " +
+                "FROM LA_QUERY_DE_PAPEL.Rol " +
+                    "WHERE Nombre like '%" + textBoxNombreRol.Text + "%'" +
+                        "AND Habilitado = 1");
         }
     }
 }
