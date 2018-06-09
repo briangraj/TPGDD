@@ -76,10 +76,7 @@ namespace FrbaHotel.AbmRol
         {
             Limpiador.LimpiarTextBox(Controls);
             Limpiador.LimpiarCheckBox(Controls);
-            foreach (int i in checkedListBoxFuncionalidades.CheckedIndices)
-            {
-                checkedListBoxFuncionalidades.SetItemCheckState(i, CheckState.Unchecked);
-            }
+            Limpiador.LimpiarCheckBoxList(checkedListBoxFuncionalidades);
         }
 
         private int checkBoxHabilitadoInt()

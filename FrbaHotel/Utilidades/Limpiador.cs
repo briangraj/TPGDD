@@ -39,6 +39,14 @@ namespace FrbaHotel.Utilidades
                     ((ComboBox)control).SelectedIndex = -1;
             }
         }
+
+        public static void LimpiarCheckBoxList(CheckedListBox lista) 
+        {
+            foreach (int i in lista.CheckedIndices)
+            {
+                lista.SetItemCheckState(i, CheckState.Unchecked);
+            }
+        }
         /*
         public static void LimpiarDateTimePicker(Control.ControlCollection controls)
         {

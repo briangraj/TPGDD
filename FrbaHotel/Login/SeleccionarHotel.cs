@@ -23,7 +23,7 @@ namespace FrbaHotel.Login
         {
             InitializeComponent();
             this.usuario = usuario;
-            cargarHoteles();
+            //cargarHoteles();
         }
 
         private void cargarHoteles()
