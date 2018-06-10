@@ -161,6 +161,14 @@ namespace FrbaHotel.AbmUsuario
             checkBoxHabilitado.Checked = (bool)filaSeleccionada.Cells["Habilitado"].Value;
             idUsuarioAModificar = (int)filaSeleccionada.Cells["Id_Usuario"].Value;
 
+            string nombreRol = DB.correrQueryEscalar(
+                "SELECT Nombre " +
+                "FROM LA_QUERY_DE_PAPEL.Rol " +
+                "WHERE Id_Rol = @idRol",
+                "idRol", (int)filaSeleccionada.Cells["Id_Rol"].Value).ToString();
+
+            comboBoxRoles.SelectedIndex = comboBoxRoles.Items.IndexOf(nombreRol);
+
             cargarHotelesDondeTrabaja();
         }
 
