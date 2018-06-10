@@ -54,7 +54,6 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Hotel] (
 	Mail nvarchar(255),
 	Telefono nvarchar(50),
 	Direccion nvarchar(255) NOT NULL,
-	Nro_Direccion INT NOT NULL,
 	Cant_Estrellas INT NOT NULL,
 	Ciudad nvarchar(255) NOT NULL,
 	Pais nvarchar(255) NOT NULL,

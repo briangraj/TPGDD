@@ -112,7 +112,8 @@ namespace FrbaHotel.AbmRol
 
                 DB.correrQuery(
                     "INSERT INTO LA_QUERY_DE_PAPEL.FuncionalidadxRol (Id_Rol, Id_Funcion) " +
-                    "VALUES (" + idRol.ToString() + ", " + id + ")");
+                    "VALUES (@idRol, @idFuncion)",
+                    "idRol", idRol, "idFuncion", Convert.ToInt32(id));
             }
         }
 

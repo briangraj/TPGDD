@@ -52,9 +52,9 @@ namespace FrbaHotel.Utilidades
             conexionDB.Close();
         }
 
-        public static void ejecutarReader(String query, Action<SqlDataReader> usarReader)
+        public static void ejecutarReader(String query, Action<SqlDataReader> usarReader, params object[] args)
         {
-            SqlCommand comando = nuevoComando(query);
+            SqlCommand comando = nuevoComando(query, args);
 
             comando.CommandType = CommandType.Text;
 

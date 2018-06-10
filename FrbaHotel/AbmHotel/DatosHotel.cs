@@ -18,10 +18,13 @@ namespace FrbaHotel.AbmHotel
     {
         private List<Regimen> regimenes = new List<Regimen>();
         private bool alta;
+        private Usuario usuario;
 
-        public DatosHotel()
+        public DatosHotel(Usuario usuario)
         {
             InitializeComponent();
+            this.usuario = usuario;
+            this.alta = true;
             cargarRegimenes();
         }
 
@@ -35,7 +38,7 @@ namespace FrbaHotel.AbmHotel
 
         public void cargarCheckBoxs(SqlDataReader reader)
         {
-            regimenes.Add(new Regimen(reader.GetString(0), reader.GetInt32(1).ToString()));
+            regimenes.Add(new Regimen(reader.GetString(0), reader.GetInt32(1)));
             checkedListBoxRegimenes.Items.Add(reader.GetString(0));
         }
 
@@ -68,16 +71,45 @@ namespace FrbaHotel.AbmHotel
         /////////////////////ALTA///////////////////////////
         private void atenderAlta()
         {
-            insertarHotel();
+            int idHotel = insertarHotel();
+
+            insertarUsuarioxHotel(idHotel);
+
+            insertarRegimenxHotel(idHotel);
+
+            MessageBox.Show("Se creo el hotel");
         }
 
-        private void insertarHotel()
+        private int insertarHotel()
+        {
+            return (int)DB.correrQueryEscalar(
+                "INSERT INTO LA_QUERY_DE_PAPEL.Hotel (Nombre, Mail,	Telefono, Direccion, Cant_Estrellas, Ciudad, Pais, Fecha_Creacion) output INSERTED.Id_Hotel " +
+                "VALUES (@nombre, @mail, @telefono, @direccion, @cantEstrellas, @ciudad, @pais, @fechaCreacion)",
+                "nombre", textBoxNombre.Text, "mail", textBoxMail.Text, "telefono", textBoxTelefono.Text, "direccion", textBoxDireccion.Text,
+                "cantEstrellas", textBoxCantEstrellas.Text, "ciudad", textBoxCiudad.Text, "pais", textBoxPais.Text, "fechaCreacion", dateTimePickerFechaCreacion.Value);
+        }
+
+        private void insertarUsuarioxHotel(int idHotel)
         {
             DB.correrQuery(
-                    "INSERT INTO LA_QUERY_DE_PAPEL.Hotel (Nombre, Mail,	Telefono, Direccion, Cant_Estrellas, Ciudad, Pais, Fecha_Creacion) " +
-                    "VALUES (@nombre, @mail, @telefono, @direccion, @cantEstrellas, @ciudad, @pais, @fechaCreacion)",
-                    "nombre", textBoxNombre.Text, "mail", textBoxMail.Text, "telefono", textBoxTelefono.Text, "direccion", textBoxDireccion.Text,
-                    "cantEstrellas", textBoxCantEstrellas.Text, "ciudad", textBoxCiudad.Text, "pais", textBoxPais.Text, "fechaCreacion", dateTimePickerFechaCreacion.Value);
+                "INSERT INTO LA_QUERY_DE_PAPEL.UsuarioxHotel (Id_Hotel, Id_Usuario) " +
+                "VALUES (@idHotel, @idUsuario)",
+                "idHotel", idHotel, "idUsuario", Convert.ToInt32(usuario.id));
+        }
+
+        private void insertarRegimenxHotel(int idHotel)
+        {
+            int id;
+
+            foreach (string desc in checkedListBoxRegimenes.CheckedItems)
+            {
+                id = regimenes.Find(regimen => regimen.descripcion == desc).id;
+
+                DB.correrQuery(
+                    "INSERT INTO LA_QUERY_DE_PAPEL.RegimenxHotel (Id_Hotel, Id_Regimen) " +
+                    "VALUES (@idHotel, @idRegimen)",
+                    "idHotel", idHotel, "idRegimen", id);
+            }
         }
 
         /////////////////////MODIFICACION///////////////////////////

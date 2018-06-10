@@ -9,9 +9,9 @@ namespace FrbaHotel.Entidades
     class Regimen
     {
         public String descripcion;
-        public String id;
+        public int id;
 
-        public Regimen(String descripcion, String id)
+        public Regimen(String descripcion, int id)
         {
             this.descripcion = descripcion;
             this.id = id;

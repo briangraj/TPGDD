@@ -23,7 +23,7 @@ namespace FrbaHotel.Login
         {
             InitializeComponent();
             this.usuario = usuario;
-            //cargarHoteles();
+            cargarHoteles();
         }
 
         private void cargarHoteles()
@@ -33,8 +33,8 @@ namespace FrbaHotel.Login
                 "FROM LA_QUERY_DE_PAPEL.Hotel H " +
                     "JOIN LA_QUERY_DE_PAPEL.UsuarioxHotel UH " +
                     "ON H.Id_Hotel = UH.Id_Hotel " +
-                        "AND UH.Id_Rol = " + usuario.id.ToString(),
-            cargarComboBox);
+                "WHERE UH.Id_Usuario = @idUsuario",
+                cargarComboBox, "idUsuario", usuario.id);
         }
 
         public void cargarComboBox(SqlDataReader reader)
