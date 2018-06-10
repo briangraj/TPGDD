@@ -79,11 +79,6 @@ namespace FrbaHotel.AbmRol
             Limpiador.LimpiarCheckBoxList(checkedListBoxFuncionalidades);
         }
 
-        private int checkBoxHabilitadoInt()
-        {
-            return checkBoxHabilitado.Checked ? 1 : 0;
-        }
-
         /////////////////////ALTA///////////////////////////
         private void atenderAlta()
         {
@@ -98,7 +93,8 @@ namespace FrbaHotel.AbmRol
         {
             return DB.correrQuery(
                     "INSERT INTO LA_QUERY_DE_PAPEL.Rol (Nombre, Habilitado) " +
-                    "VALUES ('" + textBoxNombreRol.Text + "', " + checkBoxHabilitadoInt().ToString() + ")");
+                    "VALUES (@nombre, @habilitado)",
+                    "nombre", textBoxNombreRol.Text, "habilitado", checkBoxHabilitado.Checked);
         }
 
         private void insertarFuncionalidadxRol()
@@ -123,14 +119,16 @@ namespace FrbaHotel.AbmRol
             //actualizo rol
             DB.correrQuery(
                 "UPDATE LA_QUERY_DE_PAPEL.Rol " +
-                "SET Nombre = '" + textBoxNombreRol.Text + "', " +
-                    "Habilitado = " + checkBoxHabilitadoInt().ToString() +
-                "WHERE Id_Rol = " + idRolModif.ToString());
+                "SET Nombre = @nombre, " +
+                    "Habilitado = @habilitado " +
+                "WHERE Id_Rol = @idRol",
+                "nombre", textBoxNombreRol.Text, "habilitado", checkBoxHabilitado.Checked, "idRol", idRolModif);
 
             //borro funcionalidades anteriores
             DB.correrQuery(
                 "DELETE FROM LA_QUERY_DE_PAPEL.FuncionalidadxRol " +
-                "WHERE Id_Rol = " + idRolModif.ToString());
+                "WHERE Id_Rol = @idRol",
+                "idRol", idRolModif);
 
             insertarFuncionalidadxRol();
 
@@ -142,7 +140,8 @@ namespace FrbaHotel.AbmRol
             checkBoxHabilitado.Checked = (bool)DB.correrQueryEscalar(
                 "SELECT Habilitado " +
                 "FROM LA_QUERY_DE_PAPEL.Rol " +
-                    "WHERE Nombre = '" + textBoxNombreRol.Text + "'");
+                    "WHERE Nombre = @nombre",
+                "nombre", textBoxNombreRol.Text);
 
             DB.ejecutarReader(
                 "SELECT Id_Funcion " +

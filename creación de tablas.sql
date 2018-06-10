@@ -33,7 +33,7 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Usuario] (
 	Mail nvarchar(255) NOT NULL,
 	login_habilitado bit DEFAULT 1 NOT NULL,
 
-	FOREIGN KEY (Tipo_Documento, Nro_Documento) REFERENCES [LA_QUERY_DE_PAPEL].[Persona] (Tipo_Documento, Nro_Documento),
+	FOREIGN KEY (Tipo_Documento, Nro_Documento) REFERENCES [LA_QUERY_DE_PAPEL].[Persona] (Tipo_Documento, Nro_Documento) ON UPDATE CASCADE,
 	FOREIGN KEY (Id_Rol) REFERENCES [LA_QUERY_DE_PAPEL].[Rol] (Id_Rol)
 	);
 
@@ -44,7 +44,7 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Cliente] (
 	Mail nvarchar(255) UNIQUE,
 	Nacionalidad nvarchar(255) NOT NULL,
 
-	FOREIGN KEY (Tipo_Documento, Nro_Documento) REFERENCES [LA_QUERY_DE_PAPEL].[Persona] (Tipo_Documento, Nro_Documento),
+	FOREIGN KEY (Tipo_Documento, Nro_Documento) REFERENCES [LA_QUERY_DE_PAPEL].[Persona] (Tipo_Documento, Nro_Documento) ON UPDATE CASCADE,
 	
 	);
 
@@ -179,11 +179,27 @@ INSTEAD OF INSERT
 AS
 BEGIN
 INSERT INTO LA_QUERY_DE_PAPEL.Persona (Tipo_Documento, Nro_Documento, Apellido, Nombre, Direccion, Fecha_Nacimiento, Telefono, Habilitado)
-   SELECT Tipo_Documento, Nro_Documento, Apellido, Nombre, Direccion, Fecha_Nacimiento, Telefono, Habilitado
-   FROM inserted
+   SELECT i.Tipo_Documento, i.Nro_Documento, i.Apellido, i.Nombre, i.Direccion, i.Fecha_Nacimiento, i.Telefono, i.Habilitado
+   FROM inserted i
 
 INSERT INTO LA_QUERY_DE_PAPEL.Usuario (Tipo_Documento, Nro_Documento, Username, Password, Id_Rol, Mail)
 	SELECT i.Tipo_Documento, i.Nro_Documento, i.Username, i.Password, i.Id_Rol, i.Mail
+	FROM inserted i
+END
+
+GO
+
+CREATE TRIGGER LA_QUERY_DE_PAPEL.updateUsuarios ON LA_QUERY_DE_PAPEL.usuarios
+INSTEAD OF UPDATE
+AS
+BEGIN
+UPDATE LA_QUERY_DE_PAPEL.Persona 
+	SET Tipo_Documento = i.Tipo_Documento, Nro_Documento = i.Nro_Documento, Apellido = i.Apellido, Nombre = i.Nombre, Direccion = i.Direccion,
+		Fecha_Nacimiento = i.Fecha_Nacimiento, Telefono = i.Telefono, Habilitado = i.Habilitado
+	FROM inserted i
+
+UPDATE LA_QUERY_DE_PAPEL.Usuario
+	SET Username = i.Username, Password = i.Password, Id_Rol = i.Id_Rol, Mail = i.Mail
 	FROM inserted i
 END
 

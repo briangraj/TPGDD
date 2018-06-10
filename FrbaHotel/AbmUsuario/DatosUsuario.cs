@@ -18,6 +18,7 @@ namespace FrbaHotel.AbmUsuario
     {
         private bool alta;
         private List<Hotel> hoteles = new List<Hotel>();
+        private int idUsuarioAModificar;
 
         public DatosUsuario()
         {
@@ -124,7 +125,26 @@ namespace FrbaHotel.AbmUsuario
         /////////////////////MODIFICACION///////////////////////////
         private void atenderModificacion()
         {
+            int idRol = DB.buscarIdRol(comboBoxRoles.SelectedItem.ToString());
+            
+            DB.correrQuery(
+                "UPDATE LA_QUERY_DE_PAPEL.usuarios " +
+                "SET Username = @username, Password = @password, Id_Rol = @idRol, Nombre = @nombre, Apellido = @apellido, Tipo_Documento = @tipoDoc, " +
+                "Nro_Documento = @nroDoc, Mail = @mail, Telefono = @telefono, Direccion = @direccion, Fecha_Nacimiento = @fechaNac, Habilitado = @habilitado " +
+                "WHERE Id_Usuario = @idUsuario",
+                "username", textBoxUsername.Text, "password", Usuario.encriptar(textBoxPassword.Text), "idRol", idRol,
+                "nombre", textBoxNombre.Text, "apellido", textBoxApellido.Text, "tipoDoc", textBoxTipoDocumento.Text, "nroDoc", textBoxNroDocumento.Text,
+                "mail", textBoxMail.Text, "telefono", textBoxTelefono.Text, "direccion", textBoxDireccion.Text, "fechaNac", dateTimePickerFechaNac.Value,
+                "habilitado", checkBoxHabilitado.Checked, "idUsuario", idUsuarioAModificar);
 
+            DB.correrQuery(
+                "DELETE FROM LA_QUERY_DE_PAPEL.UsuarioxHotel " +
+                "WHERE Id_Usuario = @idUsuario",
+                "idUsuario", idUsuarioAModificar);
+
+            insertUsuarioxHotel();
+
+            MessageBox.Show("Se modifico el rol");
         }
 
         private void cargarUsuario(DataGridViewRow filaSeleccionada)
@@ -139,16 +159,18 @@ namespace FrbaHotel.AbmUsuario
             textBoxDireccion.Text = filaSeleccionada.Cells["Direccion"].Value.ToString();
             dateTimePickerFechaNac.Value = Convert.ToDateTime(filaSeleccionada.Cells["Fecha_Nacimiento"].Value.ToString());
             checkBoxHabilitado.Checked = (bool)filaSeleccionada.Cells["Habilitado"].Value;
+            idUsuarioAModificar = (int)filaSeleccionada.Cells["Id_Usuario"].Value;
 
-            cargarHotelesDondeTrabaja((int)filaSeleccionada.Cells["Id_Usuario"].Value);
+            cargarHotelesDondeTrabaja();
         }
 
-        private void cargarHotelesDondeTrabaja(int idUsuarioAModificar)
+        private void cargarHotelesDondeTrabaja()
         {
             DB.ejecutarReader(
                 "SELECT Id_Hotel " +
                 "FROM LA_QUERY_DE_PAPEL.UsuarioxHotel " +
-                    "WHERE Id_Usuario = @idUsuario", cargarHotel, "idUsuario", idUsuarioAModificar);
+                    "WHERE Id_Usuario = @idUsuario",
+                cargarHotel, "idUsuario", idUsuarioAModificar);
         }
 
         public void cargarHotel(SqlDataReader reader)
