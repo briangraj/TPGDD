@@ -23,6 +23,8 @@ namespace FrbaHotel.AbmUsuario
             this.usuario = usuario;
             llenarTabla();
             dataGridViewUsuarios.Columns["Password"].Visible = false;
+            dataGridViewUsuarios.Columns["Id_Usuario"].Visible = false;
+            dataGridViewUsuarios.Columns["Habilitado"].Visible = false;
             agregarColumna();
         }
 
@@ -59,10 +61,8 @@ namespace FrbaHotel.AbmUsuario
 
         private void dataGridViewUsuarios_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == 1 && e.RowIndex != -1)
-                return;
-
-            accionBoton(e);
+            if (dataGridViewUsuarios.Columns[e.ColumnIndex].HeaderText == "Seleccionar" && e.RowIndex != -1)
+                accionBoton(e);
         }
 
         protected abstract void accionBoton(DataGridViewCellEventArgs e);

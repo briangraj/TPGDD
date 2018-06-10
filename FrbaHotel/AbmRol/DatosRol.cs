@@ -139,7 +139,6 @@ namespace FrbaHotel.AbmRol
 
         private void cargarRol()
         {
-            //int idRol = buscarIdRol();
             checkBoxHabilitado.Checked = (bool)DB.correrQueryEscalar(
                 "SELECT Habilitado " +
                 "FROM LA_QUERY_DE_PAPEL.Rol " +
@@ -148,7 +147,7 @@ namespace FrbaHotel.AbmRol
             DB.ejecutarReader(
                 "SELECT Id_Funcion " +
                 "FROM LA_QUERY_DE_PAPEL.FuncionalidadxRol " +
-                    "WHERE Id_rol = " + idRolModif.ToString(), cargarFuncionalidad);
+                    "WHERE Id_Rol = @idRol", cargarFuncionalidad, "idRol", idRolModif);
         }
 
         public void cargarFuncionalidad(SqlDataReader reader)

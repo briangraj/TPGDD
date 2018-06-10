@@ -57,6 +57,8 @@
             this.buttonAceptar = new System.Windows.Forms.Button();
             this.errorProviderDatosUsuario = new System.Windows.Forms.ErrorProvider(this.components);
             this.checkedListBoxHoteles = new System.Windows.Forms.CheckedListBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.checkBoxHabilitado = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanelDatosUsuario.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProviderDatosUsuario)).BeginInit();
             this.SuspendLayout();
@@ -67,6 +69,7 @@
             this.tableLayoutPanelDatosUsuario.ColumnCount = 2;
             this.tableLayoutPanelDatosUsuario.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 32.16495F));
             this.tableLayoutPanelDatosUsuario.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 67.83505F));
+            this.tableLayoutPanelDatosUsuario.Controls.Add(this.label13, 0, 11);
             this.tableLayoutPanelDatosUsuario.Controls.Add(this.label11, 0, 10);
             this.tableLayoutPanelDatosUsuario.Controls.Add(this.textBoxDireccion, 1, 9);
             this.tableLayoutPanelDatosUsuario.Controls.Add(this.label10, 0, 9);
@@ -89,9 +92,10 @@
             this.tableLayoutPanelDatosUsuario.Controls.Add(this.textBoxNombre, 1, 3);
             this.tableLayoutPanelDatosUsuario.Controls.Add(this.label9, 0, 8);
             this.tableLayoutPanelDatosUsuario.Controls.Add(this.dateTimePickerFechaNac, 1, 10);
+            this.tableLayoutPanelDatosUsuario.Controls.Add(this.checkBoxHabilitado, 1, 11);
             this.tableLayoutPanelDatosUsuario.Location = new System.Drawing.Point(24, 52);
             this.tableLayoutPanelDatosUsuario.Name = "tableLayoutPanelDatosUsuario";
-            this.tableLayoutPanelDatosUsuario.RowCount = 11;
+            this.tableLayoutPanelDatosUsuario.RowCount = 12;
             this.tableLayoutPanelDatosUsuario.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanelDatosUsuario.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanelDatosUsuario.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -102,8 +106,9 @@
             this.tableLayoutPanelDatosUsuario.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanelDatosUsuario.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanelDatosUsuario.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanelDatosUsuario.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanelDatosUsuario.Size = new System.Drawing.Size(512, 290);
+            this.tableLayoutPanelDatosUsuario.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
+            this.tableLayoutPanelDatosUsuario.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 18F));
+            this.tableLayoutPanelDatosUsuario.Size = new System.Drawing.Size(512, 320);
             this.tableLayoutPanelDatosUsuario.TabIndex = 30;
             // 
             // label11
@@ -342,10 +347,31 @@
             // checkedListBoxHoteles
             // 
             this.checkedListBoxHoteles.FormattingEnabled = true;
-            this.checkedListBoxHoteles.Location = new System.Drawing.Point(23, 365);
+            this.checkedListBoxHoteles.Location = new System.Drawing.Point(23, 380);
             this.checkedListBoxHoteles.Name = "checkedListBoxHoteles";
-            this.checkedListBoxHoteles.Size = new System.Drawing.Size(502, 184);
+            this.checkedListBoxHoteles.Size = new System.Drawing.Size(502, 169);
             this.checkedListBoxHoteles.TabIndex = 34;
+            // 
+            // label13
+            // 
+            this.label13.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.Location = new System.Drawing.Point(47, 296);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(70, 16);
+            this.label13.TabIndex = 43;
+            this.label13.Text = "Habilitado";
+            // 
+            // checkBoxHabilitado
+            // 
+            this.checkBoxHabilitado.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.checkBoxHabilitado.AutoSize = true;
+            this.checkBoxHabilitado.Location = new System.Drawing.Point(167, 297);
+            this.checkBoxHabilitado.Name = "checkBoxHabilitado";
+            this.checkBoxHabilitado.Size = new System.Drawing.Size(15, 14);
+            this.checkBoxHabilitado.TabIndex = 44;
+            this.checkBoxHabilitado.UseVisualStyleBackColor = true;
             // 
             // DatosUsuario
             // 
@@ -397,6 +423,8 @@
         private System.Windows.Forms.Button buttonAceptar;
         private System.Windows.Forms.ErrorProvider errorProviderDatosUsuario;
         private System.Windows.Forms.CheckedListBox checkedListBoxHoteles;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.CheckBox checkBoxHabilitado;
 
     }
 }

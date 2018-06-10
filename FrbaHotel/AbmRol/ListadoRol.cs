@@ -43,10 +43,8 @@ namespace FrbaHotel.AbmRol
 
         private void dataGridViewRoles_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == 1 && e.RowIndex != -1)
-                return;
-
-            accionBoton(e);
+            if (dataGridViewRoles.Columns[e.ColumnIndex].HeaderText == "Seleccionar" && e.RowIndex != -1)
+                accionBoton(e);
         }
 
         protected abstract void accionBoton(DataGridViewCellEventArgs e);

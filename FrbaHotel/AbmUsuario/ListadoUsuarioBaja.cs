@@ -16,13 +16,16 @@ namespace FrbaHotel.AbmUsuario
 
         protected override String queryTabla()
         {
-            return  "SELECT Username, Password, Id_Rol, Nombre, Apellido, Tipo_Documento, Nro_Documento, Mail, Telefono, Direccion, Fecha_Nacimiento " +
-                    "FROM LA_QUERY_DE_PAPEL.usuarios " +
+            return "SELECT u.Id_Usuario, Username, Password, Id_Rol, Nombre, Apellido, Tipo_Documento, Nro_Documento, Mail, Telefono, Direccion, Fecha_Nacimiento, Habilitado " +
+                    "FROM LA_QUERY_DE_PAPEL.usuarios u " +
+                    "JOIN LA_QUERY_DE_PAPEL.UsuarioxHotel uh " +
+                        "ON u.Id_Usuario = uh.Id_Usuario " +
                         "WHERE Nombre LIKE @nombre " +
                             "AND Apellido LIKE @apellido " +
                             "AND Tipo_Documento LIKE @tipoDocumento " +
                             "AND Nro_Documento LIKE @nroDocumento " +
                             "AND Mail LIKE @mail " +
+                            "AND Id_Hotel = @idHotel " +
                             "AND Habilitado = 1";
         }
 

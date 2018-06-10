@@ -79,9 +79,8 @@ namespace FrbaHotel.AbmUsuario
         private void validarDatos()
         {
             Validaciones.textBoxsVacios(errorProviderDatosUsuario, Controls);
-            /*if (checkedListBoxHoteles.CheckedItems.Count == 0)
+            if (checkedListBoxHoteles.CheckedItems.Count == 0)
                 errorProviderDatosUsuario.SetError(checkedListBoxHoteles, "Debe elegir al menos un hotel");
-             */
         }
 
         /////////////////////ALTA///////////////////////////
@@ -98,11 +97,12 @@ namespace FrbaHotel.AbmUsuario
         {
             int idRol = DB.buscarIdRol(comboBoxRoles.SelectedItem.ToString());
             DB.correrQuery(
-                    "INSERT INTO LA_QUERY_DE_PAPEL.usuarios (Username, Password , Id_Rol, Nombre, Apellido, Tipo_Documento, Nro_Documento, Mail, Telefono, Direccion, Fecha_Nacimiento) " +
-                    "VALUES (@username, @password, @idRol, @nombre, @apellido, @tipoDocumento, @nroDocumento, @mail, @telefono, @direccion, @fechaNacimiento)",
+                    "INSERT INTO LA_QUERY_DE_PAPEL.usuarios (Username, Password , Id_Rol, Nombre, Apellido, Tipo_Documento, Nro_Documento, Mail, Telefono, Direccion, Fecha_Nacimiento, Habilitado) " +
+                    "VALUES (@username, @password, @idRol, @nombre, @apellido, @tipoDocumento, @nroDocumento, @mail, @telefono, @direccion, @fechaNacimiento, @habilitado)",
                     "username", textBoxUsername.Text, "password", Usuario.encriptar(textBoxPassword.Text), "idRol", idRol,
                     "nombre", textBoxNombre.Text, "apellido", textBoxApellido.Text, "tipoDocumento", textBoxTipoDocumento.Text, "nroDocumento", textBoxNroDocumento.Text,
-                    "mail", textBoxMail.Text, "telefono", textBoxTelefono.Text, "direccion", textBoxDireccion.Text, "fechaNacimiento", dateTimePickerFechaNac.Value);
+                    "mail", textBoxMail.Text, "telefono", textBoxTelefono.Text, "direccion", textBoxDireccion.Text, "fechaNacimiento", dateTimePickerFechaNac.Value,
+                    "habilitado", checkBoxHabilitado.Checked);
         }
 
         private void insertUsuarioxHotel()
@@ -138,8 +138,26 @@ namespace FrbaHotel.AbmUsuario
             textBoxTelefono.Text = filaSeleccionada.Cells["Telefono"].Value.ToString();
             textBoxDireccion.Text = filaSeleccionada.Cells["Direccion"].Value.ToString();
             dateTimePickerFechaNac.Value = Convert.ToDateTime(filaSeleccionada.Cells["Fecha_Nacimiento"].Value.ToString());
+            checkBoxHabilitado.Checked = (bool)filaSeleccionada.Cells["Habilitado"].Value;
 
-            //TODO cargar hoteles donde trabaja
+            cargarHotelesDondeTrabaja((int)filaSeleccionada.Cells["Id_Usuario"].Value);
+        }
+
+        private void cargarHotelesDondeTrabaja(int idUsuarioAModificar)
+        {
+            DB.ejecutarReader(
+                "SELECT Id_Hotel " +
+                "FROM LA_QUERY_DE_PAPEL.UsuarioxHotel " +
+                    "WHERE Id_Usuario = @idUsuario", cargarHotel, "idUsuario", idUsuarioAModificar);
+        }
+
+        public void cargarHotel(SqlDataReader reader)
+        {
+            string nombre = hoteles.Find(hotel => hotel.id == reader.GetInt32(0).ToString()).nombre;
+
+            int indice = checkedListBoxHoteles.Items.IndexOf(nombre);
+
+            checkedListBoxHoteles.SetItemChecked(indice, true);
         }
     }
 }
