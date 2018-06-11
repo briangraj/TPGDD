@@ -17,16 +17,28 @@ namespace FrbaHotel.Utilidades
                     return true;
             return false;
         }
-
-        public static void textBoxsVacios(ErrorProvider errorProvider, Control.ControlCollection controls)
+        
+        public static void validarControles(ErrorProvider errorProvider, Control.ControlCollection controls)
         {
             foreach (Control control in controls)
             {
                 if (control is TextBox)
-                    if(((TextBox)control).Text == "")
+                {
+                    if (((TextBox)control).Text == "")
                         errorProvider.SetError(control, "No puede estar vacio");
-
-                textBoxsVacios(errorProvider, control.Controls);
+                }
+                else if (control is ComboBox)
+                {
+                    if (((ComboBox)control).SelectedIndex == -1)
+                        errorProvider.SetError(control, "Debe seleccionar una opcion");
+                }
+                else if (control is CheckedListBox)
+                {
+                    if (((CheckedListBox)control).CheckedItems.Count == 0)
+                        errorProvider.SetError(control, "Debe elegir al menos una opcion");
+                }
+                    
+                validarControles(errorProvider, control.Controls);
             }
         }
     }

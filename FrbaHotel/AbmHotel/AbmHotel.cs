@@ -27,5 +27,11 @@ namespace FrbaHotel.AbmHotel
             DatosHotel datosHotel = new DatosHotel(usuario);
             datosHotel.Show();
         }
+
+        private void buttonModificacion_Click(object sender, EventArgs e)
+        {
+            ListadoHotelModif listadoModif = new ListadoHotelModif();
+            listadoModif.Show();
+        }
     }
 }

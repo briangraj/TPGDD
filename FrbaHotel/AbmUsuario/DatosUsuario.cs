@@ -79,9 +79,7 @@ namespace FrbaHotel.AbmUsuario
 
         private void validarDatos()
         {
-            Validaciones.textBoxsVacios(errorProviderDatosUsuario, Controls);
-            if (checkedListBoxHoteles.CheckedItems.Count == 0)
-                errorProviderDatosUsuario.SetError(checkedListBoxHoteles, "Debe elegir al menos un hotel");
+            Validaciones.validarControles(errorProviderDatosUsuario, Controls);
         }
 
         /////////////////////ALTA///////////////////////////

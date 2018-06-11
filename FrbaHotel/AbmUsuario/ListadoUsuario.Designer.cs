@@ -65,7 +65,7 @@
             this.tableLayoutPanelListadoUsuario.Controls.Add(this.comboBoxTipoDoc, 2, 1);
             this.tableLayoutPanelListadoUsuario.Controls.Add(this.maskedTextBoxNroDoc, 3, 1);
             this.tableLayoutPanelListadoUsuario.Controls.Add(this.buttonLimpiar, 1, 3);
-            this.tableLayoutPanelListadoUsuario.Controls.Add(this.buttonBuscar, 4, 3);
+            this.tableLayoutPanelListadoUsuario.Controls.Add(this.buttonBuscar, 3, 3);
             this.tableLayoutPanelListadoUsuario.Location = new System.Drawing.Point(39, 55);
             this.tableLayoutPanelListadoUsuario.Name = "tableLayoutPanelListadoUsuario";
             this.tableLayoutPanelListadoUsuario.RowCount = 4;
@@ -149,7 +149,7 @@
             // 
             this.textBoxMail.Location = new System.Drawing.Point(865, 30);
             this.textBoxMail.Name = "textBoxMail";
-            this.textBoxMail.Size = new System.Drawing.Size(284, 20);
+            this.textBoxMail.Size = new System.Drawing.Size(257, 20);
             this.textBoxMail.TabIndex = 7;
             // 
             // comboBoxTipoDoc
@@ -178,7 +178,7 @@
             // 
             // buttonBuscar
             // 
-            this.buttonBuscar.Location = new System.Drawing.Point(865, 84);
+            this.buttonBuscar.Location = new System.Drawing.Point(672, 84);
             this.buttonBuscar.Name = "buttonBuscar";
             this.buttonBuscar.Size = new System.Drawing.Size(75, 23);
             this.buttonBuscar.TabIndex = 11;

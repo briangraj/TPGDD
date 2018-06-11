@@ -51,7 +51,7 @@ namespace FrbaHotel.AbmRol
 
         private void buttonLimpiar_Click(object sender, EventArgs e)
         {
-            Limpiador.LimpiarTextBox(Controls);
+            Limpiador.limpiarControles(Controls);
             llenarTabla();
         }
     }

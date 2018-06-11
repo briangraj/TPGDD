@@ -57,15 +57,12 @@ namespace FrbaHotel.AbmHotel
 
         private void validarDatos()
         {
-            Validaciones.textBoxsVacios(errorProviderHoteles, Controls);
-            if (checkedListBoxRegimenes.CheckedItems.Count == 0)
-                errorProviderHoteles.SetError(checkedListBoxRegimenes, "Debe elegir al menos un regimen");
+            Validaciones.validarControles(errorProviderHoteles, Controls);
         }
 
         private void buttonLimpiar_Click(object sender, EventArgs e)
         {
-            Limpiador.LimpiarTextBox(Controls);
-            Limpiador.LimpiarCheckBoxList(checkedListBoxRegimenes);
+            Limpiador.limpiarControles(Controls);
         }
         
         /////////////////////ALTA///////////////////////////
@@ -86,7 +83,7 @@ namespace FrbaHotel.AbmHotel
                 "INSERT INTO LA_QUERY_DE_PAPEL.Hotel (Nombre, Mail,	Telefono, Direccion, Cant_Estrellas, Ciudad, Pais, Fecha_Creacion) output INSERTED.Id_Hotel " +
                 "VALUES (@nombre, @mail, @telefono, @direccion, @cantEstrellas, @ciudad, @pais, @fechaCreacion)",
                 "nombre", textBoxNombre.Text, "mail", textBoxMail.Text, "telefono", textBoxTelefono.Text, "direccion", textBoxDireccion.Text,
-                "cantEstrellas", textBoxCantEstrellas.Text, "ciudad", textBoxCiudad.Text, "pais", textBoxPais.Text, "fechaCreacion", dateTimePickerFechaCreacion.Value);
+                "cantEstrellas", Convert.ToInt32(comboBoxCantEstrellas.SelectedItem), "ciudad", textBoxCiudad.Text, "pais", textBoxPais.Text, "fechaCreacion", dateTimePickerFechaCreacion.Value);
         }
 
         private void insertarUsuarioxHotel(int idHotel)

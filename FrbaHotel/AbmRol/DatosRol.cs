@@ -67,16 +67,12 @@ namespace FrbaHotel.AbmRol
 
         private void validarDatos()
         {
-            Validaciones.textBoxsVacios(errorProviderDatos, Controls);
-            if (checkedListBoxFuncionalidades.CheckedItems.Count == 0)
-                errorProviderDatos.SetError(checkedListBoxFuncionalidades, "Debe elegir al menos una funcionalidad");
+            Validaciones.validarControles(errorProviderDatos, Controls);
         }
 
         private void buttonLimpiar_Click(object sender, EventArgs e)
         {
-            Limpiador.LimpiarTextBox(Controls);
-            Limpiador.LimpiarCheckBox(Controls);
-            Limpiador.LimpiarCheckBoxList(checkedListBoxFuncionalidades);
+            Limpiador.limpiarControles(Controls);
         }
 
         /////////////////////ALTA///////////////////////////

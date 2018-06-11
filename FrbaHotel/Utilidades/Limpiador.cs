@@ -12,39 +12,28 @@ namespace FrbaHotel.Utilidades
     {
         //static DateTime fechaActual = DateTime.Parse(System.Configuration.ConfigurationManager.AppSettings["Fecha"]);
 
-        public static void LimpiarTextBox(Control.ControlCollection controls)
+        public static void limpiarControles(Control.ControlCollection controls)
         {
-
             foreach (Control control in controls)
             {
                 if (control is TextBox)
                     ((TextBox)control).Clear();
-            }
-        }
 
-        public static void LimpiarCheckBox(Control.ControlCollection controls)
-        {
-            foreach (Control control in controls)
-            {
-                if (control is CheckBox)
+                else if (control is CheckBox)
                     ((CheckBox)control).Checked = false;
-            }
-        }
 
-        public static void LimpiarComboBox(Control.ControlCollection controls)
-        {
-            foreach (Control control in controls)
-            {
-                if (control is ComboBox)
+                else if (control is ComboBox)
                     ((ComboBox)control).SelectedIndex = -1;
-            }
-        }
 
-        public static void LimpiarCheckBoxList(CheckedListBox lista) 
-        {
-            foreach (int i in lista.CheckedIndices)
-            {
-                lista.SetItemCheckState(i, CheckState.Unchecked);
+                else if (control is CheckedListBox)
+                {
+                    foreach (int i in ((CheckedListBox)control).CheckedIndices)
+                    {
+                        ((CheckedListBox)control).SetItemCheckState(i, CheckState.Unchecked);
+                    }
+                }
+
+                limpiarControles(control.Controls);
             }
         }
         /*
