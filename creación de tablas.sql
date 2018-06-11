@@ -69,13 +69,14 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Hotel_Baja](
  );
 
 CREATE TABLE [LA_QUERY_DE_PAPEL].[Habitacion](
-        Nro_Habitacion INT  PRIMARY KEY IDENTITY(1,1),
+        Nro_Habitacion INT,-- PRIMARY KEY IDENTITY(1,1),
         Id_Hotel INT NOT NULL,
 		Piso INT NOT NULL,
         Ubicacion nvarchar(255),
         Tipo_Hab numeric(18),
         Descripcion nvarchar(255),
-FOREIGN KEY (Id_Hotel) REFERENCES [LA_QUERY_DE_PAPEL].[Hotel] (Id_Hotel)
+FOREIGN KEY (Id_Hotel) REFERENCES [LA_QUERY_DE_PAPEL].[Hotel] (Id_Hotel),
+PRIMARY KEY (Nro_Habitacion, Id_Hotel)
 );
 
 CREATE TABLE [LA_QUERY_DE_PAPEL].[Regimen] ( 
@@ -273,3 +274,27 @@ BEGIN
 
 END
 GO
+
+
+
+BEGIN TRANSACTION
+
+INSERT INTO [LA_QUERY_DE_PAPEL].[Hotel] (Nombre, Pais, Ciudad, Direccion, Cant_Estrellas) 
+SELECT DISTINCT 'Hotel ' + M.Hotel_Ciudad, 'Desconocido', M.Hotel_Ciudad, M.Hotel_Calle + ' ' + CAST(M.Hotel_Nro_Calle AS VARCHAR), M.Hotel_CantEstrella
+FROM gd_esquema.Maestra M
+
+
+SELECT * FROM [LA_QUERY_DE_PAPEL].Hotel
+
+
+
+
+INSERT INTO [LA_QUERY_DE_PAPEL].[Habitacion] (Nro_Habitacion, Id_Hotel, Piso, Ubicacion, Tipo_Hab, Descripcion)
+SELECT DISTINCT M.Habitacion_Numero, 
+				(SELECT DISTINCT Id_Hotel FROM [LA_QUERY_DE_PAPEL].[Hotel] H WHERE H.Ciudad = M.Hotel_Ciudad AND H.Direccion = M.Hotel_Calle + ' ' + CAST(M.Hotel_Nro_Calle AS VARCHAR)), 
+				M.Habitacion_Piso, M.Habitacion_Frente, M.Habitacion_Tipo_Codigo, M.Habitacion_Tipo_Descripcion
+FROM gd_esquema.Maestra M
+
+SELECT * FROM [LA_QUERY_DE_PAPEL].[Habitacion]
+
+ROLLBACK TRANSACTION
