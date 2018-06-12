@@ -35,6 +35,8 @@ namespace FrbaHotel.AbmUsuario
             cargarHoteles();
             cargarRoles();
             cargarUsuario(filaSeleccionada);
+            pictureBoxWarning.Image = SystemIcons.Warning.ToBitmap();
+            toolTipDatosUsuario.SetToolTip(pictureBoxWarning, "Si no se deasea cambiar su password \ndeje el campo en blanco");
         }
 
         private void cargarHoteles()
@@ -127,8 +129,7 @@ namespace FrbaHotel.AbmUsuario
             
             DB.correrQuery(
                 "UPDATE LA_QUERY_DE_PAPEL.usuarios " +
-                "SET Username = @username, Password = @password, Id_Rol = @idRol, Nombre = @nombre, Apellido = @apellido, Tipo_Documento = @tipoDoc, " +
-                "Nro_Documento = @nroDoc, Mail = @mail, Telefono = @telefono, Direccion = @direccion, Fecha_Nacimiento = @fechaNac, Habilitado = @habilitado " +
+                querySet() + 
                 "WHERE Id_Usuario = @idUsuario",
                 "username", textBoxUsername.Text, "password", Usuario.encriptar(textBoxPassword.Text), "idRol", idRol,
                 "nombre", textBoxNombre.Text, "apellido", textBoxApellido.Text, "tipoDoc", textBoxTipoDocumento.Text, "nroDoc", textBoxNroDocumento.Text,
@@ -143,6 +144,18 @@ namespace FrbaHotel.AbmUsuario
             insertUsuarioxHotel();
 
             MessageBox.Show("Se modifico el rol");
+        }
+
+        private String querySet()
+        {
+            if (textBoxPassword.Text == "")
+            {
+                return "SET Username = @username, Password = @password, Id_Rol = @idRol, Nombre = @nombre, Apellido = @apellido, Tipo_Documento = @tipoDoc, " +
+                "Nro_Documento = @nroDoc, Mail = @mail, Telefono = @telefono, Direccion = @direccion, Fecha_Nacimiento = @fechaNac, Habilitado = @habilitado ";
+            }
+            else
+                return "SET Username = @username, Id_Rol = @idRol, Nombre = @nombre, Apellido = @apellido, Tipo_Documento = @tipoDoc, " +
+                "Nro_Documento = @nroDoc, Mail = @mail, Telefono = @telefono, Direccion = @direccion, Fecha_Nacimiento = @fechaNac, Habilitado = @habilitado ";
         }
 
         private void cargarUsuario(DataGridViewRow filaSeleccionada)
