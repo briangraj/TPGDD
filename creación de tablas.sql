@@ -106,6 +106,7 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Reserva] (
 	Id_Usuario INT NOT NULL, 
 
 	FOREIGN KEY (Id_Regimen) REFERENCES [LA_QUERY_DE_PAPEL].[Regimen] (Id_Regimen),
+	FOREIGN KEY (Id_Hotel) REFERENCES [LA_QUERY_DE_PAPEL].[Hotel] (Id_Hotel)
 	);
 
 	CREATE TABLE [LA_QUERY_DE_PAPEL].[UsuarioxHotel] ( 
@@ -217,7 +218,6 @@ UPDATE LA_QUERY_DE_PAPEL.Usuario
 	FROM inserted i
 	WHERE LA_QUERY_DE_PAPEL.Usuario.Username IN (SELECT Username FROM deleted)
 END
-
 GO
 
 CREATE TRIGGER LA_QUERY_DE_PAPEL.deletePersonas ON LA_QUERY_DE_PAPEL.Persona
@@ -227,6 +227,29 @@ BEGIN
 UPDATE LA_QUERY_DE_PAPEL.Persona
 	SET Habilitado = 0
 	WHERE LA_QUERY_DE_PAPEL.Persona.Tipo_Documento IN (SELECT Tipo_Documento FROM deleted) AND LA_QUERY_DE_PAPEL.Persona.Nro_Documento IN (SELECT Nro_Documento FROM deleted)
+END
+GO
+
+CREATE TRIGGER LA_QUERY_DE_PAPEL.deleteRegimenxHotel ON LA_QUERY_DE_PAPEL.RegimenxHotel
+INSTEAD OF DELETE
+AS
+BEGIN
+	DECLARE @idHotel INT
+	DECLARE @idRegimen INT
+	SELECT @idHotel = d.Id_Hotel, @idRegimen = d.Id_Regimen
+	FROM deleted d
+
+	IF(EXISTS (SELECT 1 FROM LA_QUERY_DE_PAPEL.Reserva r
+				WHERE r.Id_Hotel IN (SELECT Id_Hotel FROM deleted) AND r.Id_Regimen IN (SELECT Id_Regimen FROM deleted)
+					AND (r.Fecha_Inicio = GETDATE() OR r.Fecha_Fin = GETDATE())))
+	BEGIN
+		DECLARE @descripcion nvarchar(255)
+		SELECT @descripcion = Descripcion FROM LA_QUERY_DE_PAPEL.Regimen WHERE Id_Regimen = @idRegimen
+		DECLARE @error nvarchar (255) = 'Existen reservas para el regimen ' + @descripcion
+		RAISERROR (@error, 16, 1)
+		RETURN
+	END
+	--falta checkear las estadias
 END
 GO
 

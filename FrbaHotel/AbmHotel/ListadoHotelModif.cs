@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using System.Windows.Forms;
+
 namespace FrbaHotel.AbmHotel
 {
     class ListadoHotelModif : ListadoHotel
@@ -21,6 +23,13 @@ namespace FrbaHotel.AbmHotel
         protected override String textoBoton()
         {
             return "Modificar";
+        }
+
+        protected override void accionBoton(DataGridViewCellEventArgs e)
+        {
+            DatosHotel datosHotel = new DatosHotel(dataGridViewHoteles.CurrentRow);
+            Hide();
+            datosHotel.Show();
         }
     }
 }

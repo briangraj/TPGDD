@@ -21,11 +21,6 @@ namespace FrbaHotel.AbmHotel
             agregarColumna();
         }
 
-        private void buttonLimpiar_Click(object sender, EventArgs e)
-        {
-            Limpiador.limpiarControles(Controls);
-        }
-
         private void buttonBuscar_Click(object sender, EventArgs e)
         {
             llenarTabla();
@@ -56,5 +51,19 @@ namespace FrbaHotel.AbmHotel
         }
 
         protected abstract String textoBoton();
+
+        private void dataGridViewHoteles_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (dataGridViewHoteles.Columns[e.ColumnIndex].HeaderText == "Seleccionar" && e.RowIndex != -1)
+                accionBoton(e);
+        }
+
+        protected abstract void accionBoton(DataGridViewCellEventArgs e);
+
+        private void buttonLimpiar_Click(object sender, EventArgs e)
+        {
+            Limpiador.limpiarControles(Controls);
+            llenarTabla();
+        }
     }
 }
