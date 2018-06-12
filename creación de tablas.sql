@@ -299,18 +299,21 @@ END
 GO
 
 
+--Migracion
+--Esta en una transaccion para ir probando sin romper la base de datos
 
 BEGIN TRANSACTION
+
+--Cargo los hoteles
 
 INSERT INTO [LA_QUERY_DE_PAPEL].[Hotel] (Nombre, Pais, Ciudad, Direccion, Cant_Estrellas) 
 SELECT DISTINCT 'Hotel ' + M.Hotel_Ciudad, 'Desconocido', M.Hotel_Ciudad, M.Hotel_Calle + ' ' + CAST(M.Hotel_Nro_Calle AS VARCHAR), M.Hotel_CantEstrella
 FROM gd_esquema.Maestra M
 
-
 SELECT * FROM [LA_QUERY_DE_PAPEL].Hotel
 
 
-
+--Cargo las habitaciones
 
 INSERT INTO [LA_QUERY_DE_PAPEL].[Habitacion] (Nro_Habitacion, Id_Hotel, Piso, Ubicacion, Tipo_Hab, Descripcion)
 SELECT DISTINCT M.Habitacion_Numero, 
@@ -319,5 +322,29 @@ SELECT DISTINCT M.Habitacion_Numero,
 FROM gd_esquema.Maestra M
 
 SELECT * FROM [LA_QUERY_DE_PAPEL].[Habitacion]
+
+
+--Cargo los regimenes
+
+INSERT INTO [LA_QUERY_DE_PAPEL].Regimen (Descripcion, Precio)
+SELECT DISTINCT M.Regimen_Descripcion, M.Regimen_Precio
+FROM gd_esquema.Maestra M
+
+SELECT * FROM LA_QUERY_DE_PAPEL.Regimen
+
+
+--Cargo los regimenes por hotel
+
+INSERT INTO LA_QUERY_DE_PAPEL.RegimenxHotel
+SELECT DISTINCT 
+		(SELECT Id_Hotel FROM LA_QUERY_DE_PAPEL.Hotel WHERE Ciudad = M.Hotel_Ciudad AND Direccion = M.Hotel_Calle + ' ' + CAST(M.Hotel_Nro_Calle AS VARCHAR)),
+		(SELECT Id_Regimen FROM LA_QUERY_DE_PAPEL.Regimen WHERE Descripcion = M.Regimen_Descripcion AND Precio = M.Regimen_Precio)
+FROM gd_esquema.Maestra M
+
+SELECT * FROM LA_QUERY_DE_PAPEL.RegimenxHotel
+
+
+
+
 
 ROLLBACK TRANSACTION
