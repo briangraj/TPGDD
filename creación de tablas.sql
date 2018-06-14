@@ -7,7 +7,8 @@ GO
 CREATE TABLE [LA_QUERY_DE_PAPEL].[Rol] ( 
 	Id_Rol INT NOT NULL PRIMARY KEY IDENTITY (1, 1),
 	Nombre nvarchar(255) NOT NULL,
-	Habilitado bit DEFAULT 1 NOT NULL);
+	Habilitado bit DEFAULT 1 NOT NULL
+	);
 
 CREATE TABLE [LA_QUERY_DE_PAPEL].[Persona] ( 
 	Tipo_Documento varchar(20) NOT NULL,
@@ -16,11 +17,11 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Persona] (
 	Nombre nvarchar(255) NOT NULL,
 	Direccion nvarchar(255) NOT NULL,
 	Fecha_Nacimiento datetime NOT NULL,
-	Telefono nvarchar(50) NOT NULL,
+	Telefono nvarchar(50),
 	Habilitado bit DEFAULT 1 NOT NULL,
 	
 	PRIMARY KEY (Tipo_Documento, Nro_Documento),	
-);
+	);
 
 CREATE TABLE [LA_QUERY_DE_PAPEL].[Usuario] ( 
 	Id_Usuario INT NOT NULL PRIMARY KEY IDENTITY (1, 1),
@@ -45,7 +46,6 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Cliente] (
 	Nacionalidad nvarchar(255) NOT NULL,
 
 	FOREIGN KEY (Tipo_Documento, Nro_Documento) REFERENCES [LA_QUERY_DE_PAPEL].[Persona] (Tipo_Documento, Nro_Documento) ON UPDATE CASCADE,
-	
 	);
 
 CREATE TABLE [LA_QUERY_DE_PAPEL].[Hotel] ( 
@@ -57,33 +57,35 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Hotel] (
 	Cant_Estrellas INT NOT NULL,
 	Ciudad nvarchar(255) NOT NULL,
 	Pais nvarchar(255) NOT NULL,
-	Fecha_Creacion datetime);
+	Fecha_Creacion datetime
+	);
 
 CREATE TABLE [LA_QUERY_DE_PAPEL].[Hotel_Baja](
-        Id_Baja INT  PRIMARY KEY IDENTITY(1,1),
-        Id_Hotel INT NOT NULL,
-        Fecha_inicio datetime NOT NULL,
-        Fecha_fin datetime NOT NULL,
-		Descripcion nvarchar(255),
- FOREIGN KEY (Id_Hotel) REFERENCES [LA_QUERY_DE_PAPEL].[Hotel] (Id_Hotel)
- );
+    Id_Baja INT  PRIMARY KEY IDENTITY(1,1),
+    Id_Hotel INT NOT NULL,
+    Fecha_inicio datetime NOT NULL,
+    Fecha_fin datetime NOT NULL,
+	Descripcion nvarchar(255),
+
+	FOREIGN KEY (Id_Hotel) REFERENCES [LA_QUERY_DE_PAPEL].[Hotel] (Id_Hotel)
+	);
 
 CREATE TABLE [LA_QUERY_DE_PAPEL].[Habitacion](
-        Nro_Habitacion INT,-- PRIMARY KEY IDENTITY(1,1),
-        Id_Hotel INT NOT NULL,
-		Piso INT NOT NULL,
-        Ubicacion nvarchar(255),
-        Tipo_Hab numeric(18),
-        Descripcion nvarchar(255),
-FOREIGN KEY (Id_Hotel) REFERENCES [LA_QUERY_DE_PAPEL].[Hotel] (Id_Hotel),
-PRIMARY KEY (Nro_Habitacion, Id_Hotel)
-);
+    Nro_Habitacion INT,-- PRIMARY KEY IDENTITY(1,1),
+    Id_Hotel INT NOT NULL,
+	Piso INT NOT NULL,
+    Ubicacion nvarchar(255),
+    Tipo_Hab numeric(18),
+    Descripcion nvarchar(255),
+
+	FOREIGN KEY (Id_Hotel) REFERENCES [LA_QUERY_DE_PAPEL].[Hotel] (Id_Hotel),
+	PRIMARY KEY (Nro_Habitacion, Id_Hotel)
+	);
 
 CREATE TABLE [LA_QUERY_DE_PAPEL].[Regimen] ( 
 	Id_Regimen INT NOT NULL PRIMARY KEY IDENTITY (1, 1),
 	Descripcion nvarchar(255) NOT NULL,
 	Precio numeric(18,2) NOT NULL,
-	
 	);	
 	
 CREATE TABLE[LA_QUERY_DE_PAPEL].[RegimenxHotel] ( 
@@ -92,57 +94,75 @@ CREATE TABLE[LA_QUERY_DE_PAPEL].[RegimenxHotel] (
 	
 	PRIMARY KEY (Id_Hotel, Id_Regimen),
 	FOREIGN KEY (Id_Hotel) REFERENCES [LA_QUERY_DE_PAPEL].[Hotel] (Id_Hotel),
-	FOREIGN KEY (Id_Regimen) REFERENCES [LA_QUERY_DE_PAPEL].[Regimen] (Id_Regimen));	
+	FOREIGN KEY (Id_Regimen) REFERENCES [LA_QUERY_DE_PAPEL].[Regimen] (Id_Regimen)
+	);	
 
 CREATE TABLE [LA_QUERY_DE_PAPEL].[Reserva] ( 
 	Id_Reserva INT NOT NULL PRIMARY KEY,
-	Id_Regimen INT DEFAULT NULL,
+	Id_Regimen INT NOT NULL,
 	Fecha_Reserva datetime NOT NULL,
 	Cant_Noches INT NOT NULL,
-	Id_Hotel INT NOT NULL,
 	Fecha_Inicio datetime,
 	Fecha_Fin datetime,	
-	Estado numeric(18) NOT NULL DEFAULT 1,
-	Id_Usuario INT NOT NULL, 
+	Estado VARCHAR(255) NOT NULL DEFAULT 'Reserva Correcta',
+	Tipo_Documento VARCHAR(20) NOT NULL,
+	Nro_Documento INT NOT NULL, 
 
 	FOREIGN KEY (Id_Regimen) REFERENCES [LA_QUERY_DE_PAPEL].[Regimen] (Id_Regimen),
-	FOREIGN KEY (Id_Hotel) REFERENCES [LA_QUERY_DE_PAPEL].[Hotel] (Id_Hotel)
+	FOREIGN KEY (Tipo_Documento, Nro_Documento) REFERENCES [LA_QUERY_DE_PAPEL].[Persona] (Tipo_Documento, Nro_Documento)
 	);
 
-	CREATE TABLE [LA_QUERY_DE_PAPEL].[UsuarioxHotel] ( 
+CREATE TABLE [LA_QUERY_DE_PAPEL].[ReservaxHabitacion] (
+	Id_Reserva INT NOT NULL,
+	Id_Hotel INT NOT NULL,
+	Nro_Habitacion INT NOT NULL,
+	
+	PRIMARY KEY (Id_Reserva, Id_Hotel, Nro_Habitacion),
+	FOREIGN KEY (Id_Reserva) REFERENCES [LA_QUERY_DE_PAPEL].[Reserva],
+	FOREIGN KEY (Id_Hotel, Nro_Habitacion) REFERENCES [LA_QUERY_DE_PAPEL].[Habitacion]
+	);
+
+
+CREATE TABLE [LA_QUERY_DE_PAPEL].[UsuarioxHotel] ( 
 	Id_Hotel INT NOT NULL,
 	Id_Usuario INT NOT NULL,
+
 	PRIMARY KEY (Id_Hotel, Id_Usuario),
 	FOREIGN KEY (Id_Hotel) REFERENCES [LA_QUERY_DE_PAPEL].Hotel (Id_Hotel),
 	FOREIGN KEY (Id_Usuario) REFERENCES [LA_QUERY_DE_PAPEL].[Usuario] (Id_Usuario)
 	);
 	
-	CREATE TABLE [LA_QUERY_DE_PAPEL].[Consumible] ( 
+CREATE TABLE [LA_QUERY_DE_PAPEL].[Consumible] ( 
 	Id_Consumible INT  NOT NULL PRIMARY KEY,
 	Descripcion nvarchar(255) NOT NULL,
 	Precio numeric(18,2) NOT NULL
 	);	
 
-	CREATE TABLE [LA_QUERY_DE_PAPEL].[Factura] ( 
+CREATE TABLE [LA_QUERY_DE_PAPEL].[Factura] ( 
 	Nro_Factura numeric(18) NOT NULL PRIMARY KEY,
 	Tipo_Documento varchar(20) NOT NULL,
 	Nro_Documento INT NOT NULL,
 	Fecha_Emision datetime NOT NULL,
 	Forma_Pago nvarchar(255) NOT NULL,
-	FOREIGN KEY (Tipo_Documento, Nro_Documento) REFERENCES [LA_QUERY_DE_PAPEL].[Persona] (Tipo_Documento, Nro_Documento));
+	
+	FOREIGN KEY (Tipo_Documento, Nro_Documento) REFERENCES [LA_QUERY_DE_PAPEL].[Persona] (Tipo_Documento, Nro_Documento)
+	);
 
 
-	CREATE TABLE [LA_QUERY_DE_PAPEL].[Funcionalidad] ( 
+CREATE TABLE [LA_QUERY_DE_PAPEL].[Funcionalidad] ( 
 	Id_Funcion INT NOT NULL PRIMARY KEY IDENTITY (1, 1),
-	Descripcion nvarchar(255) NOT NULL);	
+	Descripcion nvarchar(255) NOT NULL
+	);	
 
 
 CREATE TABLE [LA_QUERY_DE_PAPEL].[FuncionalidadxRol] ( 
 	Id_Rol INT NOT NULL,
 	Id_Funcion INT NOT NULL,
+
 	PRIMARY KEY (Id_Rol, Id_Funcion),
 	FOREIGN KEY (Id_Funcion) REFERENCES [LA_QUERY_DE_PAPEL].[Funcionalidad] (Id_Funcion),
-	FOREIGN KEY (Id_Rol) REFERENCES [LA_QUERY_DE_PAPEL].[Rol] (Id_Rol));
+	FOREIGN KEY (Id_Rol) REFERENCES [LA_QUERY_DE_PAPEL].[Rol] (Id_Rol)
+	);
 	--Conviene crear otra entidad Forma de Pago con id y descripcion??
 	--
 
@@ -344,7 +364,27 @@ FROM gd_esquema.Maestra M
 SELECT * FROM LA_QUERY_DE_PAPEL.RegimenxHotel
 
 
+--Cargo los clientes (Como personas)
+
+INSERT INTO [LA_QUERY_DE_PAPEL].Persona (Tipo_Documento, Nro_Documento, Apellido, Nombre, Direccion, Fecha_Nacimiento)
+SELECT DISTINCT 'Pasaporte', Cliente_Pasaporte_Nro, Cliente_Apellido, Cliente_Nombre, 
+		Cliente_Dom_Calle + ' ' + CAST(Cliente_Nro_Calle AS VARCHAR) + ' Piso ' + CAST(Cliente_Piso AS VARCHAR) + ' Depto ' + Cliente_Depto,
+		Cliente_Fecha_Nac
+FROM gd_esquema.Maestra
+--ORDER BY 
+
+
+--Cargo las reservas
+
+INSERT INTO [LA_QUERY_DE_PAPEL].Reserva (Id_Reserva, Fecha_Reserva, Cant_Noches, Id_Regimen, Tipo_Documento, Nro_Documento)
+SELECT DISTINCT M.Reserva_Codigo, M.Reserva_Fecha_Inicio, M.Reserva_Cant_Noches,
+	(SELECT DISTINCT Id_Regimen FROM LA_QUERY_DE_PAPEL.Regimen WHERE Descripcion = M.Regimen_Descripcion AND Precio = M.Regimen_Precio),
+	'Pasaporte', M.Cliente_Pasaporte_Nro
+FROM gd_esquema.Maestra M
 
 
 
 ROLLBACK TRANSACTION
+
+
+SELECT * FROM gd_esquema.Maestra
