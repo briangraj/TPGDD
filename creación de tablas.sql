@@ -79,6 +79,8 @@ FOREIGN KEY (Id_Hotel) REFERENCES [LA_QUERY_DE_PAPEL].[Hotel] (Id_Hotel),
 PRIMARY KEY (Nro_Habitacion, Id_Hotel)
 );
 
+
+
 CREATE TABLE [LA_QUERY_DE_PAPEL].[Regimen] ( 
 	Id_Regimen INT NOT NULL PRIMARY KEY IDENTITY (1, 1),
 	Descripcion nvarchar(255) NOT NULL,
@@ -122,6 +124,19 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Reserva] (
 	Descripcion nvarchar(255) NOT NULL,
 	Precio numeric(18,2) NOT NULL
 	);	
+
+CREATE TABLE [LA_QUERY_DE_PAPEL].[Estadia](
+	Id_Reserva INT NOT NULL PRIMARY KEY IDENTITY (1, 1),
+	Fecha_ingreso datetime ,
+	Usuario_ingreso_id int,
+	Fecha_egreso datetime ,
+	Usuario_egreso_id int, 
+
+	FOREIGN KEY (Id_Reserva) REFERENCES [LA_QUERY_DE_PAPEL].[Reserva] (Id_Reserva), 
+	FOREIGN KEY (Usuario_ingreso_id) REFERENCES [LA_QUERY_DE_PAPEL].[Usuario] (Id_Usuario),
+	FOREIGN KEY (Usuario_egreso_id) REFERENCES [LA_QUERY_DE_PAPEL].[Usuario] (Id_Usuario)
+	
+	);
 
 	CREATE TABLE [LA_QUERY_DE_PAPEL].[Factura] ( 
 	Nro_Factura numeric(18) NOT NULL PRIMARY KEY,
@@ -348,6 +363,7 @@ FROM gd_esquema.Maestra M
 SELECT * FROM [LA_QUERY_DE_PAPEL].[Habitacion]
 
 
+
 --Cargo los regimenes
 
 INSERT INTO [LA_QUERY_DE_PAPEL].Regimen (Descripcion, Precio)
@@ -368,7 +384,13 @@ FROM gd_esquema.Maestra M
 SELECT * FROM LA_QUERY_DE_PAPEL.RegimenxHotel
 
 
+-- Cargo los consumibles
 
+INSERT INTO LA_QUERY_DE_PAPEL.Consumible (Id_Consumible,descripcion,precio)
+SELECT DISTINCT Consumible_Codigo, Consumible_Descripcion, Consumible_Precio
+FROM gd_esquema.Maestra
+WHERE Consumible_Codigo IS NOT NULL
 
+SELECT*FROM LA_QUERY_DE_PAPEL.Consumible
 
 ROLLBACK TRANSACTION
