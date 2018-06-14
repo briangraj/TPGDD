@@ -151,9 +151,7 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Consumible] (
 	Precio numeric(18,2) NOT NULL
 	);	
 
-<<<<<<< HEAD
-CREATE TABLE [LA_QUERY_DE_PAPEL].[Factura] ( 
-=======
+
 CREATE TABLE [LA_QUERY_DE_PAPEL].[Estadia](
 	Id_Reserva INT NOT NULL PRIMARY KEY IDENTITY (1, 1),
 	Fecha_ingreso datetime ,
@@ -168,7 +166,6 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Estadia](
 	);
 
 	CREATE TABLE [LA_QUERY_DE_PAPEL].[Factura] ( 
->>>>>>> 7242b58fa38c8a7a3978a9dc8711f3310930e744
 	Nro_Factura numeric(18) NOT NULL PRIMARY KEY,
 	Tipo_Documento varchar(20) NOT NULL,
 	Nro_Documento INT NOT NULL,
@@ -303,30 +300,6 @@ UPDATE LA_QUERY_DE_PAPEL.Persona
 END
 GO
 
---para validar si existe alguna reserva o estadia de algun regimen en un hotel
-CREATE TRIGGER LA_QUERY_DE_PAPEL.deleteRegimenxHotel ON LA_QUERY_DE_PAPEL.RegimenxHotel
-INSTEAD OF DELETE
-AS
-BEGIN
-	DECLARE @idHotel INT
-	DECLARE @idRegimen INT
-	SELECT @idHotel = d.Id_Hotel, @idRegimen = d.Id_Regimen
-	FROM deleted d
-
-	IF(EXISTS (SELECT 1 FROM LA_QUERY_DE_PAPEL.Reserva r
-				WHERE r.Id_Hotel IN (SELECT Id_Hotel FROM deleted) AND r.Id_Regimen IN (SELECT Id_Regimen FROM deleted)
-					AND (r.Fecha_Inicio = GETDATE() OR r.Fecha_Fin = GETDATE())))
-	BEGIN
-		DECLARE @descripcion nvarchar(255)
-		SELECT @descripcion = Descripcion FROM LA_QUERY_DE_PAPEL.Regimen WHERE Id_Regimen = @idRegimen
-		DECLARE @error nvarchar (255) = 'Existen reservas para el regimen ' + @descripcion
-		RAISERROR (@error, 16, 1)
-		RETURN
-	END
-	--falta checkear las estadias
-END
-GO
-
 
 CREATE PROCEDURE LA_QUERY_DE_PAPEL.procedure_login
 	@usuario nvarchar(20),
@@ -374,51 +347,6 @@ END
 GO
 
 
-CREATE PROCEDURE [LA_QUERY_DE_PAPEL].Cargar_Personas
-AS
-BEGIN
-
-	DECLARE @Email VARCHAR(255), @Nombre VARCHAR(50), @Apellido VARCHAR(50), @Nro_pasaporte INT, @Direccion VARCHAR(255), @Fecha_Nacimiento DATETIME,
-		@Datos_Persona INTEGER
-			
-	DECLARE cursor_personas CURSOR FOR
-	SELECT DISTINCT Cliente_Mail, Cliente_Pasaporte_Nro FROM gd_esquema.Maestra
-
-	OPEN cursor_personas
-	FETCH NEXT FROM cursor_personas INTO @Email, @Nro_pasaporte
-
-	WHILE (@@FETCH_STATUS = 0)
-	BEGIN	
-
-		SELECT DISTINCT @Apellido = Cliente_Apellido, @Nombre = Cliente_Nombre, 
-				@Direccion = Cliente_Dom_Calle + ' ' + CAST(Cliente_Nro_Calle AS VARCHAR) + ' Piso ' + CAST(Cliente_Piso AS VARCHAR) + ' Depto ' + Cliente_Depto,
-				@Fecha_Nacimiento = Cliente_Fecha_Nac
-		FROM gd_esquema.Maestra
-		WHERE @Email = Cliente_Mail AND  @Nro_pasaporte = Cliente_Pasaporte_Nro
-
-		IF NOT EXISTS(SELECT Nro_Documento FROM [LA_QUERY_DE_PAPEL].Persona WHERE @Nro_pasaporte = Nro_Documento)
-		BEGIN
-			INSERT INTO [LA_QUERY_DE_PAPEL].Persona 
-				(Tipo_Documento, Nro_Documento, Apellido, Nombre, Direccion, Fecha_Nacimiento)
-			VALUES ('Pasaporte', @Nro_pasaporte, @Apellido, @Nombre, @Direccion, @Fecha_Nacimiento);
-			FETCH NEXT FROM cursor_personas INTO @Email, @Nro_pasaporte;
-		END
-
-		ELSE
-		BEGIN
-			INSERT INTO [LA_QUERY_DE_PAPEL].[Persona_conflicto_migracion] 
-				(Tipo_Documento, Nro_Documento, Apellido, Nombre, Direccion, Fecha_Nacimiento)
-			VALUES ('Pasaporte', @Nro_pasaporte, @Apellido, @Nombre, @Direccion, @Fecha_Nacimiento);
-			FETCH NEXT FROM cursor_personas INTO @Email, @Nro_pasaporte;
-		END
-			
-	END 
-	CLOSE cursor_personas;
-	DEALLOCATE cursor_personas;
-
-END
-GO
-
 --Migracion
 --Esta en una transaccion para ir probando sin romper la base de datos
 
@@ -463,25 +391,6 @@ SELECT DISTINCT
 FROM gd_esquema.Maestra M
 
 SELECT * FROM LA_QUERY_DE_PAPEL.RegimenxHotel
-
-
---Cargo los clientes (Como personas)
-
-EXECUTE [LA_QUERY_DE_PAPEL].Cargar_Personas
- 
-SELECT * FROM [LA_QUERY_DE_PAPEL].Persona
-SELECT * FROM [LA_QUERY_DE_PAPEL].Persona_conflicto_migracion
-
-
---Cargo las reservas
-
-INSERT INTO [LA_QUERY_DE_PAPEL].Reserva (Id_Reserva, Fecha_Reserva, Cant_Noches, Id_Regimen, Tipo_Documento, Nro_Documento)
-SELECT DISTINCT M.Reserva_Codigo, M.Reserva_Fecha_Inicio, M.Reserva_Cant_Noches,
-	(SELECT DISTINCT Id_Regimen FROM LA_QUERY_DE_PAPEL.Regimen WHERE Descripcion = M.Regimen_Descripcion AND Precio = M.Regimen_Precio),
-	'Pasaporte', M.Cliente_Pasaporte_Nro
-FROM gd_esquema.Maestra M
-
-SELECT * FROM [LA_QUERY_DE_PAPEL].Reserva
 
 
 -- Cargo los consumibles
