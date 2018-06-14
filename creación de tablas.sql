@@ -185,6 +185,17 @@ VALUES ('', 1, 'admin', CONVERT(varbinary(255),HASHBYTES('SHA2_256','w23e' ),2),
 
 GO
 
+--baja logica del rol
+CREATE TRIGGER LA_QUERY_DE_PAPEL.deleteRol ON LA_QUERY_DE_PAPEL.Rol
+INSTEAD OF DELETE
+AS
+BEGIN
+UPDATE LA_QUERY_DE_PAPEL.Rol
+	SET Habilitado = 0
+	WHERE LA_QUERY_DE_PAPEL.Rol.Id_Rol IN (SELECT Id_Rol FROM deleted)
+END
+GO
+
 --para usar en el abm de usuarios
 CREATE VIEW LA_QUERY_DE_PAPEL.usuarios
 AS
@@ -193,22 +204,27 @@ FROM LA_QUERY_DE_PAPEL.Persona P
 	JOIN LA_QUERY_DE_PAPEL.Usuario U
 	ON P.Tipo_Documento = U.Tipo_Documento
 		AND P.Nro_Documento = U.Nro_Documento
-
 GO
 
+--para poder hacer insert en la view de usuarios y validar el username
 CREATE TRIGGER LA_QUERY_DE_PAPEL.insertUsuarios ON LA_QUERY_DE_PAPEL.usuarios
 INSTEAD OF INSERT
 AS
 BEGIN
-INSERT INTO LA_QUERY_DE_PAPEL.Persona (Tipo_Documento, Nro_Documento, Apellido, Nombre, Direccion, Fecha_Nacimiento, Telefono, Habilitado)
-	SELECT i.Tipo_Documento, i.Nro_Documento, i.Apellido, i.Nombre, i.Direccion, i.Fecha_Nacimiento, i.Telefono, i.Habilitado
-	FROM inserted i
+BEGIN TRY
+	INSERT INTO LA_QUERY_DE_PAPEL.Persona (Tipo_Documento, Nro_Documento, Apellido, Nombre, Direccion, Fecha_Nacimiento, Telefono, Habilitado)
+		SELECT i.Tipo_Documento, i.Nro_Documento, i.Apellido, i.Nombre, i.Direccion, i.Fecha_Nacimiento, i.Telefono, i.Habilitado
+		FROM inserted i
 
-INSERT INTO LA_QUERY_DE_PAPEL.Usuario (Tipo_Documento, Nro_Documento, Username, Password, Id_Rol, Mail)
-	SELECT i.Tipo_Documento, i.Nro_Documento, i.Username, i.Password, i.Id_Rol, i.Mail
-	FROM inserted i
+	INSERT INTO LA_QUERY_DE_PAPEL.Usuario (Tipo_Documento, Nro_Documento, Username, Password, Id_Rol, Mail)
+		SELECT i.Tipo_Documento, i.Nro_Documento, i.Username, i.Password, i.Id_Rol, i.Mail
+		FROM inserted i
+END TRY
+
+BEGIN CATCH
+	RAISERROR('El username ya esta en uso', 16, 1)
+END CATCH
 END
-
 GO
 
 CREATE TRIGGER LA_QUERY_DE_PAPEL.deleteUsuarios ON LA_QUERY_DE_PAPEL.usuarios
@@ -227,19 +243,26 @@ CREATE TRIGGER LA_QUERY_DE_PAPEL.updateUsuarios ON LA_QUERY_DE_PAPEL.usuarios
 INSTEAD OF UPDATE
 AS
 BEGIN
-UPDATE LA_QUERY_DE_PAPEL.Persona
-	SET Tipo_Documento = i.Tipo_Documento, Nro_Documento = i.Nro_Documento, Apellido = i.Apellido, Nombre = i.Nombre, Direccion = i.Direccion,
-		Fecha_Nacimiento = i.Fecha_Nacimiento, Telefono = i.Telefono, Habilitado = i.Habilitado
-	FROM inserted i
-	WHERE LA_QUERY_DE_PAPEL.Persona.Tipo_Documento IN (SELECT Tipo_Documento FROM deleted) AND LA_QUERY_DE_PAPEL.Persona.Nro_Documento IN (SELECT Nro_Documento FROM deleted)
+BEGIN TRY
+	UPDATE LA_QUERY_DE_PAPEL.Persona
+		SET Tipo_Documento = i.Tipo_Documento, Nro_Documento = i.Nro_Documento, Apellido = i.Apellido, Nombre = i.Nombre, Direccion = i.Direccion,
+			Fecha_Nacimiento = i.Fecha_Nacimiento, Telefono = i.Telefono, Habilitado = i.Habilitado
+		FROM inserted i
+		WHERE LA_QUERY_DE_PAPEL.Persona.Tipo_Documento IN (SELECT Tipo_Documento FROM deleted) AND LA_QUERY_DE_PAPEL.Persona.Nro_Documento IN (SELECT Nro_Documento FROM deleted)
 
-UPDATE LA_QUERY_DE_PAPEL.Usuario
-	SET Username = i.Username, Password = i.Password, Id_Rol = i.Id_Rol, Mail = i.Mail
-	FROM inserted i
-	WHERE LA_QUERY_DE_PAPEL.Usuario.Username IN (SELECT Username FROM deleted)
+	UPDATE LA_QUERY_DE_PAPEL.Usuario
+		SET Username = i.Username, Password = i.Password, Id_Rol = i.Id_Rol, Mail = i.Mail
+		FROM inserted i
+		WHERE LA_QUERY_DE_PAPEL.Usuario.Username IN (SELECT Username FROM deleted)
+END TRY
+
+BEGIN CATCH
+	RAISERROR('El username ya esta en uso', 16, 1)
+END CATCH
 END
 GO
 
+--baja logica de una persona
 CREATE TRIGGER LA_QUERY_DE_PAPEL.deletePersonas ON LA_QUERY_DE_PAPEL.Persona
 INSTEAD OF DELETE
 AS
@@ -250,6 +273,7 @@ UPDATE LA_QUERY_DE_PAPEL.Persona
 END
 GO
 
+--para validar si existe alguna reserva o estadia de algun regimen en un hotel
 CREATE TRIGGER LA_QUERY_DE_PAPEL.deleteRegimenxHotel ON LA_QUERY_DE_PAPEL.RegimenxHotel
 INSTEAD OF DELETE
 AS
