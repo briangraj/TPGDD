@@ -1,7 +1,7 @@
 --Esquema
 USE [GD1C2018]
 GO
---CREATE SCHEMA [LA_QUERY_DE_PAPEL] 
+CREATE SCHEMA [LA_QUERY_DE_PAPEL] 
 GO
 
 CREATE TABLE [LA_QUERY_DE_PAPEL].[Rol] ( 
@@ -199,10 +199,10 @@ INSERT INTO LA_QUERY_DE_PAPEL.Rol (Nombre)
 VALUES ('Administrador General')
 
 INSERT INTO LA_QUERY_DE_PAPEL.Funcionalidad (Descripcion)
-VALUES ('ABM de rol'), ('ABM de usuario')
+VALUES ('ABM de rol'), ('ABM de usuario'), ('ABM de hotel')
 
 INSERT INTO LA_QUERY_DE_PAPEL.FuncionalidadxRol(Id_Rol, Id_Funcion)
-VALUES (1, 1), (1, 2) --el unico rol y la unica funcionalidad que hay por ahora
+VALUES (1, 1), (1, 2), (1, 3)
 
 INSERT INTO LA_QUERY_DE_PAPEL.Persona (Tipo_Documento, Nro_Documento, Apellido, Nombre,	Direccion, Fecha_Nacimiento, Telefono, Habilitado)
 VALUES ('', 1, '', '', '', GETDATE(), '', 1)
@@ -350,16 +350,13 @@ GO
 --Migracion
 --Esta en una transaccion para ir probando sin romper la base de datos
 
-BEGIN TRANSACTION
+--BEGIN TRANSACTION
 
 --Cargo los hoteles
 
 INSERT INTO [LA_QUERY_DE_PAPEL].[Hotel] (Nombre, Pais, Ciudad, Direccion, Cant_Estrellas) 
 SELECT DISTINCT 'Hotel ' + M.Hotel_Ciudad, 'Desconocido', M.Hotel_Ciudad, M.Hotel_Calle + ' ' + CAST(M.Hotel_Nro_Calle AS VARCHAR), M.Hotel_CantEstrella
 FROM gd_esquema.Maestra M
-
-SELECT * FROM [LA_QUERY_DE_PAPEL].Hotel
-
 
 --Cargo las habitaciones
 
@@ -369,18 +366,12 @@ SELECT DISTINCT M.Habitacion_Numero,
 				M.Habitacion_Piso, M.Habitacion_Frente, M.Habitacion_Tipo_Codigo, M.Habitacion_Tipo_Descripcion
 FROM gd_esquema.Maestra M
 
-SELECT * FROM [LA_QUERY_DE_PAPEL].[Habitacion]
-
-
 
 --Cargo los regimenes
 
 INSERT INTO [LA_QUERY_DE_PAPEL].Regimen (Descripcion, Precio)
 SELECT DISTINCT M.Regimen_Descripcion, M.Regimen_Precio
 FROM gd_esquema.Maestra M
-
-SELECT * FROM LA_QUERY_DE_PAPEL.Regimen
-
 
 --Cargo los regimenes por hotel
 
@@ -390,8 +381,6 @@ SELECT DISTINCT
 		(SELECT Id_Regimen FROM LA_QUERY_DE_PAPEL.Regimen WHERE Descripcion = M.Regimen_Descripcion AND Precio = M.Regimen_Precio)
 FROM gd_esquema.Maestra M
 
-SELECT * FROM LA_QUERY_DE_PAPEL.RegimenxHotel
-
 
 -- Cargo los consumibles
 
@@ -400,8 +389,8 @@ SELECT DISTINCT Consumible_Codigo, Consumible_Descripcion, Consumible_Precio
 FROM gd_esquema.Maestra
 WHERE Consumible_Codigo IS NOT NULL
 
-SELECT*FROM LA_QUERY_DE_PAPEL.Consumible
-
-ROLLBACK TRANSACTION
+--ROLLBACK TRANSACTION
 
 
+INSERT INTO LA_QUERY_DE_PAPEL.UsuarioxHotel (Id_Hotel, Id_Usuario)
+VALUES (1, 1), (1, 2)
