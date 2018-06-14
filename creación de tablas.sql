@@ -23,6 +23,17 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Persona] (
 	PRIMARY KEY (Tipo_Documento, Nro_Documento),	
 	);
 
+CREATE TABLE [LA_QUERY_DE_PAPEL].[Persona_conflicto_migracion] ( 
+	id_persona_conflicto INT PRIMARY KEY IDENTITY (1,1),
+	Tipo_Documento varchar(20) NOT NULL,
+	Nro_Documento INT NOT NULL,
+	Apellido nvarchar(255) NOT NULL,
+	Nombre nvarchar(255) NOT NULL,
+	Direccion nvarchar(255) NOT NULL,
+	Fecha_Nacimiento datetime NOT NULL,
+	Telefono nvarchar(50),
+	);
+
 CREATE TABLE [LA_QUERY_DE_PAPEL].[Usuario] ( 
 	Id_Usuario INT NOT NULL PRIMARY KEY IDENTITY (1, 1),
 	Tipo_Documento varchar(20) NOT NULL,
@@ -297,6 +308,7 @@ BEGIN
 END
 GO
 
+
 CREATE PROCEDURE LA_QUERY_DE_PAPEL.procedure_login
 	@usuario nvarchar(20),
 	@contrasenia varbinary(255)
@@ -342,6 +354,51 @@ BEGIN
 END
 GO
 
+
+CREATE PROCEDURE [LA_QUERY_DE_PAPEL].Cargar_Personas
+AS
+BEGIN
+
+	DECLARE @Email VARCHAR(255), @Nombre VARCHAR(50), @Apellido VARCHAR(50), @Nro_pasaporte INT, @Direccion VARCHAR(255), @Fecha_Nacimiento DATETIME,
+		@Datos_Persona INTEGER
+			
+	DECLARE cursor_personas CURSOR FOR
+	SELECT DISTINCT Cliente_Mail, Cliente_Pasaporte_Nro FROM gd_esquema.Maestra
+
+	OPEN cursor_personas
+	FETCH NEXT FROM cursor_personas INTO @Email, @Nro_pasaporte
+
+	WHILE (@@FETCH_STATUS = 0)
+	BEGIN	
+
+		SELECT DISTINCT @Apellido = Cliente_Apellido, @Nombre = Cliente_Nombre, 
+				@Direccion = Cliente_Dom_Calle + ' ' + CAST(Cliente_Nro_Calle AS VARCHAR) + ' Piso ' + CAST(Cliente_Piso AS VARCHAR) + ' Depto ' + Cliente_Depto,
+				@Fecha_Nacimiento = Cliente_Fecha_Nac
+		FROM gd_esquema.Maestra
+		WHERE @Email = Cliente_Mail AND  @Nro_pasaporte = Cliente_Pasaporte_Nro
+
+		IF NOT EXISTS(SELECT Nro_Documento FROM [LA_QUERY_DE_PAPEL].Persona WHERE @Nro_pasaporte = Nro_Documento)
+		BEGIN
+			INSERT INTO [LA_QUERY_DE_PAPEL].Persona 
+				(Tipo_Documento, Nro_Documento, Apellido, Nombre, Direccion, Fecha_Nacimiento)
+			VALUES ('Pasaporte', @Nro_pasaporte, @Apellido, @Nombre, @Direccion, @Fecha_Nacimiento);
+			FETCH NEXT FROM cursor_personas INTO @Email, @Nro_pasaporte;
+		END
+
+		ELSE
+		BEGIN
+			INSERT INTO [LA_QUERY_DE_PAPEL].[Persona_conflicto_migracion] 
+				(Tipo_Documento, Nro_Documento, Apellido, Nombre, Direccion, Fecha_Nacimiento)
+			VALUES ('Pasaporte', @Nro_pasaporte, @Apellido, @Nombre, @Direccion, @Fecha_Nacimiento);
+			FETCH NEXT FROM cursor_personas INTO @Email, @Nro_pasaporte;
+		END
+			
+	END 
+	CLOSE cursor_personas;
+	DEALLOCATE cursor_personas;
+
+END
+GO
 
 --Migracion
 --Esta en una transaccion para ir probando sin romper la base de datos
@@ -390,12 +447,10 @@ SELECT * FROM LA_QUERY_DE_PAPEL.RegimenxHotel
 
 --Cargo los clientes (Como personas)
 
-INSERT INTO [LA_QUERY_DE_PAPEL].Persona (Tipo_Documento, Nro_Documento, Apellido, Nombre, Direccion, Fecha_Nacimiento)
-SELECT DISTINCT 'Pasaporte', Cliente_Pasaporte_Nro, Cliente_Apellido, Cliente_Nombre, 
-		Cliente_Dom_Calle + ' ' + CAST(Cliente_Nro_Calle AS VARCHAR) + ' Piso ' + CAST(Cliente_Piso AS VARCHAR) + ' Depto ' + Cliente_Depto,
-		Cliente_Fecha_Nac
-FROM gd_esquema.Maestra
---ORDER BY 
+EXECUTE [LA_QUERY_DE_PAPEL].Cargar_Personas
+ 
+SELECT * FROM [LA_QUERY_DE_PAPEL].Persona
+SELECT * FROM [LA_QUERY_DE_PAPEL].Persona_conflicto_migracion
 
 
 --Cargo las reservas
@@ -406,9 +461,11 @@ SELECT DISTINCT M.Reserva_Codigo, M.Reserva_Fecha_Inicio, M.Reserva_Cant_Noches,
 	'Pasaporte', M.Cliente_Pasaporte_Nro
 FROM gd_esquema.Maestra M
 
+SELECT * FROM [LA_QUERY_DE_PAPEL].Reserva
+
+
 
 
 ROLLBACK TRANSACTION
 
 
-SELECT * FROM gd_esquema.Maestra
