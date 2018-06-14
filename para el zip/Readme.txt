@@ -1,4 +1,4 @@
-Curso: K
+Curso: K3013
 
 Numero de grupo: 42
 
@@ -9,3 +9,4 @@ Nombre y legajo de los integrantes:
 	Brian Grajeda, 156.647-7
 
 Email del responsable:
+	francoesposta@gmail.com
