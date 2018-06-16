@@ -57,6 +57,9 @@
     <Compile Include="AbmCliente\DatosCliente.Designer.cs">
       <DependentUpon>DatosCliente.cs</DependentUpon>
     </Compile>
+    <Compile Include="AbmCliente\ListadoClienteBaja.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="AbmHabitacion\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -126,11 +129,11 @@
     <Compile Include="AbmUsuario\DatosUsuario.Designer.cs">
       <DependentUpon>DatosUsuario.cs</DependentUpon>
     </Compile>
-    <Compile Include="AbmUsuario\ListadoUsuario.cs">
+    <Compile Include="AbmUsuario\ListadoPersona.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AbmUsuario\ListadoUsuario.Designer.cs">
-      <DependentUpon>ListadoUsuario.cs</DependentUpon>
+    <Compile Include="AbmUsuario\ListadoPersona.Designer.cs">
+      <DependentUpon>ListadoPersona.cs</DependentUpon>
     </Compile>
     <Compile Include="AbmUsuario\ListadoUsuarioBaja.cs">
       <SubType>Form</SubType>
@@ -231,8 +234,8 @@
     <EmbeddedResource Include="AbmUsuario\DatosUsuario.resx">
       <DependentUpon>DatosUsuario.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AbmUsuario\ListadoUsuario.resx">
-      <DependentUpon>ListadoUsuario.cs</DependentUpon>
+    <EmbeddedResource Include="AbmUsuario\ListadoPersona.resx">
+      <DependentUpon>ListadoPersona.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Login\Inicio.resx">
       <DependentUpon>Inicio.cs</DependentUpon>

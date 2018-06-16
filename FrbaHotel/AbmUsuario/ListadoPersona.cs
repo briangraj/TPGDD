@@ -13,18 +13,25 @@ using FrbaHotel.Entidades;
 
 namespace FrbaHotel.AbmUsuario
 {
-    public abstract partial class ListadoUsuario : Form
+    public abstract partial class ListadoPersona : Form
     {
         protected Usuario usuario;
 
-        public ListadoUsuario(Usuario usuario)
+        public ListadoPersona()
+        {
+            InitializeComponent();
+            llenarTabla();
+            agregarColumna();
+        }
+
+        public ListadoPersona(Usuario usuario)
         {
             InitializeComponent();
             this.usuario = usuario;
             llenarTabla();
-            dataGridViewUsuarios.Columns["Password"].Visible = false;
-            dataGridViewUsuarios.Columns["Id_Usuario"].Visible = false;
-            dataGridViewUsuarios.Columns["Habilitado"].Visible = false;
+            dataGridViewPersonas.Columns["Password"].Visible = false;
+            dataGridViewPersonas.Columns["Id_Usuario"].Visible = false;
+            dataGridViewPersonas.Columns["Habilitado"].Visible = false;
             agregarColumna();
         }
 
@@ -39,12 +46,10 @@ namespace FrbaHotel.AbmUsuario
             if (comboBoxTipoDoc.SelectedItem != null)
                 tipoDoc = comboBoxTipoDoc.SelectedItem.ToString();
 
-            dataGridViewUsuarios.DataSource = DB.correrQueryTabla(queryTabla(),
-                "nombre", "%" + textBoxNombre.Text + "%", "apellido", "%" + textBoxApellido.Text + "%", "tipoDocumento", "%" + tipoDoc + "%",
-                "nroDocumento", "%" + maskedTextBoxNroDoc.Text + "%", "mail", "%" + textBoxMail.Text + "%", "idHotel", usuario.idHotel);
+            cargarTabla(tipoDoc);
         }
 
-        protected abstract String queryTabla();
+        protected abstract void cargarTabla(string tipoDoc);
 
         protected void agregarColumna()
         {
@@ -54,14 +59,14 @@ namespace FrbaHotel.AbmUsuario
             columna.Name = "columnaBoton";
             columna.UseColumnTextForButtonValue = true;
 
-            dataGridViewUsuarios.Columns.Add(columna);
+            dataGridViewPersonas.Columns.Add(columna);
         }
 
         protected abstract String textoBoton();
 
         private void dataGridViewUsuarios_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (dataGridViewUsuarios.Columns[e.ColumnIndex].HeaderText == "Seleccionar" && e.RowIndex != -1)
+            if (dataGridViewPersonas.Columns[e.ColumnIndex].HeaderText == "Seleccionar" && e.RowIndex != -1)
                 accionBoton(e);
         }
 

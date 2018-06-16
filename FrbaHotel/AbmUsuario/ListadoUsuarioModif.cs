@@ -10,13 +10,14 @@ using System.Windows.Forms;
 
 namespace FrbaHotel.AbmUsuario
 {
-    class ListadoUsuarioModif : ListadoUsuario
+    class ListadoUsuarioModif : ListadoPersona
     {
         public ListadoUsuarioModif(Usuario usuario) : base(usuario) { }
 
-        protected override String queryTabla()
+        protected override void cargarTabla(string tipoDoc)
         {
-            return  "SELECT u.Id_Usuario, Username, Password, Id_Rol, Nombre, Apellido, Tipo_Documento, Nro_Documento, Mail, Telefono, Direccion, Fecha_Nacimiento, Habilitado " +
+            dataGridViewPersonas.DataSource = DB.correrQueryTabla(
+                "SELECT u.Id_Usuario, Username, Password, Id_Rol, Nombre, Apellido, Tipo_Documento, Nro_Documento, Mail, Telefono, Direccion, Fecha_Nacimiento, Habilitado " +
                     "FROM LA_QUERY_DE_PAPEL.usuarios u " +
                     "JOIN LA_QUERY_DE_PAPEL.UsuarioxHotel uh " +
                         "ON u.Id_Usuario = uh.Id_Usuario " +
@@ -25,7 +26,9 @@ namespace FrbaHotel.AbmUsuario
                             "AND Tipo_Documento LIKE @tipoDocumento " +
                             "AND Nro_Documento LIKE @nroDocumento " +
                             "AND Mail LIKE @mail " +
-                            "AND Id_Hotel = @idHotel";
+                            "AND Id_Hotel = @idHotel",
+                "nombre", "%" + textBoxNombre.Text + "%", "apellido", "%" + textBoxApellido.Text + "%", "tipoDocumento", "%" + tipoDoc + "%",
+                "nroDocumento", "%" + maskedTextBoxNroDoc.Text + "%", "mail", "%" + textBoxMail.Text + "%", "idHotel", usuario.idHotel);
         }
 
         protected override String textoBoton()
@@ -35,7 +38,7 @@ namespace FrbaHotel.AbmUsuario
 
         protected override void accionBoton(DataGridViewCellEventArgs e)
         {
-            DatosUsuario datos = new DatosUsuario(dataGridViewUsuarios.CurrentRow);
+            DatosUsuario datos = new DatosUsuario(dataGridViewPersonas.CurrentRow);
             Hide();
             datos.Show();
         }

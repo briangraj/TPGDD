@@ -22,5 +22,11 @@ namespace FrbaHotel.AbmCliente
             DatosCliente datos = new DatosCliente();
             datos.Show();
         }
+
+        private void buttonBaja_Click(object sender, EventArgs e)
+        {
+            AbmUsuario.ListadoPersona listadoBaja = new ListadoClienteBaja();
+            listadoBaja.Show();
+        }
     }
 }
