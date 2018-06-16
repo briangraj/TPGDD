@@ -30,6 +30,15 @@
         {
             this.components = new System.ComponentModel.Container();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.textBoxNacionalidad = new System.Windows.Forms.TextBox();
+            this.textBoxLocalidad = new System.Windows.Forms.TextBox();
+            this.textBoxDireccion = new System.Windows.Forms.TextBox();
+            this.textBoxTelefono = new System.Windows.Forms.TextBox();
+            this.textBoxMail = new System.Windows.Forms.TextBox();
+            this.textBoxNroDoc = new System.Windows.Forms.TextBox();
+            this.textBoxTipoDoc = new System.Windows.Forms.TextBox();
+            this.textBoxApellido = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -40,16 +49,7 @@
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
             this.textBoxNombre = new System.Windows.Forms.TextBox();
-            this.textBoxApellido = new System.Windows.Forms.TextBox();
-            this.textBoxTipoDoc = new System.Windows.Forms.TextBox();
-            this.textBoxNroDoc = new System.Windows.Forms.TextBox();
-            this.textBoxMail = new System.Windows.Forms.TextBox();
-            this.textBoxTelefono = new System.Windows.Forms.TextBox();
-            this.textBoxDireccion = new System.Windows.Forms.TextBox();
-            this.textBoxLocalidad = new System.Windows.Forms.TextBox();
-            this.textBoxNacionalidad = new System.Windows.Forms.TextBox();
             this.dateTimePickerFechaNac = new System.Windows.Forms.DateTimePicker();
             this.checkBoxHabilitado = new System.Windows.Forms.CheckBox();
             this.buttonLimpiar = new System.Windows.Forms.Button();
@@ -102,6 +102,81 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.Size = new System.Drawing.Size(582, 286);
             this.tableLayoutPanel1.TabIndex = 0;
+            // 
+            // textBoxNacionalidad
+            // 
+            this.textBoxNacionalidad.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.textBoxNacionalidad.Location = new System.Drawing.Point(219, 211);
+            this.textBoxNacionalidad.Name = "textBoxNacionalidad";
+            this.textBoxNacionalidad.Size = new System.Drawing.Size(333, 20);
+            this.textBoxNacionalidad.TabIndex = 26;
+            // 
+            // textBoxLocalidad
+            // 
+            this.textBoxLocalidad.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.textBoxLocalidad.Location = new System.Drawing.Point(219, 185);
+            this.textBoxLocalidad.Name = "textBoxLocalidad";
+            this.textBoxLocalidad.Size = new System.Drawing.Size(333, 20);
+            this.textBoxLocalidad.TabIndex = 25;
+            // 
+            // textBoxDireccion
+            // 
+            this.textBoxDireccion.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.textBoxDireccion.Location = new System.Drawing.Point(219, 159);
+            this.textBoxDireccion.Name = "textBoxDireccion";
+            this.textBoxDireccion.Size = new System.Drawing.Size(333, 20);
+            this.textBoxDireccion.TabIndex = 24;
+            // 
+            // textBoxTelefono
+            // 
+            this.textBoxTelefono.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.textBoxTelefono.Location = new System.Drawing.Point(219, 133);
+            this.textBoxTelefono.Name = "textBoxTelefono";
+            this.textBoxTelefono.Size = new System.Drawing.Size(333, 20);
+            this.textBoxTelefono.TabIndex = 23;
+            // 
+            // textBoxMail
+            // 
+            this.textBoxMail.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.textBoxMail.Location = new System.Drawing.Point(219, 107);
+            this.textBoxMail.Name = "textBoxMail";
+            this.textBoxMail.Size = new System.Drawing.Size(333, 20);
+            this.textBoxMail.TabIndex = 22;
+            // 
+            // textBoxNroDoc
+            // 
+            this.textBoxNroDoc.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.textBoxNroDoc.Location = new System.Drawing.Point(219, 81);
+            this.textBoxNroDoc.Name = "textBoxNroDoc";
+            this.textBoxNroDoc.Size = new System.Drawing.Size(333, 20);
+            this.textBoxNroDoc.TabIndex = 21;
+            // 
+            // textBoxTipoDoc
+            // 
+            this.textBoxTipoDoc.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.textBoxTipoDoc.Location = new System.Drawing.Point(219, 55);
+            this.textBoxTipoDoc.Name = "textBoxTipoDoc";
+            this.textBoxTipoDoc.Size = new System.Drawing.Size(333, 20);
+            this.textBoxTipoDoc.TabIndex = 20;
+            // 
+            // textBoxApellido
+            // 
+            this.textBoxApellido.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.textBoxApellido.Location = new System.Drawing.Point(219, 29);
+            this.textBoxApellido.Name = "textBoxApellido";
+            this.textBoxApellido.Size = new System.Drawing.Size(333, 20);
+            this.textBoxApellido.TabIndex = 19;
+            // 
+            // label11
+            // 
+            this.label11.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.Location = new System.Drawing.Point(73, 265);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(70, 16);
+            this.label11.TabIndex = 17;
+            this.label11.Text = "Habilitado";
             // 
             // label2
             // 
@@ -213,17 +288,6 @@
             this.label10.TabIndex = 16;
             this.label10.Text = "Fecha de nacimiento";
             // 
-            // label11
-            // 
-            this.label11.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label11.AutoSize = true;
-            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(73, 265);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(70, 16);
-            this.label11.TabIndex = 17;
-            this.label11.Text = "Habilitado";
-            // 
             // textBoxNombre
             // 
             this.textBoxNombre.Anchor = System.Windows.Forms.AnchorStyles.Left;
@@ -231,70 +295,6 @@
             this.textBoxNombre.Name = "textBoxNombre";
             this.textBoxNombre.Size = new System.Drawing.Size(333, 20);
             this.textBoxNombre.TabIndex = 18;
-            // 
-            // textBoxApellido
-            // 
-            this.textBoxApellido.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.textBoxApellido.Location = new System.Drawing.Point(219, 29);
-            this.textBoxApellido.Name = "textBoxApellido";
-            this.textBoxApellido.Size = new System.Drawing.Size(333, 20);
-            this.textBoxApellido.TabIndex = 19;
-            // 
-            // textBoxTipoDoc
-            // 
-            this.textBoxTipoDoc.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.textBoxTipoDoc.Location = new System.Drawing.Point(219, 55);
-            this.textBoxTipoDoc.Name = "textBoxTipoDoc";
-            this.textBoxTipoDoc.Size = new System.Drawing.Size(333, 20);
-            this.textBoxTipoDoc.TabIndex = 20;
-            // 
-            // textBoxNroDoc
-            // 
-            this.textBoxNroDoc.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.textBoxNroDoc.Location = new System.Drawing.Point(219, 81);
-            this.textBoxNroDoc.Name = "textBoxNroDoc";
-            this.textBoxNroDoc.Size = new System.Drawing.Size(333, 20);
-            this.textBoxNroDoc.TabIndex = 21;
-            // 
-            // textBoxMail
-            // 
-            this.textBoxMail.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.textBoxMail.Location = new System.Drawing.Point(219, 107);
-            this.textBoxMail.Name = "textBoxMail";
-            this.textBoxMail.Size = new System.Drawing.Size(333, 20);
-            this.textBoxMail.TabIndex = 22;
-            // 
-            // textBoxTelefono
-            // 
-            this.textBoxTelefono.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.textBoxTelefono.Location = new System.Drawing.Point(219, 133);
-            this.textBoxTelefono.Name = "textBoxTelefono";
-            this.textBoxTelefono.Size = new System.Drawing.Size(333, 20);
-            this.textBoxTelefono.TabIndex = 23;
-            // 
-            // textBoxDireccion
-            // 
-            this.textBoxDireccion.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.textBoxDireccion.Location = new System.Drawing.Point(219, 159);
-            this.textBoxDireccion.Name = "textBoxDireccion";
-            this.textBoxDireccion.Size = new System.Drawing.Size(333, 20);
-            this.textBoxDireccion.TabIndex = 24;
-            // 
-            // textBoxLocalidad
-            // 
-            this.textBoxLocalidad.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.textBoxLocalidad.Location = new System.Drawing.Point(219, 185);
-            this.textBoxLocalidad.Name = "textBoxLocalidad";
-            this.textBoxLocalidad.Size = new System.Drawing.Size(333, 20);
-            this.textBoxLocalidad.TabIndex = 25;
-            // 
-            // textBoxNacionalidad
-            // 
-            this.textBoxNacionalidad.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.textBoxNacionalidad.Location = new System.Drawing.Point(219, 211);
-            this.textBoxNacionalidad.Name = "textBoxNacionalidad";
-            this.textBoxNacionalidad.Size = new System.Drawing.Size(333, 20);
-            this.textBoxNacionalidad.TabIndex = 26;
             // 
             // dateTimePickerFechaNac
             // 
@@ -321,6 +321,7 @@
             this.buttonLimpiar.TabIndex = 1;
             this.buttonLimpiar.Text = "Limpiar";
             this.buttonLimpiar.UseVisualStyleBackColor = true;
+            this.buttonLimpiar.Click += new System.EventHandler(this.buttonLimpiar_Click);
             // 
             // buttonAceptar
             // 

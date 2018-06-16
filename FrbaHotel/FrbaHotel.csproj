@@ -60,6 +60,9 @@
     <Compile Include="AbmCliente\ListadoClienteBaja.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="AbmCliente\ListadoClienteModif.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="AbmHabitacion\Form1.cs">
       <SubType>Form</SubType>
     </Compile>

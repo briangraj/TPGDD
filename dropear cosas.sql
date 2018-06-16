@@ -4,6 +4,7 @@ DROP TRIGGER LA_QUERY_DE_PAPEL.deleteUsuarios
 DROP TRIGGER LA_QUERY_DE_PAPEL.updateUsuarios
 DROP TRIGGER LA_QUERY_DE_PAPEL.deletePersonas
 drop TRIGGER LA_QUERY_DE_PAPEL.insertClientes
+drop TRIGGER LA_QUERY_DE_PAPEL.deleteClientes
 
 DROP TABLE [LA_QUERY_DE_PAPEL].[FuncionalidadxRol]
 DROP TABLE [LA_QUERY_DE_PAPEL].[Funcionalidad]
@@ -27,5 +28,5 @@ DROP TABLE [LA_QUERY_DE_PAPEL].[Regimen]
 DROP VIEW LA_QUERY_DE_PAPEL.usuarios
 DROP VIEW LA_QUERY_DE_PAPEL.clientes
 
+drop PROCEDURE LA_QUERY_DE_PAPEL.procedure_update_cliente
 DROP PROCEDURE LA_QUERY_DE_PAPEL.procedure_login
-

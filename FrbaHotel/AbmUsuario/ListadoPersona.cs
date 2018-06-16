@@ -17,13 +17,16 @@ namespace FrbaHotel.AbmUsuario
     {
         protected Usuario usuario;
 
+        //constructor para listar clientes
         public ListadoPersona()
         {
             InitializeComponent();
             llenarTabla();
+            dataGridViewPersonas.Columns["Habilitado"].Visible = false;
             agregarColumna();
         }
 
+        //constructor para listar usuarios
         public ListadoPersona(Usuario usuario)
         {
             InitializeComponent();
