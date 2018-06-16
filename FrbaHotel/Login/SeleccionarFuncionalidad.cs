@@ -57,6 +57,9 @@ namespace FrbaHotel.Login
                     case "ABM de hotel":
                         form = new AbmHotel.AbmHotel(usuario);
                         break;
+                    case "ABM de cliente":
+                        form = new AbmCliente.AbmCliente();
+                        break;
                     default:
                         MessageBox.Show("Debe seleccionar una funcionalidad");
                         return;

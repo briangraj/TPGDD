@@ -1,7 +1,7 @@
 --Esquema
 USE [GD1C2018]
 GO
-CREATE SCHEMA [LA_QUERY_DE_PAPEL] 
+--CREATE SCHEMA [LA_QUERY_DE_PAPEL] 
 GO
 
 CREATE TABLE [LA_QUERY_DE_PAPEL].[Rol] ( 
@@ -56,6 +56,7 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Cliente] (
 	Mail nvarchar(255) UNIQUE,
 	Nacionalidad nvarchar(255) NOT NULL,
 
+	PRIMARY KEY (Tipo_Documento, Nro_Documento),
 	FOREIGN KEY (Tipo_Documento, Nro_Documento) REFERENCES [LA_QUERY_DE_PAPEL].[Persona] (Tipo_Documento, Nro_Documento) ON UPDATE CASCADE,
 	);
 
@@ -199,10 +200,10 @@ INSERT INTO LA_QUERY_DE_PAPEL.Rol (Nombre)
 VALUES ('Administrador General')
 
 INSERT INTO LA_QUERY_DE_PAPEL.Funcionalidad (Descripcion)
-VALUES ('ABM de rol'), ('ABM de usuario'), ('ABM de hotel')
+VALUES ('ABM de rol'), ('ABM de usuario'), ('ABM de hotel'), ('ABM de cliente')
 
 INSERT INTO LA_QUERY_DE_PAPEL.FuncionalidadxRol(Id_Rol, Id_Funcion)
-VALUES (1, 1), (1, 2), (1, 3)
+VALUES (1, 1), (1, 2), (1, 3), (1, 4)
 
 INSERT INTO LA_QUERY_DE_PAPEL.Persona (Tipo_Documento, Nro_Documento, Apellido, Nombre,	Direccion, Fecha_Nacimiento, Telefono, Habilitado)
 VALUES ('', 1, '', '', '', GETDATE(), '', 1)
@@ -285,6 +286,37 @@ END TRY
 
 BEGIN CATCH
 	RAISERROR('El username ya esta en uso', 16, 1)
+END CATCH
+END
+GO
+
+--para usar en el abm de clientes
+CREATE VIEW LA_QUERY_DE_PAPEL.clientes
+AS
+SELECT Nombre, Apellido, p.Tipo_Documento, p.Nro_Documento, Mail, Telefono, Direccion, Localidad, Nacionalidad, Fecha_Nacimiento, Habilitado
+FROM LA_QUERY_DE_PAPEL.Persona p
+	JOIN LA_QUERY_DE_PAPEL.Cliente c
+	ON p.Tipo_Documento = c.Tipo_Documento
+		AND p.Nro_Documento = c.Nro_Documento
+GO
+
+--para poder hacer insert en la view de clientes y validar el mail
+CREATE TRIGGER LA_QUERY_DE_PAPEL.insertClientes ON LA_QUERY_DE_PAPEL.clientes
+INSTEAD OF INSERT
+AS
+BEGIN
+BEGIN TRY
+	INSERT INTO LA_QUERY_DE_PAPEL.Persona (Tipo_Documento, Nro_Documento, Apellido, Nombre, Direccion, Fecha_Nacimiento, Telefono, Habilitado)
+		SELECT i.Tipo_Documento, i.Nro_Documento, i.Apellido, i.Nombre, i.Direccion, i.Fecha_Nacimiento, i.Telefono, i.Habilitado
+		FROM inserted i
+
+	INSERT INTO LA_QUERY_DE_PAPEL.Cliente (Tipo_Documento, Nro_Documento, Localidad, Mail, Nacionalidad)
+		SELECT i.Tipo_Documento, i.Nro_Documento, i.Localidad, i.Mail, i.Nacionalidad
+		FROM inserted i
+END TRY
+
+BEGIN CATCH
+	RAISERROR('El mail ya esta en uso', 16, 1)
 END CATCH
 END
 GO
@@ -393,4 +425,4 @@ WHERE Consumible_Codigo IS NOT NULL
 
 
 INSERT INTO LA_QUERY_DE_PAPEL.UsuarioxHotel (Id_Hotel, Id_Usuario)
-VALUES (1, 1), (1, 2)
+VALUES (1, 1), (2, 1)
