@@ -63,11 +63,17 @@
     <Compile Include="AbmCliente\ListadoClienteModif.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AbmHabitacion\Form1.cs">
+    <Compile Include="AbmHabitacion\AbmHabitacion.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AbmHabitacion\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="AbmHabitacion\AbmHabitacion.Designer.cs">
+      <DependentUpon>AbmHabitacion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmHabitacion\DatosHabitacion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmHabitacion\DatosHabitacion.Designer.cs">
+      <DependentUpon>DatosHabitacion.cs</DependentUpon>
     </Compile>
     <Compile Include="AbmHotel\AbmHotel.cs">
       <SubType>Form</SubType>
@@ -212,6 +218,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AbmCliente\DatosCliente.resx">
       <DependentUpon>DatosCliente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmHabitacion\AbmHabitacion.resx">
+      <DependentUpon>AbmHabitacion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmHabitacion\DatosHabitacion.resx">
+      <DependentUpon>DatosHabitacion.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AbmHotel\AbmHotel.resx">
       <DependentUpon>AbmHotel.cs</DependentUpon>
