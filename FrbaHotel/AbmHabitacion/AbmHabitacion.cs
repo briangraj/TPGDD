@@ -8,18 +8,23 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using FrbaHotel.Entidades;
+
 namespace FrbaHotel.AbmHabitacion
 {
     public partial class AbmHabitacion : Form
     {
-        public AbmHabitacion()
+        private Usuario usuario;
+
+        public AbmHabitacion(Usuario usuario)
         {
             InitializeComponent();
+            this.usuario = usuario;
         }
 
         private void buttonAlta_Click(object sender, EventArgs e)
         {
-            DatosHabitacion datos = new DatosHabitacion();
+            DatosHabitacionAlta datos = new DatosHabitacionAlta(usuario);
             datos.Show();
         }
     }

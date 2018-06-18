@@ -89,6 +89,7 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Habitacion](
     Ubicacion nvarchar(255),
     Tipo_Hab numeric(18),
     Descripcion nvarchar(255),
+	Habilitada bit,
 
 	FOREIGN KEY (Id_Hotel) REFERENCES [LA_QUERY_DE_PAPEL].[Hotel] (Id_Hotel),
 	PRIMARY KEY (Nro_Habitacion, Id_Hotel)
@@ -437,6 +438,23 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE LA_QUERY_DE_PAPEL.procedure_alta_habitacion
+	@nroHabitacion int,
+	@idHotel int,
+	@piso int,
+	@vistaExterior bit,
+	@tipoHabitacion nvarchar(255),
+	@descripcion nvarchar(255),
+	@habilitada bit
+AS
+BEGIN
+	IF(EXISTS (SELECT 1 FROM LA_QUERY_DE_PAPEL.Habitacion WHERE Nro_Habitacion = @nroHabitacion AND Id_Hotel = @idHotel))
+		RAISERROR('Ya existe el numero de habitacion en el hotel', 16, 1)
+
+	INSERT INTO LA_QUERY_DE_PAPEL.Habitacion(Nro_Habitacion, Id_Hotel, Piso, Ubicacion, Tipo_Hab, Descripcion, Habilitada)
+	VALUES (@nroHabitacion, @idHotel, @piso, ubicacion, @tipoHabitacion, @descripcion, @habilitada)
+END
+GO
 
 CREATE PROCEDURE [LA_QUERY_DE_PAPEL].Cargar_Personas
 AS
