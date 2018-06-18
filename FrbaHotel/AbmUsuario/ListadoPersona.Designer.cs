@@ -1,6 +1,6 @@
 ﻿namespace FrbaHotel.AbmUsuario
 {
-    partial class ListadoUsuario
+    partial class ListadoPersona
     {
         /// <summary>
         /// Required designer variable.
@@ -41,9 +41,9 @@
             this.maskedTextBoxNroDoc = new System.Windows.Forms.MaskedTextBox();
             this.buttonLimpiar = new System.Windows.Forms.Button();
             this.buttonBuscar = new System.Windows.Forms.Button();
-            this.dataGridViewUsuarios = new System.Windows.Forms.DataGridView();
+            this.dataGridViewPersonas = new System.Windows.Forms.DataGridView();
             this.tableLayoutPanelListadoUsuario.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewUsuarios)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPersonas)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanelListadoUsuario
@@ -187,30 +187,30 @@
             this.buttonBuscar.UseVisualStyleBackColor = true;
             this.buttonBuscar.Click += new System.EventHandler(this.buttonBuscar_Click);
             // 
-            // dataGridViewUsuarios
+            // dataGridViewPersonas
             // 
-            this.dataGridViewUsuarios.AllowUserToAddRows = false;
-            this.dataGridViewUsuarios.AllowUserToDeleteRows = false;
-            this.dataGridViewUsuarios.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewUsuarios.Location = new System.Drawing.Point(39, 205);
-            this.dataGridViewUsuarios.Name = "dataGridViewUsuarios";
-            this.dataGridViewUsuarios.ReadOnly = true;
-            this.dataGridViewUsuarios.Size = new System.Drawing.Size(1156, 420);
-            this.dataGridViewUsuarios.TabIndex = 1;
-            this.dataGridViewUsuarios.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewUsuarios_CellContentClick);
+            this.dataGridViewPersonas.AllowUserToAddRows = false;
+            this.dataGridViewPersonas.AllowUserToDeleteRows = false;
+            this.dataGridViewPersonas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewPersonas.Location = new System.Drawing.Point(39, 205);
+            this.dataGridViewPersonas.Name = "dataGridViewPersonas";
+            this.dataGridViewPersonas.ReadOnly = true;
+            this.dataGridViewPersonas.Size = new System.Drawing.Size(1156, 420);
+            this.dataGridViewPersonas.TabIndex = 1;
+            this.dataGridViewPersonas.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewUsuarios_CellContentClick);
             // 
-            // ListadoUsuario
+            // ListadoPersona
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1230, 637);
-            this.Controls.Add(this.dataGridViewUsuarios);
+            this.Controls.Add(this.dataGridViewPersonas);
             this.Controls.Add(this.tableLayoutPanelListadoUsuario);
-            this.Name = "ListadoUsuario";
-            this.Text = "ListadoUsuario";
+            this.Name = "ListadoPersona";
+            this.Text = "Listado";
             this.tableLayoutPanelListadoUsuario.ResumeLayout(false);
             this.tableLayoutPanelListadoUsuario.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewUsuarios)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPersonas)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -230,6 +230,6 @@
         protected System.Windows.Forms.ComboBox comboBoxTipoDoc;
         protected System.Windows.Forms.MaskedTextBox maskedTextBoxNroDoc;
         protected System.Windows.Forms.TextBox textBoxMail;
-        protected System.Windows.Forms.DataGridView dataGridViewUsuarios;
+        protected System.Windows.Forms.DataGridView dataGridViewPersonas;
     }
 }

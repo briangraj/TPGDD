@@ -45,11 +45,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AbmCliente\Form1.cs">
+    <Compile Include="AbmCliente\AbmCliente.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AbmCliente\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="AbmCliente\AbmCliente.Designer.cs">
+      <DependentUpon>AbmCliente.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmCliente\DatosCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmCliente\DatosCliente.Designer.cs">
+      <DependentUpon>DatosCliente.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmCliente\ListadoClienteBaja.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmCliente\ListadoClienteModif.cs">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="AbmHabitacion\Form1.cs">
       <SubType>Form</SubType>
@@ -120,11 +132,11 @@
     <Compile Include="AbmUsuario\DatosUsuario.Designer.cs">
       <DependentUpon>DatosUsuario.cs</DependentUpon>
     </Compile>
-    <Compile Include="AbmUsuario\ListadoUsuario.cs">
+    <Compile Include="AbmUsuario\ListadoPersona.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AbmUsuario\ListadoUsuario.Designer.cs">
-      <DependentUpon>ListadoUsuario.cs</DependentUpon>
+    <Compile Include="AbmUsuario\ListadoPersona.Designer.cs">
+      <DependentUpon>ListadoPersona.cs</DependentUpon>
     </Compile>
     <Compile Include="AbmUsuario\ListadoUsuarioBaja.cs">
       <SubType>Form</SubType>
@@ -195,6 +207,12 @@
     <Compile Include="Utilidades\DB.cs" />
     <Compile Include="Utilidades\Limpiador.cs" />
     <Compile Include="Utilidades\Validaciones.cs" />
+    <EmbeddedResource Include="AbmCliente\AbmCliente.resx">
+      <DependentUpon>AbmCliente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmCliente\DatosCliente.resx">
+      <DependentUpon>DatosCliente.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AbmHotel\AbmHotel.resx">
       <DependentUpon>AbmHotel.cs</DependentUpon>
     </EmbeddedResource>
@@ -219,8 +237,8 @@
     <EmbeddedResource Include="AbmUsuario\DatosUsuario.resx">
       <DependentUpon>DatosUsuario.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AbmUsuario\ListadoUsuario.resx">
-      <DependentUpon>ListadoUsuario.cs</DependentUpon>
+    <EmbeddedResource Include="AbmUsuario\ListadoPersona.resx">
+      <DependentUpon>ListadoPersona.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Login\Inicio.resx">
       <DependentUpon>Inicio.cs</DependentUpon>

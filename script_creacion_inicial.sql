@@ -56,6 +56,7 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Cliente] (
 	Mail nvarchar(255) UNIQUE,
 	Nacionalidad nvarchar(255) NOT NULL,
 
+	PRIMARY KEY (Tipo_Documento, Nro_Documento),
 	FOREIGN KEY (Tipo_Documento, Nro_Documento) REFERENCES [LA_QUERY_DE_PAPEL].[Persona] (Tipo_Documento, Nro_Documento) ON UPDATE CASCADE,
 	);
 
@@ -92,8 +93,6 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Habitacion](
 	FOREIGN KEY (Id_Hotel) REFERENCES [LA_QUERY_DE_PAPEL].[Hotel] (Id_Hotel),
 	PRIMARY KEY (Nro_Habitacion, Id_Hotel)
 	);
-
-
 
 CREATE TABLE [LA_QUERY_DE_PAPEL].[Regimen] ( 
 	Id_Regimen INT NOT NULL PRIMARY KEY IDENTITY (1, 1),
@@ -210,10 +209,10 @@ INSERT INTO LA_QUERY_DE_PAPEL.Rol (Nombre)
 VALUES ('Administrador General')
 
 INSERT INTO LA_QUERY_DE_PAPEL.Funcionalidad (Descripcion)
-VALUES ('ABM de rol'), ('ABM de usuario'), ('ABM de hotel')
+VALUES ('ABM de rol'), ('ABM de usuario'), ('ABM de hotel'), ('ABM de cliente')
 
 INSERT INTO LA_QUERY_DE_PAPEL.FuncionalidadxRol(Id_Rol, Id_Funcion)
-VALUES (1, 1), (1, 2), (1, 3)
+VALUES (1, 1), (1, 2), (1, 3), (1, 4)
 
 INSERT INTO LA_QUERY_DE_PAPEL.Persona (Tipo_Documento, Nro_Documento, Apellido, Nombre,	Direccion, Fecha_Nacimiento, Telefono, Habilitado)
 VALUES ('', 1, '', '', '', GETDATE(), '', 1)
@@ -244,7 +243,7 @@ FROM LA_QUERY_DE_PAPEL.Persona P
 		AND P.Nro_Documento = U.Nro_Documento
 GO
 
---para poder hacer insert en la view de usuarios y validar el username
+--triggers para poder hacer insert, delete y update en la view de usuarios y validar el username
 CREATE TRIGGER LA_QUERY_DE_PAPEL.insertUsuarios ON LA_QUERY_DE_PAPEL.usuarios
 INSTEAD OF INSERT
 AS
@@ -274,7 +273,6 @@ DELETE p FROM LA_QUERY_DE_PAPEL.Persona p
 		ON p.Tipo_Documento = d.Tipo_Documento
 			AND p.Nro_Documento = d.Nro_Documento
 END
-
 GO
 
 CREATE TRIGGER LA_QUERY_DE_PAPEL.updateUsuarios ON LA_QUERY_DE_PAPEL.usuarios
@@ -300,6 +298,89 @@ END CATCH
 END
 GO
 
+--para usar en el abm de clientes
+CREATE VIEW LA_QUERY_DE_PAPEL.clientes
+AS
+SELECT Nombre, Apellido, p.Tipo_Documento, p.Nro_Documento, Mail, Telefono, Direccion, Localidad, Nacionalidad, Fecha_Nacimiento, Habilitado
+FROM LA_QUERY_DE_PAPEL.Persona p
+	JOIN LA_QUERY_DE_PAPEL.Cliente c
+	ON p.Tipo_Documento = c.Tipo_Documento
+		AND p.Nro_Documento = c.Nro_Documento
+GO
+
+--triggers para poder hacer insert y delete en la view de clientes y validar el mail
+CREATE TRIGGER LA_QUERY_DE_PAPEL.insertClientes ON LA_QUERY_DE_PAPEL.clientes
+INSTEAD OF INSERT
+AS
+BEGIN
+BEGIN TRY
+	INSERT INTO LA_QUERY_DE_PAPEL.Persona (Tipo_Documento, Nro_Documento, Apellido, Nombre, Direccion, Fecha_Nacimiento, Telefono, Habilitado)
+		SELECT i.Tipo_Documento, i.Nro_Documento, i.Apellido, i.Nombre, i.Direccion, i.Fecha_Nacimiento, i.Telefono, i.Habilitado
+		FROM inserted i
+
+	INSERT INTO LA_QUERY_DE_PAPEL.Cliente (Tipo_Documento, Nro_Documento, Localidad, Mail, Nacionalidad)
+		SELECT i.Tipo_Documento, i.Nro_Documento, i.Localidad, i.Mail, i.Nacionalidad
+		FROM inserted i
+END TRY
+
+BEGIN CATCH
+	RAISERROR('El mail ya esta en uso', 16, 1)
+END CATCH
+END
+GO
+
+CREATE TRIGGER LA_QUERY_DE_PAPEL.deleteClientes ON LA_QUERY_DE_PAPEL.clientes
+INSTEAD OF DELETE
+AS
+BEGIN
+DELETE p FROM LA_QUERY_DE_PAPEL.Persona p
+	JOIN deleted d
+		ON p.Tipo_Documento = d.Tipo_Documento
+			AND p.Nro_Documento = d.Nro_Documento
+END
+GO
+
+--procedure para actualizar un cliente
+CREATE PROCEDURE LA_QUERY_DE_PAPEL.procedure_update_cliente
+	@nombre nvarchar(255),
+	@apellido nvarchar(255),
+	@tipoDoc varchar(20),
+	@nroDoc int,
+	@mail nvarchar(255),
+	@telefono nvarchar(50),
+	@direccion nvarchar(255),
+	@localidad nvarchar(255),
+	@nacionalidad nvarchar(255),
+	@fechaNac datetime,
+	@habilitado bit,
+	@tipoDocOriginal varchar(20),
+	@nroDocOriginal int
+AS
+BEGIN
+	DECLARE @mailOriginal nvarchar(255)
+	SELECT @mailOriginal = Mail FROM LA_QUERY_DE_PAPEL.Cliente WHERE Tipo_Documento = @tipoDocOriginal AND Nro_Documento = @nroDocOriginal
+
+	IF(@mail <> @mailOriginal AND EXISTS (SELECT 1 FROM LA_QUERY_DE_PAPEL.Cliente WHERE Mail = @mail AND Tipo_Documento <> @tipoDocOriginal AND Nro_Documento <> @nroDocOriginal))
+		RAISERROR('El mail ya esta en uso', 16, 1)
+
+	IF(@tipoDoc <> @tipoDocOriginal AND @nroDoc <> @nroDocOriginal AND EXISTS (SELECT 1 FROM LA_QUERY_DE_PAPEL.Cliente WHERE Tipo_Documento = @tipoDoc AND Nro_Documento = @nroDoc)
+		OR @tipoDoc <> @tipoDocOriginal AND EXISTS (SELECT 1 FROM LA_QUERY_DE_PAPEL.Cliente WHERE Tipo_Documento = @tipoDoc AND Nro_Documento = @nroDocOriginal)
+		OR @nroDoc <> @nroDocOriginal AND EXISTS (SELECT 1 FROM LA_QUERY_DE_PAPEL.Cliente WHERE Tipo_Documento = @tipoDocOriginal AND Nro_Documento = @nroDoc))
+	BEGIN
+		RAISERROR('El tipo y numero de documento ya estan en uso', 16, 1)
+	END
+
+	UPDATE LA_QUERY_DE_PAPEL.Persona
+		SET Tipo_Documento = @tipoDoc, Nro_Documento = @nroDoc, Apellido = @apellido, Nombre = @nombre, Direccion = @direccion,
+			Fecha_Nacimiento = @fechaNac, Telefono = @telefono, Habilitado = @habilitado
+		WHERE Tipo_Documento = @tipoDocOriginal AND Nro_Documento = @nroDocOriginal
+
+	UPDATE LA_QUERY_DE_PAPEL.Cliente
+		SET Localidad = @localidad, Mail = @mail, Nacionalidad = @nacionalidad
+		WHERE Tipo_Documento = @tipoDoc AND Nro_Documento = @nroDoc
+END
+GO
+
 --baja logica de una persona
 CREATE TRIGGER LA_QUERY_DE_PAPEL.deletePersonas ON LA_QUERY_DE_PAPEL.Persona
 INSTEAD OF DELETE
@@ -310,7 +391,6 @@ UPDATE LA_QUERY_DE_PAPEL.Persona
 	WHERE LA_QUERY_DE_PAPEL.Persona.Tipo_Documento IN (SELECT Tipo_Documento FROM deleted) AND LA_QUERY_DE_PAPEL.Persona.Nro_Documento IN (SELECT Nro_Documento FROM deleted)
 END
 GO
-
 
 CREATE PROCEDURE LA_QUERY_DE_PAPEL.procedure_login
 	@usuario nvarchar(20),
