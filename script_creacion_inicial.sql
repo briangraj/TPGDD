@@ -1,7 +1,7 @@
 --Esquema
 USE [GD1C2018]
 GO
-CREATE SCHEMA [LA_QUERY_DE_PAPEL] 
+--CREATE SCHEMA [LA_QUERY_DE_PAPEL] 
 GO
 
 CREATE TABLE [LA_QUERY_DE_PAPEL].[Rol] ( 
@@ -123,6 +123,17 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Reserva] (
 
 	FOREIGN KEY (Id_Regimen) REFERENCES [LA_QUERY_DE_PAPEL].[Regimen] (Id_Regimen),
 	FOREIGN KEY (Tipo_Documento, Nro_Documento) REFERENCES [LA_QUERY_DE_PAPEL].[Persona] (Tipo_Documento, Nro_Documento)
+	);
+
+CREATE TABLE [LA_QUERY_DE_PAPEL].[Reserva_Conflicto_Migracion] ( 
+	Id_Reserva INT NOT NULL PRIMARY KEY,
+	Id_Regimen INT NOT NULL,
+	Fecha_Reserva datetime NOT NULL,
+	Cant_Noches INT NOT NULL,
+	Fecha_Inicio datetime,
+	Fecha_Fin datetime,	
+	Tipo_Documento VARCHAR(20) NOT NULL,
+	Nro_Documento INT NOT NULL, 
 	);
 
 CREATE TABLE [LA_QUERY_DE_PAPEL].[ReservaxHabitacion] (
@@ -347,6 +358,101 @@ END
 GO
 
 
+CREATE PROCEDURE [LA_QUERY_DE_PAPEL].Cargar_Personas
+AS
+BEGIN
+
+	DECLARE @Email VARCHAR(255), @Nombre VARCHAR(50), @Apellido VARCHAR(50), @Nro_pasaporte INT, @Calle VARCHAR(50), @Nro_Calle INT, @Piso INT, @Depto VARCHAR(5), @Fecha_Nacimiento DATETIME, @Direccion VARCHAR(250)
+			
+	DECLARE cursor_personas CURSOR FOR
+	SELECT DISTINCT Cliente_Mail, Cliente_Pasaporte_Nro, Cliente_Apellido, Cliente_Nombre, Cliente_Fecha_Nac, Cliente_Dom_Calle, Cliente_Nro_Calle, Cliente_Piso, Cliente_Depto FROM gd_esquema.Maestra
+
+	OPEN cursor_personas
+	FETCH NEXT FROM cursor_personas INTO @Email, @Nro_pasaporte, @Apellido, @Nombre, @Fecha_Nacimiento, @Calle, @Nro_Calle, @Piso, @Depto;
+	CREATE INDEX Nro_Doc_index ON LA_QUERY_DE_PAPEL.Persona (Nro_Documento);
+
+	WHILE (@@FETCH_STATUS = 0)
+	BEGIN	
+
+		SET @Direccion = @Calle + ' ' + CAST(@Nro_Calle AS VARCHAR) + ' Piso ' + CAST(@Piso AS VARCHAR) + ' Depto ' + @Depto
+
+		IF NOT EXISTS(SELECT Nro_Documento FROM [LA_QUERY_DE_PAPEL].Persona WHERE @Nro_pasaporte = Nro_Documento)
+		BEGIN
+			INSERT INTO [LA_QUERY_DE_PAPEL].Persona 
+				(Tipo_Documento, Nro_Documento, Apellido, Nombre, Direccion, Fecha_Nacimiento)
+			VALUES ('Pasaporte', @Nro_pasaporte, @Apellido, @Nombre, @Direccion, @Fecha_Nacimiento);
+			FETCH NEXT FROM cursor_personas INTO @Email, @Nro_pasaporte, @Apellido, @Nombre, @Fecha_Nacimiento, @Calle, @Nro_Calle, @Piso, @Depto;
+		END
+
+		IF EXISTS(SELECT Nro_Documento FROM [LA_QUERY_DE_PAPEL].Persona WHERE @Nro_pasaporte = Nro_Documento)
+		BEGIN
+			INSERT INTO [LA_QUERY_DE_PAPEL].[Persona_conflicto_migracion] 
+				(Tipo_Documento, Nro_Documento, Apellido, Nombre, Direccion, Fecha_Nacimiento)
+			VALUES ('Pasaporte', @Nro_pasaporte, @Apellido, @Nombre, @Direccion, @Fecha_Nacimiento);
+			FETCH NEXT FROM cursor_personas INTO @Email, @Nro_pasaporte, @Apellido, @Nombre, @Fecha_Nacimiento, @Calle, @Nro_Calle, @Piso, @Depto;
+		END
+			
+	END 
+	CLOSE cursor_personas;
+	DEALLOCATE cursor_personas;
+
+	DROP INDEX Nro_Doc_index ON LA_QUERY_DE_PAPEL.Persona;
+
+END
+GO
+
+
+
+CREATE PROCEDURE [LA_QUERY_DE_PAPEL].Cargar_Reservas
+AS
+BEGIN
+
+	DECLARE @Id_Reserva INT, @Fecha_Reserva DATETIME, @Cant_Noches INT, @Id_Regimen INT, @Regimen_Precio NUMERIC(18,2), @Regimen_Descripcion VARCHAR(255), @Tipo_Documento VARCHAR(20), @Nro_Documento INT,
+			@Apellido_cliente VARCHAR(255), @Nombre_cliente VARCHAR(255);
+
+	SET @Tipo_Documento = 'Pasaporte';
+
+	DECLARE cursor_reservas CURSOR FOR
+	SELECT DISTINCT Cliente_Pasaporte_Nro, Cliente_Apellido, Cliente_Nombre, Reserva_Codigo, Reserva_Fecha_Inicio, Reserva_Cant_Noches, Regimen_Precio, Regimen_Descripcion FROM gd_esquema.Maestra;
+
+	OPEN cursor_reservas
+	FETCH NEXT FROM cursor_reservas INTO @Nro_Documento, @Apellido_cliente, @Nombre_cliente, @Id_Reserva, @Fecha_Reserva, @Cant_Noches, @Regimen_Precio, @Regimen_Descripcion;
+
+	CREATE INDEX Nro_Doc_index ON LA_QUERY_DE_PAPEL.Persona (Nro_Documento);
+
+	WHILE (@@FETCH_STATUS = 0)
+	BEGIN	
+
+		SET @Id_Regimen = (SELECT DISTINCT id_regimen FROM LA_QUERY_DE_PAPEL.Regimen WHERE Descripcion = @Regimen_Descripcion AND Precio = @Regimen_Precio);
+
+		IF EXISTS(SELECT Nro_Documento FROM [LA_QUERY_DE_PAPEL].Persona WHERE @Nro_Documento = Nro_Documento AND @Apellido_cliente = Apellido AND @Nombre_cliente = Nombre)
+		BEGIN
+
+			INSERT INTO [LA_QUERY_DE_PAPEL].Reserva (Id_Reserva, Fecha_Reserva, Cant_Noches, Id_Regimen, Tipo_Documento, Nro_Documento)
+			VALUES(@Id_Reserva, @Fecha_Reserva, @Cant_Noches, @Id_Regimen, @Tipo_Documento, @Nro_Documento)
+			
+			FETCH NEXT FROM cursor_reservas INTO @Nro_Documento, @Apellido_cliente, @Nombre_cliente, @Id_Reserva, @Fecha_Reserva, @Cant_Noches, @Regimen_Precio, @Regimen_Descripcion;
+		END
+
+		ELSE
+		BEGIN
+			INSERT INTO [LA_QUERY_DE_PAPEL].Reserva_Conflicto_Migracion (Id_Reserva, Fecha_Reserva, Cant_Noches, Id_Regimen, Tipo_Documento, Nro_Documento)
+			VALUES(@Id_Reserva, @Fecha_Reserva, @Cant_Noches, @Id_Regimen, @Tipo_Documento, @Nro_Documento)
+
+			FETCH NEXT FROM cursor_reservas INTO @Nro_Documento, @Apellido_cliente, @Nombre_cliente, @Id_Reserva, @Fecha_Reserva, @Cant_Noches, @Regimen_Precio, @Regimen_Descripcion;
+		END
+			
+	END 
+	CLOSE cursor_reservas;
+	DEALLOCATE cursor_reservas;
+
+	DROP INDEX Nro_Doc_index ON LA_QUERY_DE_PAPEL.Persona;
+
+END
+GO
+
+
+
 --Migracion
 --Esta en una transaccion para ir probando sin romper la base de datos
 
@@ -382,6 +488,23 @@ SELECT DISTINCT
 FROM gd_esquema.Maestra M
 
 
+--Cargo los clientes (Como personas)
+
+EXECUTE [LA_QUERY_DE_PAPEL].Cargar_Personas
+ 
+--SELECT * FROM [LA_QUERY_DE_PAPEL].Persona
+--SELECT * FROM [LA_QUERY_DE_PAPEL].Persona_conflicto_migracion
+
+
+--Cargo las reservas
+
+EXECUTE LA_QUERY_DE_PAPEL.Cargar_Reservas
+
+--SELECT * FROM [LA_QUERY_DE_PAPEL].Reserva
+--SELECT * FROM [LA_QUERY_DE_PAPEL].Reserva_Conflicto_Migracion
+
+
+
 -- Cargo los consumibles
 
 INSERT INTO LA_QUERY_DE_PAPEL.Consumible (Id_Consumible,descripcion,precio)
@@ -389,8 +512,12 @@ SELECT DISTINCT Consumible_Codigo, Consumible_Descripcion, Consumible_Precio
 FROM gd_esquema.Maestra
 WHERE Consumible_Codigo IS NOT NULL
 
+--SELECT * FROM LA_QUERY_DE_PAPEL.Consumible
+
+
+
 --ROLLBACK TRANSACTION
 
 
 INSERT INTO LA_QUERY_DE_PAPEL.UsuarioxHotel (Id_Hotel, Id_Usuario)
-VALUES (1, 1), (1, 2)
+VALUES (1, 1), (2, 1)
