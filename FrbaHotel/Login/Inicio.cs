@@ -40,5 +40,19 @@ namespace FrbaHotel.Login
             }
             catch (SqlException){ }
         }
+
+        private void buttonGuest_Click(object sender, EventArgs e)
+        {
+            try
+            {  
+                Usuario usuario = new Usuario("guest");
+                usuario.cargar();
+
+                Hide();
+                SeleccionarHotel form = new SeleccionarHotel(usuario);
+                form.ShowDialog();
+            }
+            catch (SqlException) { }
+        }
     }
 }

@@ -46,12 +46,11 @@ namespace FrbaHotel.GenerarModificacionReserva
 
         protected void agregarColumna()
         {
-            DataGridViewButtonColumn columna = new DataGridViewButtonColumn();
+            DataGridViewCheckBoxColumn columna = new DataGridViewCheckBoxColumn();
             columna.HeaderText = "Seleccionar";
-            columna.Text = "Seleccionar";
             columna.Name = "columnaBoton";
-            columna.UseColumnTextForButtonValue = true;
-
+            columna.ReadOnly = false;
+            
             dataGridViewReserva.Columns.Add(columna);
         }
 
