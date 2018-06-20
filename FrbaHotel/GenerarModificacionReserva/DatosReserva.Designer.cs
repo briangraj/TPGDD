@@ -40,6 +40,7 @@
             this.buttonLimpiar = new System.Windows.Forms.Button();
             this.buttonBuscar = new System.Windows.Forms.Button();
             this.dataGridViewReserva = new System.Windows.Forms.DataGridView();
+            this.buttonSiguiente = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewReserva)).BeginInit();
             this.SuspendLayout();
@@ -174,11 +175,22 @@
             this.dataGridViewReserva.TabIndex = 6;
             this.dataGridViewReserva.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewReserva_CellContentClick);
             // 
+            // buttonSiguiente
+            // 
+            this.buttonSiguiente.Location = new System.Drawing.Point(780, 662);
+            this.buttonSiguiente.Name = "buttonSiguiente";
+            this.buttonSiguiente.Size = new System.Drawing.Size(75, 23);
+            this.buttonSiguiente.TabIndex = 7;
+            this.buttonSiguiente.Text = "Siguiente";
+            this.buttonSiguiente.UseVisualStyleBackColor = true;
+            this.buttonSiguiente.Click += new System.EventHandler(this.buttonSiguiente_Click);
+            // 
             // DatosReserva
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(898, 647);
+            this.ClientSize = new System.Drawing.Size(898, 697);
+            this.Controls.Add(this.buttonSiguiente);
             this.Controls.Add(this.dataGridViewReserva);
             this.Controls.Add(this.buttonBuscar);
             this.Controls.Add(this.buttonLimpiar);
@@ -206,5 +218,6 @@
         private System.Windows.Forms.Button buttonLimpiar;
         private System.Windows.Forms.Button buttonBuscar;
         protected System.Windows.Forms.DataGridView dataGridViewReserva;
+        private System.Windows.Forms.Button buttonSiguiente;
     }
 }

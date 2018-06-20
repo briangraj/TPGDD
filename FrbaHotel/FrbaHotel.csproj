@@ -169,14 +169,22 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Entidades\Funcionalidad.cs" />
+    <Compile Include="Entidades\Habitacion.cs" />
     <Compile Include="Entidades\Hotel.cs" />
     <Compile Include="Entidades\Regimen.cs" />
+    <Compile Include="Entidades\Reserva.cs" />
     <Compile Include="Entidades\Usuario.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GenerarModificacionReserva\ConfirmacionReserva.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GenerarModificacionReserva\ConfirmacionReserva.Designer.cs">
+      <DependentUpon>ConfirmacionReserva.cs</DependentUpon>
     </Compile>
     <Compile Include="GenerarModificacionReserva\DatosReserva.cs">
       <SubType>Form</SubType>
@@ -272,6 +280,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AbmUsuario\ListadoPersona.resx">
       <DependentUpon>ListadoPersona.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GenerarModificacionReserva\ConfirmacionReserva.resx">
+      <DependentUpon>ConfirmacionReserva.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GenerarModificacionReserva\DatosReserva.resx">
       <DependentUpon>DatosReserva.cs</DependentUpon>

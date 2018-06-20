@@ -17,6 +17,8 @@ namespace FrbaHotel.GenerarModificacionReserva
     public partial class DatosReserva : Form
     {
         private Usuario usuario;
+        private bool primeraVez = true;
+        private int idRegimen;
 
         public DatosReserva(Usuario usuario)
         {
@@ -42,6 +44,17 @@ namespace FrbaHotel.GenerarModificacionReserva
             comboBoxTipoReg.Items.Add(reader.GetString(0));
         }
 
+        protected void agregarColumna()
+        {
+            DataGridViewButtonColumn columna = new DataGridViewButtonColumn();
+            columna.HeaderText = "Seleccionar";
+            columna.Text = "Seleccionar";
+            columna.Name = "columnaBoton";
+            columna.UseColumnTextForButtonValue = true;
+
+            dataGridViewReserva.Columns.Add(columna);
+        }
+
         private void buttonBuscar_Click(object sender, EventArgs e)
         {
             if (comboBoxTipoReg.SelectedIndex == -1)
@@ -56,11 +69,17 @@ namespace FrbaHotel.GenerarModificacionReserva
             }
 
             cargarHabitaciones();
+
+            if (primeraVez)
+            {
+                agregarColumna();
+                primeraVez = false;
+            }
         }
 
         private void cargarHabitaciones()
         {
-            int idRegimen = DB.buscarIdRegimen(comboBoxTipoReg.SelectedItem.ToString());
+            idRegimen = DB.buscarIdRegimen(comboBoxTipoReg.SelectedItem.ToString());
 
             dataGridViewReserva.DataSource = DB.correrQueryTabla(
                 "SELECT h.Nro_Habitacion, Piso, Ubicacion, Tipo_Hab, Descripcion " +
@@ -73,11 +92,35 @@ namespace FrbaHotel.GenerarModificacionReserva
 	                        //"AND r.Habilitada = 1 " +
 	                        "AND NOT (Fecha_Inicio BETWEEN @fechaDesde AND @fechaHasta OR Fecha_Fin BETWEEN @fechaDesde AND @fechaHasta)",
                 "idHotel", usuario.idHotel, "idRegimen", idRegimen, "fechaDesde", dateTimePickerDesde.Value, "fechaHasta" , dateTimePickerHasta.Value);
+
         }
 
         private void dataGridViewReserva_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            if (dataGridViewReserva.Columns[e.ColumnIndex].HeaderText != "Seleccionar" || e.RowIndex == -1)
+                return;
 
+            
+        }
+
+        private void buttonSiguiente_Click(object sender, EventArgs e)
+        {
+            Reserva reserva = new Reserva(dateTimePickerDesde.Value, dateTimePickerHasta.Value, comboBoxTipoHab.SelectedItem.ToString(), comboBoxTipoReg.SelectedItem.ToString());
+
+            ConfirmacionReserva confirmacion = new ConfirmacionReserva(reserva, tablaHabitacionesSeleccionadas());
+            confirmacion.Show();
+        }
+
+        private DataTable tablaHabitacionesSeleccionadas()
+        {
+            DataTable tabla = new DataTable();
+
+            foreach(DataGridViewRow fila in dataGridViewReserva.Rows)
+            {
+                if(Convert.ToBoolean(fila.Cells["Seleccionar"].Value))
+                    tabla.Rows.Add(fila);
+            }
+            return tabla;
         }
     }
 }
