@@ -196,6 +196,7 @@
             // comboBoxTipoHab
             // 
             this.comboBoxTipoHab.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.comboBoxTipoHab.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxTipoHab.FormattingEnabled = true;
             this.comboBoxTipoHab.Location = new System.Drawing.Point(179, 75);
             this.comboBoxTipoHab.Name = "comboBoxTipoHab";

@@ -15,16 +15,24 @@ namespace FrbaHotel.GenerarModificacionReserva
     public partial class ConfirmacionReserva : Form
     {
         private Reserva reserva;
+        private Form form;
 
-        public ConfirmacionReserva(Reserva reserva, DataTable tabla)
+        public ConfirmacionReserva(Reserva reserva, DataTable tabla, Form form)
         {
             InitializeComponent();
             this.reserva = reserva;
+            this.form = form;
             dateTimePickerDesde.Value = reserva.fechaInicio;
             dateTimePickerHasta.Value = reserva.fechaFin;
             textBoxTipoHab.Text = reserva.tipoHabitacion;
             textBoxTipoReg.Text = reserva.descRegimen;
             dataGridViewReserva.DataSource = tabla;
+        }
+
+        private void buttonCancelar_Click(object sender, EventArgs e)
+        {
+            form.Show();
+            Close();
         }
     }
 }

@@ -52,6 +52,7 @@ namespace FrbaHotel.AbmCliente
         private void validarDatos()
         {
             Validaciones.validarControles(errorProviderCliente, Controls);
+            Validaciones.validarFechasPosteriores(errorProviderCliente, Controls);
         }
 
         private void buttonLimpiar_Click(object sender, EventArgs e)

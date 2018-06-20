@@ -30,16 +30,16 @@
         {
             this.dataGridViewReserva = new System.Windows.Forms.DataGridView();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.textBoxTipoReg = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.dateTimePickerDesde = new System.Windows.Forms.DateTimePicker();
             this.dateTimePickerHasta = new System.Windows.Forms.DateTimePicker();
+            this.textBoxTipoHab = new System.Windows.Forms.TextBox();
             this.buttonCancelar = new System.Windows.Forms.Button();
             this.buttonConfirmar = new System.Windows.Forms.Button();
-            this.textBoxTipoHab = new System.Windows.Forms.TextBox();
-            this.textBoxTipoReg = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewReserva)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -78,12 +78,20 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(836, 57);
             this.tableLayoutPanel1.TabIndex = 8;
             // 
+            // textBoxTipoReg
+            // 
+            this.textBoxTipoReg.Location = new System.Drawing.Point(679, 31);
+            this.textBoxTipoReg.Name = "textBoxTipoReg";
+            this.textBoxTipoReg.ReadOnly = true;
+            this.textBoxTipoReg.Size = new System.Drawing.Size(154, 20);
+            this.textBoxTipoReg.TabIndex = 13;
+            // 
             // label4
             // 
             this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(679, 11);
+            this.label4.Location = new System.Drawing.Point(679, 12);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(107, 16);
             this.label4.TabIndex = 11;
@@ -94,7 +102,7 @@
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(483, 11);
+            this.label3.Location = new System.Drawing.Point(483, 12);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(120, 16);
             this.label3.TabIndex = 10;
@@ -105,7 +113,7 @@
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(243, 11);
+            this.label1.Location = new System.Drawing.Point(243, 12);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(111, 16);
             this.label1.TabIndex = 9;
@@ -116,7 +124,7 @@
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(3, 11);
+            this.label2.Location = new System.Drawing.Point(3, 12);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(113, 16);
             this.label2.TabIndex = 8;
@@ -125,7 +133,7 @@
             // dateTimePickerDesde
             // 
             this.dateTimePickerDesde.Enabled = false;
-            this.dateTimePickerDesde.Location = new System.Drawing.Point(3, 30);
+            this.dateTimePickerDesde.Location = new System.Drawing.Point(3, 31);
             this.dateTimePickerDesde.Name = "dateTimePickerDesde";
             this.dateTimePickerDesde.Size = new System.Drawing.Size(197, 20);
             this.dateTimePickerDesde.TabIndex = 0;
@@ -133,10 +141,18 @@
             // dateTimePickerHasta
             // 
             this.dateTimePickerHasta.Enabled = false;
-            this.dateTimePickerHasta.Location = new System.Drawing.Point(243, 30);
+            this.dateTimePickerHasta.Location = new System.Drawing.Point(243, 31);
             this.dateTimePickerHasta.Name = "dateTimePickerHasta";
             this.dateTimePickerHasta.Size = new System.Drawing.Size(197, 20);
             this.dateTimePickerHasta.TabIndex = 1;
+            // 
+            // textBoxTipoHab
+            // 
+            this.textBoxTipoHab.Location = new System.Drawing.Point(483, 31);
+            this.textBoxTipoHab.Name = "textBoxTipoHab";
+            this.textBoxTipoHab.ReadOnly = true;
+            this.textBoxTipoHab.Size = new System.Drawing.Size(163, 20);
+            this.textBoxTipoHab.TabIndex = 12;
             // 
             // buttonCancelar
             // 
@@ -146,6 +162,7 @@
             this.buttonCancelar.TabIndex = 9;
             this.buttonCancelar.Text = "Cancelar";
             this.buttonCancelar.UseVisualStyleBackColor = true;
+            this.buttonCancelar.Click += new System.EventHandler(this.buttonCancelar_Click);
             // 
             // buttonConfirmar
             // 
@@ -155,22 +172,6 @@
             this.buttonConfirmar.TabIndex = 10;
             this.buttonConfirmar.Text = "Confirmar";
             this.buttonConfirmar.UseVisualStyleBackColor = true;
-            // 
-            // textBoxTipoHab
-            // 
-            this.textBoxTipoHab.Location = new System.Drawing.Point(483, 30);
-            this.textBoxTipoHab.Name = "textBoxTipoHab";
-            this.textBoxTipoHab.ReadOnly = true;
-            this.textBoxTipoHab.Size = new System.Drawing.Size(163, 20);
-            this.textBoxTipoHab.TabIndex = 12;
-            // 
-            // textBoxTipoReg
-            // 
-            this.textBoxTipoReg.Location = new System.Drawing.Point(679, 30);
-            this.textBoxTipoReg.Name = "textBoxTipoReg";
-            this.textBoxTipoReg.ReadOnly = true;
-            this.textBoxTipoReg.Size = new System.Drawing.Size(154, 20);
-            this.textBoxTipoReg.TabIndex = 13;
             // 
             // ConfirmacionReserva
             // 

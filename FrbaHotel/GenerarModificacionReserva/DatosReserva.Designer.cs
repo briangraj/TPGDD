@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.dateTimePickerDesde = new System.Windows.Forms.DateTimePicker();
             this.dateTimePickerHasta = new System.Windows.Forms.DateTimePicker();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -41,8 +42,10 @@
             this.buttonBuscar = new System.Windows.Forms.Button();
             this.dataGridViewReserva = new System.Windows.Forms.DataGridView();
             this.buttonSiguiente = new System.Windows.Forms.Button();
+            this.errorProviderReserva = new System.Windows.Forms.ErrorProvider(this.components);
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewReserva)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProviderReserva)).BeginInit();
             this.SuspendLayout();
             // 
             // dateTimePickerDesde
@@ -173,7 +176,6 @@
             this.dataGridViewReserva.ReadOnly = true;
             this.dataGridViewReserva.Size = new System.Drawing.Size(836, 468);
             this.dataGridViewReserva.TabIndex = 6;
-            this.dataGridViewReserva.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewReserva_CellContentClick);
             // 
             // buttonSiguiente
             // 
@@ -184,6 +186,10 @@
             this.buttonSiguiente.Text = "Siguiente";
             this.buttonSiguiente.UseVisualStyleBackColor = true;
             this.buttonSiguiente.Click += new System.EventHandler(this.buttonSiguiente_Click);
+            // 
+            // errorProviderReserva
+            // 
+            this.errorProviderReserva.ContainerControl = this;
             // 
             // DatosReserva
             // 
@@ -200,6 +206,7 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewReserva)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProviderReserva)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -219,5 +226,6 @@
         private System.Windows.Forms.Button buttonBuscar;
         protected System.Windows.Forms.DataGridView dataGridViewReserva;
         private System.Windows.Forms.Button buttonSiguiente;
+        private System.Windows.Forms.ErrorProvider errorProviderReserva;
     }
 }

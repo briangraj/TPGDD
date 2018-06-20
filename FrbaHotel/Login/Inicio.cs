@@ -34,9 +34,9 @@ namespace FrbaHotel.Login
                 Usuario usuario = new Usuario(textBoxUser.Text);
                 usuario.cargar();
 
-                Hide();
                 SeleccionarHotel form = new SeleccionarHotel(usuario);
-                form.ShowDialog();
+                form.Show();
+                Hide();
             }
             catch (SqlException){ }
         }
@@ -48,9 +48,9 @@ namespace FrbaHotel.Login
                 Usuario usuario = new Usuario("guest");
                 usuario.cargar();
 
-                Hide();
                 SeleccionarHotel form = new SeleccionarHotel(usuario);
-                form.ShowDialog();
+                form.Show();
+                Hide();
             }
             catch (SqlException) { }
         }

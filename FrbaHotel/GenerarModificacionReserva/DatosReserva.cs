@@ -24,8 +24,22 @@ namespace FrbaHotel.GenerarModificacionReserva
         {
             InitializeComponent();
             this.usuario = usuario;
-            //cargarTiposHab(usuario.idHotel);
+            cargarTiposHab(usuario.idHotel);
             cargarRegimenes(usuario.idHotel);
+        }
+
+        private void cargarTiposHab(int idHotel)
+        {
+            DB.ejecutarReader(
+                "SELECT distinct(Descripcion) " +
+                "FROM LA_QUERY_DE_PAPEL.Habitacion " +
+                    "WHERE Id_Hotel = @idHotel",
+            cargarComboBoxTiposHab, "idHotel", idHotel);
+        }
+
+        public void cargarComboBoxTiposHab(SqlDataReader reader)
+        {
+            comboBoxTipoHab.Items.Add(reader.GetString(0));
         }
 
         private void cargarRegimenes(int idHotel)
@@ -56,6 +70,11 @@ namespace FrbaHotel.GenerarModificacionReserva
 
         private void buttonBuscar_Click(object sender, EventArgs e)
         {
+            errorProviderReserva.Clear();
+            Validaciones.validarFechasAnteriores(errorProviderReserva, Controls);
+            if (Validaciones.errorProviderConError(errorProviderReserva, Controls))
+                return;
+
             if (comboBoxTipoReg.SelectedIndex == -1)
             {
                 SeleccionRegimen regimen = new SeleccionRegimen(usuario);
@@ -76,9 +95,19 @@ namespace FrbaHotel.GenerarModificacionReserva
             }
         }
 
+        private void validarDatos()
+        {
+            Validaciones.validarControles(errorProviderReserva, Controls);
+            Validaciones.validarFechasAnteriores(errorProviderReserva, Controls);
+            //todo validar que elija habitaciones
+        }
+
         private void cargarHabitaciones()
         {
             idRegimen = DB.buscarIdRegimen(comboBoxTipoReg.SelectedItem.ToString());
+            string tipoHab = "";
+            if (comboBoxTipoHab.SelectedItem != null)
+                tipoHab = comboBoxTipoHab.SelectedItem.ToString();
 
             dataGridViewReserva.DataSource = DB.correrQueryTabla(
                 "SELECT h.Nro_Habitacion, Piso, Ubicacion, Tipo_Hab, Descripcion " +
@@ -88,32 +117,31 @@ namespace FrbaHotel.GenerarModificacionReserva
                     "JOIN LA_QUERY_DE_PAPEL.Reserva r ON rha.Id_Reserva = r.Id_Reserva " +
 	                    "WHERE rho.Id_Hotel = @idHotel " +
 	                        "AND rho.Id_Regimen = @idRegimen " +
-	                        //"AND r.Habilitada = 1 " +
+	                        "AND h.Habilitada = 1 " +
+                            "AND Tipo_Hab LIKE @tipoHab " +
 	                        "AND NOT (Fecha_Inicio BETWEEN @fechaDesde AND @fechaHasta OR Fecha_Fin BETWEEN @fechaDesde AND @fechaHasta)",
-                "idHotel", usuario.idHotel, "idRegimen", idRegimen, "fechaDesde", dateTimePickerDesde.Value, "fechaHasta" , dateTimePickerHasta.Value);
+                "idHotel", usuario.idHotel, "idRegimen", idRegimen, "tipoHab", tipoHab, "fechaDesde", dateTimePickerDesde.Value, "fechaHasta" , dateTimePickerHasta.Value);
 
-        }
-
-        private void dataGridViewReserva_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (dataGridViewReserva.Columns[e.ColumnIndex].HeaderText != "Seleccionar" || e.RowIndex == -1)
-                return;
-
-            
         }
 
         private void buttonSiguiente_Click(object sender, EventArgs e)
         {
+            errorProviderReserva.Clear();
+            validarDatos();
+            if (Validaciones.errorProviderConError(errorProviderReserva, Controls))
+                return;
+
             Reserva reserva = new Reserva(dateTimePickerDesde.Value, dateTimePickerHasta.Value, comboBoxTipoHab.SelectedItem.ToString(), comboBoxTipoReg.SelectedItem.ToString());
 
-            ConfirmacionReserva confirmacion = new ConfirmacionReserva(reserva, tablaHabitacionesSeleccionadas());
+            ConfirmacionReserva confirmacion = new ConfirmacionReserva(reserva, tablaHabitacionesSeleccionadas(), this);
             confirmacion.Show();
+            Hide();
         }
 
         private DataTable tablaHabitacionesSeleccionadas()
         {
             DataTable tabla = new DataTable();
-
+            //tabla.Rows.Add(dataGridViewReserva.Rows.SharedRow(0));
             foreach(DataGridViewRow fila in dataGridViewReserva.Rows)
             {
                 if(Convert.ToBoolean(fila.Cells["Seleccionar"].Value))

@@ -37,13 +37,36 @@ namespace FrbaHotel.Utilidades
                     if (((CheckedListBox)control).CheckedItems.Count == 0)
                         errorProvider.SetError(control, "Debe elegir al menos una opcion");
                 }
-                else if (control is DateTimePicker)
+                    
+                validarControles(errorProvider, control.Controls);
+            }
+        }
+
+        public static void validarFechasPosteriores(ErrorProvider errorProvider, Control.ControlCollection controls)
+        {
+            foreach (Control control in controls)
+            {
+                if (control is DateTimePicker)
                 {
                     if (((DateTimePicker)control).Value > Program.fechaActual)
                         errorProvider.SetError(control, "La fecha no puede ser posterior al dia hoy");
                 }
-                    
-                validarControles(errorProvider, control.Controls);
+
+                validarFechasPosteriores(errorProvider, control.Controls);
+            }
+        }
+
+        public static void validarFechasAnteriores(ErrorProvider errorProvider, Control.ControlCollection controls)
+        {
+            foreach (Control control in controls)
+            {
+                if (control is DateTimePicker)
+                {
+                    if (((DateTimePicker)control).Value < Program.fechaActual)
+                        errorProvider.SetError(control, "La fecha no puede ser anterior al dia hoy");
+                }
+
+                validarFechasAnteriores(errorProvider, control.Controls);
             }
         }
     }
