@@ -63,11 +63,13 @@ namespace FrbaHotel.Login
                     case "ABM de habitacion":
                         form = new AbmHabitacion.AbmHabitacion(usuario);
                         break;
+                    case "Generar o modificar reserva":
+                        form = new GenerarModificacionReserva.DatosReserva(usuario);
+                        break;
                     default:
-                        MessageBox.Show("Debe seleccionar una funcionalidad");
                         return;
                 }
-
+                form = new GenerarModificacionReserva.DatosReserva(usuario);
                 form.Show();
             }
         }

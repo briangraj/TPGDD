@@ -185,7 +185,7 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Estadia](
 	
 	FOREIGN KEY (Tipo_Documento, Nro_Documento) REFERENCES [LA_QUERY_DE_PAPEL].[Persona] (Tipo_Documento, Nro_Documento)
 	);
-
+	
 
 CREATE TABLE [LA_QUERY_DE_PAPEL].[Funcionalidad] ( 
 	Id_Funcion INT NOT NULL PRIMARY KEY IDENTITY (1, 1),
@@ -437,7 +437,7 @@ BEGIN
 
 END
 GO
-
+/*
 CREATE PROCEDURE LA_QUERY_DE_PAPEL.procedure_alta_habitacion
 	@nroHabitacion int,
 	@idHotel int,
@@ -455,7 +455,7 @@ BEGIN
 	VALUES (@nroHabitacion, @idHotel, @piso, ubicacion, @tipoHabitacion, @descripcion, @habilitada)
 END
 GO
-
+*/
 CREATE PROCEDURE [LA_QUERY_DE_PAPEL].Cargar_Personas
 AS
 BEGIN

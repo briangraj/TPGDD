@@ -146,5 +146,13 @@ namespace FrbaHotel.Utilidades
                 "FROM LA_QUERY_DE_PAPEL.Usuario " +
                 "WHERE Username = @username", "username", username);
         }
+
+        public static int buscarIdRegimen(string descripcion)
+        {
+            return (int)DB.correrQueryEscalar(
+                "SELECT Id_Regimen " +
+                "FROM LA_QUERY_DE_PAPEL.Regimen " +
+                "WHERE Descripcion = @descripcion", "descripcion", descripcion);
+        }
     }
 }
