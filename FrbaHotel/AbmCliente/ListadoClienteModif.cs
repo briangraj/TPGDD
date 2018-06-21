@@ -31,7 +31,7 @@ namespace FrbaHotel.AbmCliente
 
         protected override void accionBoton(System.Windows.Forms.DataGridViewCellEventArgs e)
         {
-            DatosCliente datos = new DatosCliente(dataGridViewPersonas.CurrentRow);
+            DatosClienteModif datos = new DatosClienteModif(dataGridViewPersonas.CurrentRow);
             this.Hide();
             datos.Show();
         }

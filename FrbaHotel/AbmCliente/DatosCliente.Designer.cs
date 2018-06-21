@@ -38,7 +38,7 @@
             this.textBoxNroDoc = new System.Windows.Forms.TextBox();
             this.textBoxTipoDoc = new System.Windows.Forms.TextBox();
             this.textBoxApellido = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
+            this.labelHabilitado = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -72,7 +72,7 @@
             this.tableLayoutPanel1.Controls.Add(this.textBoxNroDoc, 1, 3);
             this.tableLayoutPanel1.Controls.Add(this.textBoxTipoDoc, 1, 2);
             this.tableLayoutPanel1.Controls.Add(this.textBoxApellido, 1, 1);
-            this.tableLayoutPanel1.Controls.Add(this.label11, 0, 10);
+            this.tableLayoutPanel1.Controls.Add(this.labelHabilitado, 0, 10);
             this.tableLayoutPanel1.Controls.Add(this.label2, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.label3, 0, 2);
@@ -167,16 +167,16 @@
             this.textBoxApellido.Size = new System.Drawing.Size(333, 20);
             this.textBoxApellido.TabIndex = 19;
             // 
-            // label11
+            // labelHabilitado
             // 
-            this.label11.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label11.AutoSize = true;
-            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(73, 265);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(70, 16);
-            this.label11.TabIndex = 17;
-            this.label11.Text = "Habilitado";
+            this.labelHabilitado.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.labelHabilitado.AutoSize = true;
+            this.labelHabilitado.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelHabilitado.Location = new System.Drawing.Point(73, 265);
+            this.labelHabilitado.Name = "labelHabilitado";
+            this.labelHabilitado.Size = new System.Drawing.Size(70, 16);
+            this.labelHabilitado.TabIndex = 17;
+            this.labelHabilitado.Text = "Habilitado";
             // 
             // label2
             // 
@@ -302,6 +302,7 @@
             this.dateTimePickerFechaNac.Name = "dateTimePickerFechaNac";
             this.dateTimePickerFechaNac.Size = new System.Drawing.Size(333, 20);
             this.dateTimePickerFechaNac.TabIndex = 27;
+            this.dateTimePickerFechaNac.Value = new System.DateTime(2018, 6, 14, 0, 0, 0, 0);
             // 
             // checkBoxHabilitado
             // 
@@ -357,7 +358,6 @@
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label3;
@@ -368,19 +368,20 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.TextBox textBoxNacionalidad;
-        private System.Windows.Forms.TextBox textBoxLocalidad;
-        private System.Windows.Forms.TextBox textBoxDireccion;
-        private System.Windows.Forms.TextBox textBoxTelefono;
-        private System.Windows.Forms.TextBox textBoxMail;
-        private System.Windows.Forms.TextBox textBoxNroDoc;
-        private System.Windows.Forms.TextBox textBoxTipoDoc;
-        private System.Windows.Forms.TextBox textBoxApellido;
-        private System.Windows.Forms.TextBox textBoxNombre;
-        private System.Windows.Forms.DateTimePicker dateTimePickerFechaNac;
-        private System.Windows.Forms.CheckBox checkBoxHabilitado;
         private System.Windows.Forms.Button buttonLimpiar;
         private System.Windows.Forms.Button buttonAceptar;
         private System.Windows.Forms.ErrorProvider errorProviderCliente;
+        protected System.Windows.Forms.TextBox textBoxNacionalidad;
+        protected System.Windows.Forms.TextBox textBoxLocalidad;
+        protected System.Windows.Forms.TextBox textBoxDireccion;
+        protected System.Windows.Forms.TextBox textBoxTelefono;
+        protected System.Windows.Forms.TextBox textBoxMail;
+        protected System.Windows.Forms.TextBox textBoxNroDoc;
+        protected System.Windows.Forms.TextBox textBoxTipoDoc;
+        protected System.Windows.Forms.TextBox textBoxApellido;
+        protected System.Windows.Forms.TextBox textBoxNombre;
+        protected System.Windows.Forms.DateTimePicker dateTimePickerFechaNac;
+        protected System.Windows.Forms.CheckBox checkBoxHabilitado;
+        protected System.Windows.Forms.Label labelHabilitado;
     }
 }

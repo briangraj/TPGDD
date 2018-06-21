@@ -39,9 +39,10 @@ namespace FrbaHotel.GenerarModificacionReserva
         {
             foreach (DataGridViewRow fila in dataGridViewReserva.Rows)
             {
-                reserva.habitaciones.Add(new Habitacion(
-                    fila.Cells["Id_Hotel
+                reserva.habitaciones.Add(new Habitacion(reserva.usuario.idHotel, Convert.ToInt32(fila.Cells["Nro_Habitacion"].Value)));
             }
+
+
         }
     }
 }

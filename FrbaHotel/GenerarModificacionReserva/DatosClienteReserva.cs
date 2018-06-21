@@ -12,11 +12,14 @@ namespace FrbaHotel.GenerarModificacionReserva
     {
         private Reserva reserva;
 
-        public DatosClienteReserva(Reserva reserva)
+        public DatosClienteReserva(Reserva reserva) : base()
         {
             this.reserva = reserva;
         }
 
-
+        protected override void accionAceptar()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

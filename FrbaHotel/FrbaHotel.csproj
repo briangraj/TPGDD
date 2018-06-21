@@ -57,6 +57,12 @@
     <Compile Include="AbmCliente\DatosCliente.Designer.cs">
       <DependentUpon>DatosCliente.cs</DependentUpon>
     </Compile>
+    <Compile Include="AbmCliente\DatosClienteAlta.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmCliente\DatosClienteModif.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="AbmCliente\ListadoClienteBaja.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -185,6 +191,9 @@
     </Compile>
     <Compile Include="GenerarModificacionReserva\ConfirmacionReserva.Designer.cs">
       <DependentUpon>ConfirmacionReserva.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GenerarModificacionReserva\DatosClienteReserva.cs">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="GenerarModificacionReserva\DatosReserva.cs">
       <SubType>Form</SubType>

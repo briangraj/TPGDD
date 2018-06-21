@@ -314,6 +314,7 @@
             this.dateTimePickerFechaNac.Name = "dateTimePickerFechaNac";
             this.dateTimePickerFechaNac.Size = new System.Drawing.Size(335, 20);
             this.dateTimePickerFechaNac.TabIndex = 42;
+            this.dateTimePickerFechaNac.Value = new System.DateTime(2018, 6, 14, 0, 0, 0, 0);
             // 
             // checkBoxHabilitado
             // 

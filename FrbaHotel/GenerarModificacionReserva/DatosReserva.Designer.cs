@@ -54,6 +54,7 @@
             this.dateTimePickerDesde.Name = "dateTimePickerDesde";
             this.dateTimePickerDesde.Size = new System.Drawing.Size(197, 20);
             this.dateTimePickerDesde.TabIndex = 0;
+            this.dateTimePickerDesde.Value = new System.DateTime(2018, 6, 14, 0, 0, 0, 0);
             // 
             // dateTimePickerHasta
             // 
@@ -61,6 +62,7 @@
             this.dateTimePickerHasta.Name = "dateTimePickerHasta";
             this.dateTimePickerHasta.Size = new System.Drawing.Size(197, 20);
             this.dateTimePickerHasta.TabIndex = 1;
+            this.dateTimePickerHasta.Value = new System.DateTime(2018, 6, 17, 0, 0, 0, 0);
             // 
             // tableLayoutPanel1
             // 

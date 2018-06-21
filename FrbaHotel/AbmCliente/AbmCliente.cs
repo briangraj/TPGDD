@@ -19,7 +19,7 @@ namespace FrbaHotel.AbmCliente
 
         private void buttonAlta_Click(object sender, EventArgs e)
         {
-            DatosCliente datos = new DatosCliente();
+            DatosClienteAlta datos = new DatosClienteAlta();
             datos.Show();
         }
 

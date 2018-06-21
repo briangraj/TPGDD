@@ -45,11 +45,11 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.dateTimePickerFechaCreacion = new System.Windows.Forms.DateTimePicker();
+            this.comboBoxCantEstrellas = new System.Windows.Forms.ComboBox();
             this.checkedListBoxRegimenes = new System.Windows.Forms.CheckedListBox();
             this.buttonLimpiar = new System.Windows.Forms.Button();
             this.buttonAceptar = new System.Windows.Forms.Button();
             this.errorProviderHoteles = new System.Windows.Forms.ErrorProvider(this.components);
-            this.comboBoxCantEstrellas = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProviderHoteles)).BeginInit();
             this.SuspendLayout();
@@ -225,6 +225,22 @@
             this.dateTimePickerFechaCreacion.Name = "dateTimePickerFechaCreacion";
             this.dateTimePickerFechaCreacion.Size = new System.Drawing.Size(307, 20);
             this.dateTimePickerFechaCreacion.TabIndex = 8;
+            this.dateTimePickerFechaCreacion.Value = new System.DateTime(2018, 6, 14, 0, 0, 0, 0);
+            // 
+            // comboBoxCantEstrellas
+            // 
+            this.comboBoxCantEstrellas.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxCantEstrellas.FormattingEnabled = true;
+            this.comboBoxCantEstrellas.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"});
+            this.comboBoxCantEstrellas.Location = new System.Drawing.Point(214, 107);
+            this.comboBoxCantEstrellas.Name = "comboBoxCantEstrellas";
+            this.comboBoxCantEstrellas.Size = new System.Drawing.Size(307, 21);
+            this.comboBoxCantEstrellas.TabIndex = 9;
             // 
             // checkedListBoxRegimenes
             // 
@@ -257,21 +273,6 @@
             // errorProviderHoteles
             // 
             this.errorProviderHoteles.ContainerControl = this;
-            // 
-            // comboBoxCantEstrellas
-            // 
-            this.comboBoxCantEstrellas.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxCantEstrellas.FormattingEnabled = true;
-            this.comboBoxCantEstrellas.Items.AddRange(new object[] {
-            "1",
-            "2",
-            "3",
-            "4",
-            "5"});
-            this.comboBoxCantEstrellas.Location = new System.Drawing.Point(214, 107);
-            this.comboBoxCantEstrellas.Name = "comboBoxCantEstrellas";
-            this.comboBoxCantEstrellas.Size = new System.Drawing.Size(307, 21);
-            this.comboBoxCantEstrellas.TabIndex = 9;
             // 
             // DatosHotel
             // 
