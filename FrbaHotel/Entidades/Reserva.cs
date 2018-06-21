@@ -13,15 +13,17 @@ namespace FrbaHotel.Entidades
         public DateTime fechaFin;
         public string descRegimen;
         public string tipoHabitacion;
+        public Usuario usuario;
 
         public List<Habitacion> habitaciones = new List<Habitacion>();
 
-        public Reserva(DateTime fechaInicio, DateTime fechaFin, string tipoHabitacion, string descRegimen)
+        public Reserva(DateTime fechaInicio, DateTime fechaFin, string tipoHabitacion, string descRegimen, Usuario usuario)
         {
             this.fechaInicio = fechaInicio;
             this.fechaFin = fechaFin;
             this.tipoHabitacion = tipoHabitacion;
             this.descRegimen = descRegimen;
+            this.usuario = usuario;
         }
     }
 }

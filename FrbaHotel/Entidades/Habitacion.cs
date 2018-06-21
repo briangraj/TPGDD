@@ -10,5 +10,11 @@ namespace FrbaHotel.Entidades
     {
         public int idHotel;
         public int nroHabitacion;
+
+        public Habitacion(int idHotel, int nroHabitacion)
+        {
+            this.idHotel = idHotel;
+            this.nroHabitacion = nroHabitacion;
+        }
     }
 }

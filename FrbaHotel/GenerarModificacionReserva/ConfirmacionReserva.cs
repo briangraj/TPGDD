@@ -34,5 +34,14 @@ namespace FrbaHotel.GenerarModificacionReserva
             form.Show();
             Close();
         }
+
+        private void buttonConfirmar_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow fila in dataGridViewReserva.Rows)
+            {
+                reserva.habitaciones.Add(new Habitacion(
+                    fila.Cells["Id_Hotel
+            }
+        }
     }
 }

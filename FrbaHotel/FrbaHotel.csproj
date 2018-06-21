@@ -192,6 +192,12 @@
     <Compile Include="GenerarModificacionReserva\DatosReserva.Designer.cs">
       <DependentUpon>DatosReserva.cs</DependentUpon>
     </Compile>
+    <Compile Include="GenerarModificacionReserva\ElegirTipoCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GenerarModificacionReserva\ElegirTipoCliente.Designer.cs">
+      <DependentUpon>ElegirTipoCliente.cs</DependentUpon>
+    </Compile>
     <Compile Include="GenerarModificacionReserva\SeleccionRegimen.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -286,6 +292,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GenerarModificacionReserva\DatosReserva.resx">
       <DependentUpon>DatosReserva.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GenerarModificacionReserva\ElegirTipoCliente.resx">
+      <DependentUpon>ElegirTipoCliente.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GenerarModificacionReserva\SeleccionRegimen.resx">
       <DependentUpon>SeleccionRegimen.cs</DependentUpon>

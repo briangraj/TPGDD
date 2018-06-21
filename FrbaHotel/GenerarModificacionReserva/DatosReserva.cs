@@ -131,7 +131,7 @@ namespace FrbaHotel.GenerarModificacionReserva
             if (Validaciones.errorProviderConError(errorProviderReserva, Controls))
                 return;
 
-            Reserva reserva = new Reserva(dateTimePickerDesde.Value, dateTimePickerHasta.Value, comboBoxTipoHab.SelectedItem.ToString(), comboBoxTipoReg.SelectedItem.ToString());
+            Reserva reserva = new Reserva(dateTimePickerDesde.Value, dateTimePickerHasta.Value, comboBoxTipoHab.SelectedItem.ToString(), comboBoxTipoReg.SelectedItem.ToString(), usuario);
 
             ConfirmacionReserva confirmacion = new ConfirmacionReserva(reserva, tablaHabitacionesSeleccionadas(), this);
             confirmacion.Show();
