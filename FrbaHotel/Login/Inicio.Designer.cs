@@ -109,6 +109,7 @@
             // 
             // buttonGuest
             // 
+            this.buttonGuest.Enabled = false;
             this.buttonGuest.Location = new System.Drawing.Point(65, 199);
             this.buttonGuest.Name = "buttonGuest";
             this.buttonGuest.Size = new System.Drawing.Size(162, 23);

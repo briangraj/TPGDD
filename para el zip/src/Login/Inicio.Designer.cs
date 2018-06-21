@@ -30,12 +30,13 @@
         {
             this.components = new System.ComponentModel.Container();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.textBoxUser = new System.Windows.Forms.TextBox();
             this.textBoxPass = new System.Windows.Forms.TextBox();
+            this.textBoxUser = new System.Windows.Forms.TextBox();
             this.labelUser = new System.Windows.Forms.Label();
             this.labelPass = new System.Windows.Forms.Label();
             this.buttonLogin = new System.Windows.Forms.Button();
             this.errorProviderInicio = new System.Windows.Forms.ErrorProvider(this.components);
+            this.buttonGuest = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProviderInicio)).BeginInit();
             this.SuspendLayout();
@@ -54,8 +55,16 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(195, 100);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(195, 61);
             this.tableLayoutPanel1.TabIndex = 0;
+            // 
+            // textBoxPass
+            // 
+            this.textBoxPass.Location = new System.Drawing.Point(62, 33);
+            this.textBoxPass.Name = "textBoxPass";
+            this.textBoxPass.Size = new System.Drawing.Size(100, 20);
+            this.textBoxPass.TabIndex = 1;
+            this.textBoxPass.UseSystemPasswordChar = true;
             // 
             // textBoxUser
             // 
@@ -63,14 +72,6 @@
             this.textBoxUser.Name = "textBoxUser";
             this.textBoxUser.Size = new System.Drawing.Size(100, 20);
             this.textBoxUser.TabIndex = 0;
-            // 
-            // textBoxPass
-            // 
-            this.textBoxPass.Location = new System.Drawing.Point(62, 53);
-            this.textBoxPass.Name = "textBoxPass";
-            this.textBoxPass.Size = new System.Drawing.Size(100, 20);
-            this.textBoxPass.TabIndex = 1;
-            this.textBoxPass.UseSystemPasswordChar = true;
             // 
             // labelUser
             // 
@@ -86,7 +87,7 @@
             // 
             this.labelPass.AutoSize = true;
             this.labelPass.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelPass.Location = new System.Drawing.Point(3, 50);
+            this.labelPass.Location = new System.Drawing.Point(3, 30);
             this.labelPass.Name = "labelPass";
             this.labelPass.Size = new System.Drawing.Size(39, 16);
             this.labelPass.TabIndex = 3;
@@ -94,7 +95,7 @@
             // 
             // buttonLogin
             // 
-            this.buttonLogin.Location = new System.Drawing.Point(110, 191);
+            this.buttonLogin.Location = new System.Drawing.Point(110, 123);
             this.buttonLogin.Name = "buttonLogin";
             this.buttonLogin.Size = new System.Drawing.Size(75, 23);
             this.buttonLogin.TabIndex = 1;
@@ -106,11 +107,23 @@
             // 
             this.errorProviderInicio.ContainerControl = this;
             // 
+            // buttonGuest
+            // 
+            this.buttonGuest.Enabled = false;
+            this.buttonGuest.Location = new System.Drawing.Point(65, 199);
+            this.buttonGuest.Name = "buttonGuest";
+            this.buttonGuest.Size = new System.Drawing.Size(162, 23);
+            this.buttonGuest.TabIndex = 2;
+            this.buttonGuest.Text = "Ingresar como guest";
+            this.buttonGuest.UseVisualStyleBackColor = true;
+            this.buttonGuest.Click += new System.EventHandler(this.buttonGuest_Click);
+            // 
             // Inicio
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 261);
+            this.Controls.Add(this.buttonGuest);
             this.Controls.Add(this.buttonLogin);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "Inicio";
@@ -131,5 +144,6 @@
         private System.Windows.Forms.Label labelPass;
         private System.Windows.Forms.Button buttonLogin;
         private System.Windows.Forms.ErrorProvider errorProviderInicio;
+        private System.Windows.Forms.Button buttonGuest;
     }
 }

@@ -37,7 +37,7 @@ namespace FrbaHotel.AbmHotel
                 "pais", "%" + textBoxPais.Text + "%");
         }
 
-        protected abstract String queryTabla();
+        protected abstract string queryTabla();
 
         protected void agregarColumna()
         {
@@ -50,7 +50,7 @@ namespace FrbaHotel.AbmHotel
             dataGridViewHoteles.Columns.Add(columna);
         }
 
-        protected abstract String textoBoton();
+        protected abstract string textoBoton();
 
         private void dataGridViewHoteles_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {

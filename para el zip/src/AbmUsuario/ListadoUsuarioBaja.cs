@@ -10,13 +10,14 @@ using System.Windows.Forms;
 
 namespace FrbaHotel.AbmUsuario
 {
-    class ListadoUsuarioBaja : ListadoUsuario
+    class ListadoUsuarioBaja : ListadoPersona
     {
         public ListadoUsuarioBaja(Usuario usuario) : base(usuario) { }
 
-        protected override String queryTabla()
+        protected override void cargarTabla(string tipoDoc)
         {
-            return "SELECT u.Id_Usuario, Username, Password, Id_Rol, Nombre, Apellido, Tipo_Documento, Nro_Documento, Mail, Telefono, Direccion, Fecha_Nacimiento, Habilitado " +
+            dataGridViewPersonas.DataSource = DB.correrQueryTabla(
+                "SELECT u.Id_Usuario, Username, Password, Id_Rol, Nombre, Apellido, Tipo_Documento, Nro_Documento, Mail, Telefono, Direccion, Fecha_Nacimiento, Habilitado " +
                     "FROM LA_QUERY_DE_PAPEL.usuarios u " +
                     "JOIN LA_QUERY_DE_PAPEL.UsuarioxHotel uh " +
                         "ON u.Id_Usuario = uh.Id_Usuario " +
@@ -26,10 +27,12 @@ namespace FrbaHotel.AbmUsuario
                             "AND Nro_Documento LIKE @nroDocumento " +
                             "AND Mail LIKE @mail " +
                             "AND Id_Hotel = @idHotel " +
-                            "AND Habilitado = 1";
+                            "AND Habilitado = 1",
+                "nombre", "%" + textBoxNombre.Text + "%", "apellido", "%" + textBoxApellido.Text + "%", "tipoDocumento", "%" + tipoDoc + "%",
+                "nroDocumento", "%" + maskedTextBoxNroDoc.Text + "%", "mail", "%" + textBoxMail.Text + "%", "idHotel", usuario.idHotel); 
         }
 
-        protected override String textoBoton()
+        protected override string textoBoton()
         {
             return "Eliminar";
         }
@@ -39,7 +42,7 @@ namespace FrbaHotel.AbmUsuario
             DB.correrQuery(
                 "DELETE FROM LA_QUERY_DE_PAPEL.usuarios " +
                 "WHERE Username = @username",
-                "username", dataGridViewUsuarios.CurrentRow.Cells["Username"].Value.ToString());
+                "username", dataGridViewPersonas.CurrentRow.Cells["Username"].Value.ToString());
 
             llenarTabla();
             MessageBox.Show("Usuario eliminado");

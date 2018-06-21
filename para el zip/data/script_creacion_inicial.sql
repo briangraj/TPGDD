@@ -216,19 +216,19 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[FuncionalidadxRol] (
 GO
 
 INSERT INTO LA_QUERY_DE_PAPEL.Rol (Nombre)
-VALUES ('Administrador General'), ('Guest')
+VALUES ('Administrador General')--, ('Guest')
 
 INSERT INTO LA_QUERY_DE_PAPEL.Funcionalidad (Descripcion)
-VALUES ('ABM de rol'), ('ABM de usuario'), ('ABM de hotel'), ('ABM de cliente'), ('Abm de habitacion'), ('Generar o modificar reserva')
+VALUES ('ABM de rol'), ('ABM de usuario'), ('ABM de hotel'), ('ABM de cliente')--, ('Abm de habitacion'), ('Generar o modificar reserva')
 
 INSERT INTO LA_QUERY_DE_PAPEL.FuncionalidadxRol(Id_Rol, Id_Funcion)
-VALUES (1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (2,6)
+VALUES (1, 1), (1, 2), (1, 3), (1, 4)--, (1, 5), (1, 6), (2,6)
 
 INSERT INTO LA_QUERY_DE_PAPEL.Persona (Tipo_Documento, Nro_Documento, Apellido, Nombre,	Direccion, Fecha_Nacimiento, Telefono, Habilitado)
 VALUES ('', 1, '', '', '', GETDATE(), '', 1)
 
 INSERT INTO LA_QUERY_DE_PAPEL.Usuario (Tipo_Documento, Nro_Documento, Username,	Password, Id_Rol, Mail)
-VALUES ('', 1, 'admin', CONVERT(varbinary(255),HASHBYTES('SHA2_256','w23e'),2), 1, ''), ('', 1, 'guest', HASHBYTES('SHA2_256',''), 2, '')
+VALUES ('', 1, 'admin', CONVERT(varbinary(255),HASHBYTES('SHA2_256','w23e'),2), 1, '')--, ('', 1, 'guest', HASHBYTES('SHA2_256',''), 2, '')
 
 GO
 
@@ -646,4 +646,4 @@ WHERE Consumible_Codigo IS NOT NULL
 
 
 INSERT INTO LA_QUERY_DE_PAPEL.UsuarioxHotel (Id_Hotel, Id_Usuario)
-VALUES (1, 1), (2, 1), (1, 2)
+VALUES (1, 1), (2, 1)--, (1, 2)
