@@ -56,6 +56,7 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Cliente] (
 	Mail nvarchar(255) UNIQUE,
 	Nacionalidad nvarchar(255) NOT NULL,
 
+	PRIMARY KEY (Tipo_Documento, Nro_Documento),
 	FOREIGN KEY (Tipo_Documento, Nro_Documento) REFERENCES [LA_QUERY_DE_PAPEL].[Persona] (Tipo_Documento, Nro_Documento) ON UPDATE CASCADE,
 	);
 
@@ -88,12 +89,11 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Habitacion](
     Ubicacion nvarchar(255),
     Tipo_Hab numeric(18),
     Descripcion nvarchar(255),
+	Habilitada bit,
 
 	FOREIGN KEY (Id_Hotel) REFERENCES [LA_QUERY_DE_PAPEL].[Hotel] (Id_Hotel),
 	PRIMARY KEY (Nro_Habitacion, Id_Hotel)
 	);
-
-
 
 CREATE TABLE [LA_QUERY_DE_PAPEL].[Regimen] ( 
 	Id_Regimen INT NOT NULL PRIMARY KEY IDENTITY (1, 1),
@@ -125,6 +125,17 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Reserva] (
 	FOREIGN KEY (Tipo_Documento, Nro_Documento) REFERENCES [LA_QUERY_DE_PAPEL].[Persona] (Tipo_Documento, Nro_Documento)
 	);
 
+CREATE TABLE [LA_QUERY_DE_PAPEL].[Reserva_Conflicto_Migracion] ( 
+	Id_Reserva INT NOT NULL PRIMARY KEY,
+	Id_Regimen INT NOT NULL,
+	Fecha_Reserva datetime NOT NULL,
+	Cant_Noches INT NOT NULL,
+	Fecha_Inicio datetime,
+	Fecha_Fin datetime,	
+	Tipo_Documento VARCHAR(20) NOT NULL,
+	Nro_Documento INT NOT NULL, 
+	);
+
 CREATE TABLE [LA_QUERY_DE_PAPEL].[ReservaxHabitacion] (
 	Id_Reserva INT NOT NULL,
 	Id_Hotel INT NOT NULL,
@@ -135,6 +146,15 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[ReservaxHabitacion] (
 	FOREIGN KEY (Id_Hotel, Nro_Habitacion) REFERENCES [LA_QUERY_DE_PAPEL].[Habitacion]
 	);
 
+
+CREATE TABLE [LA_QUERY_DE_PAPEL].[ReservaxHabitacion_Conflicto_Migracion] (
+	Id_Reserva INT NOT NULL,
+	Id_Hotel INT NOT NULL,
+	Nro_Habitacion INT NOT NULL,
+	
+	PRIMARY KEY (Id_Reserva, Id_Hotel, Nro_Habitacion),
+	FOREIGN KEY (Id_Reserva) REFERENCES [LA_QUERY_DE_PAPEL].[Reserva_Conflicto_Migracion],
+	);
 
 CREATE TABLE [LA_QUERY_DE_PAPEL].[UsuarioxHotel] ( 
 	Id_Hotel INT NOT NULL,
@@ -174,7 +194,7 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Estadia](
 	
 	FOREIGN KEY (Tipo_Documento, Nro_Documento) REFERENCES [LA_QUERY_DE_PAPEL].[Persona] (Tipo_Documento, Nro_Documento)
 	);
-
+	
 
 CREATE TABLE [LA_QUERY_DE_PAPEL].[Funcionalidad] ( 
 	Id_Funcion INT NOT NULL PRIMARY KEY IDENTITY (1, 1),
@@ -196,19 +216,19 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[FuncionalidadxRol] (
 GO
 
 INSERT INTO LA_QUERY_DE_PAPEL.Rol (Nombre)
-VALUES ('Administrador General')
+VALUES ('Administrador General'), ('Guest')
 
 INSERT INTO LA_QUERY_DE_PAPEL.Funcionalidad (Descripcion)
-VALUES ('ABM de rol'), ('ABM de usuario'), ('ABM de hotel')
+VALUES ('ABM de rol'), ('ABM de usuario'), ('ABM de hotel'), ('ABM de cliente'), ('Abm de habitacion'), ('Generar o modificar reserva')
 
 INSERT INTO LA_QUERY_DE_PAPEL.FuncionalidadxRol(Id_Rol, Id_Funcion)
-VALUES (1, 1), (1, 2), (1, 3)
+VALUES (1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (2,6)
 
 INSERT INTO LA_QUERY_DE_PAPEL.Persona (Tipo_Documento, Nro_Documento, Apellido, Nombre,	Direccion, Fecha_Nacimiento, Telefono, Habilitado)
 VALUES ('', 1, '', '', '', GETDATE(), '', 1)
 
 INSERT INTO LA_QUERY_DE_PAPEL.Usuario (Tipo_Documento, Nro_Documento, Username,	Password, Id_Rol, Mail)
-VALUES ('', 1, 'admin', CONVERT(varbinary(255),HASHBYTES('SHA2_256','w23e' ),2), 1, '')
+VALUES ('', 1, 'admin', CONVERT(varbinary(255),HASHBYTES('SHA2_256','w23e'),2), 1, ''), ('', 1, 'guest', HASHBYTES('SHA2_256',''), 2, '')
 
 GO
 
@@ -233,7 +253,7 @@ FROM LA_QUERY_DE_PAPEL.Persona P
 		AND P.Nro_Documento = U.Nro_Documento
 GO
 
---para poder hacer insert en la view de usuarios y validar el username
+--triggers para poder hacer insert, delete y update en la view de usuarios y validar el username
 CREATE TRIGGER LA_QUERY_DE_PAPEL.insertUsuarios ON LA_QUERY_DE_PAPEL.usuarios
 INSTEAD OF INSERT
 AS
@@ -263,7 +283,6 @@ DELETE p FROM LA_QUERY_DE_PAPEL.Persona p
 		ON p.Tipo_Documento = d.Tipo_Documento
 			AND p.Nro_Documento = d.Nro_Documento
 END
-
 GO
 
 CREATE TRIGGER LA_QUERY_DE_PAPEL.updateUsuarios ON LA_QUERY_DE_PAPEL.usuarios
@@ -289,6 +308,89 @@ END CATCH
 END
 GO
 
+--para usar en el abm de clientes
+CREATE VIEW LA_QUERY_DE_PAPEL.clientes
+AS
+SELECT Nombre, Apellido, p.Tipo_Documento, p.Nro_Documento, Mail, Telefono, Direccion, Localidad, Nacionalidad, Fecha_Nacimiento, Habilitado
+FROM LA_QUERY_DE_PAPEL.Persona p
+	JOIN LA_QUERY_DE_PAPEL.Cliente c
+	ON p.Tipo_Documento = c.Tipo_Documento
+		AND p.Nro_Documento = c.Nro_Documento
+GO
+
+--triggers para poder hacer insert y delete en la view de clientes y validar el mail
+CREATE TRIGGER LA_QUERY_DE_PAPEL.insertClientes ON LA_QUERY_DE_PAPEL.clientes
+INSTEAD OF INSERT
+AS
+BEGIN
+BEGIN TRY
+	INSERT INTO LA_QUERY_DE_PAPEL.Persona (Tipo_Documento, Nro_Documento, Apellido, Nombre, Direccion, Fecha_Nacimiento, Telefono, Habilitado)
+		SELECT i.Tipo_Documento, i.Nro_Documento, i.Apellido, i.Nombre, i.Direccion, i.Fecha_Nacimiento, i.Telefono, i.Habilitado
+		FROM inserted i
+
+	INSERT INTO LA_QUERY_DE_PAPEL.Cliente (Tipo_Documento, Nro_Documento, Localidad, Mail, Nacionalidad)
+		SELECT i.Tipo_Documento, i.Nro_Documento, i.Localidad, i.Mail, i.Nacionalidad
+		FROM inserted i
+END TRY
+
+BEGIN CATCH
+	RAISERROR('El mail ya esta en uso', 16, 1)
+END CATCH
+END
+GO
+
+CREATE TRIGGER LA_QUERY_DE_PAPEL.deleteClientes ON LA_QUERY_DE_PAPEL.clientes
+INSTEAD OF DELETE
+AS
+BEGIN
+DELETE p FROM LA_QUERY_DE_PAPEL.Persona p
+	JOIN deleted d
+		ON p.Tipo_Documento = d.Tipo_Documento
+			AND p.Nro_Documento = d.Nro_Documento
+END
+GO
+
+--procedure para actualizar un cliente
+CREATE PROCEDURE LA_QUERY_DE_PAPEL.procedure_update_cliente
+	@nombre nvarchar(255),
+	@apellido nvarchar(255),
+	@tipoDoc varchar(20),
+	@nroDoc int,
+	@mail nvarchar(255),
+	@telefono nvarchar(50),
+	@direccion nvarchar(255),
+	@localidad nvarchar(255),
+	@nacionalidad nvarchar(255),
+	@fechaNac datetime,
+	@habilitado bit,
+	@tipoDocOriginal varchar(20),
+	@nroDocOriginal int
+AS
+BEGIN
+	DECLARE @mailOriginal nvarchar(255)
+	SELECT @mailOriginal = Mail FROM LA_QUERY_DE_PAPEL.Cliente WHERE Tipo_Documento = @tipoDocOriginal AND Nro_Documento = @nroDocOriginal
+
+	IF(@mail <> @mailOriginal AND EXISTS (SELECT 1 FROM LA_QUERY_DE_PAPEL.Cliente WHERE Mail = @mail AND Tipo_Documento <> @tipoDocOriginal AND Nro_Documento <> @nroDocOriginal))
+		RAISERROR('El mail ya esta en uso', 16, 1)
+
+	IF(@tipoDoc <> @tipoDocOriginal AND @nroDoc <> @nroDocOriginal AND EXISTS (SELECT 1 FROM LA_QUERY_DE_PAPEL.Cliente WHERE Tipo_Documento = @tipoDoc AND Nro_Documento = @nroDoc)
+		OR @tipoDoc <> @tipoDocOriginal AND EXISTS (SELECT 1 FROM LA_QUERY_DE_PAPEL.Cliente WHERE Tipo_Documento = @tipoDoc AND Nro_Documento = @nroDocOriginal)
+		OR @nroDoc <> @nroDocOriginal AND EXISTS (SELECT 1 FROM LA_QUERY_DE_PAPEL.Cliente WHERE Tipo_Documento = @tipoDocOriginal AND Nro_Documento = @nroDoc))
+	BEGIN
+		RAISERROR('El tipo y numero de documento ya estan en uso', 16, 1)
+	END
+
+	UPDATE LA_QUERY_DE_PAPEL.Persona
+		SET Tipo_Documento = @tipoDoc, Nro_Documento = @nroDoc, Apellido = @apellido, Nombre = @nombre, Direccion = @direccion,
+			Fecha_Nacimiento = @fechaNac, Telefono = @telefono, Habilitado = @habilitado
+		WHERE Tipo_Documento = @tipoDocOriginal AND Nro_Documento = @nroDocOriginal
+
+	UPDATE LA_QUERY_DE_PAPEL.Cliente
+		SET Localidad = @localidad, Mail = @mail, Nacionalidad = @nacionalidad
+		WHERE Tipo_Documento = @tipoDoc AND Nro_Documento = @nroDoc
+END
+GO
+
 --baja logica de una persona
 CREATE TRIGGER LA_QUERY_DE_PAPEL.deletePersonas ON LA_QUERY_DE_PAPEL.Persona
 INSTEAD OF DELETE
@@ -299,7 +401,6 @@ UPDATE LA_QUERY_DE_PAPEL.Persona
 	WHERE LA_QUERY_DE_PAPEL.Persona.Tipo_Documento IN (SELECT Tipo_Documento FROM deleted) AND LA_QUERY_DE_PAPEL.Persona.Nro_Documento IN (SELECT Nro_Documento FROM deleted)
 END
 GO
-
 
 CREATE PROCEDURE LA_QUERY_DE_PAPEL.procedure_login
 	@usuario nvarchar(20),
@@ -345,6 +446,134 @@ BEGIN
 
 END
 GO
+/*
+CREATE PROCEDURE LA_QUERY_DE_PAPEL.procedure_alta_habitacion
+	@nroHabitacion int,
+	@idHotel int,
+	@piso int,
+	@vistaExterior bit,
+	@tipoHabitacion nvarchar(255),
+	@descripcion nvarchar(255),
+	@habilitada bit
+AS
+BEGIN
+	IF(EXISTS (SELECT 1 FROM LA_QUERY_DE_PAPEL.Habitacion WHERE Nro_Habitacion = @nroHabitacion AND Id_Hotel = @idHotel))
+		RAISERROR('Ya existe el numero de habitacion en el hotel', 16, 1)
+
+	INSERT INTO LA_QUERY_DE_PAPEL.Habitacion(Nro_Habitacion, Id_Hotel, Piso, Ubicacion, Tipo_Hab, Descripcion, Habilitada)
+	VALUES (@nroHabitacion, @idHotel, @piso, ubicacion, @tipoHabitacion, @descripcion, @habilitada)
+END
+GO
+*/
+CREATE PROCEDURE [LA_QUERY_DE_PAPEL].Cargar_Personas
+AS
+BEGIN
+
+	DECLARE @Email VARCHAR(255), @Nombre VARCHAR(50), @Apellido VARCHAR(50), @Nro_pasaporte INT, @Calle VARCHAR(50), @Nro_Calle INT, @Piso INT, @Depto VARCHAR(5), @Fecha_Nacimiento DATETIME, @Direccion VARCHAR(250)
+			
+	DECLARE cursor_personas CURSOR FOR
+	SELECT DISTINCT Cliente_Mail, Cliente_Pasaporte_Nro, Cliente_Apellido, Cliente_Nombre, Cliente_Fecha_Nac, Cliente_Dom_Calle, Cliente_Nro_Calle, Cliente_Piso, Cliente_Depto FROM gd_esquema.Maestra
+
+	OPEN cursor_personas
+	FETCH NEXT FROM cursor_personas INTO @Email, @Nro_pasaporte, @Apellido, @Nombre, @Fecha_Nacimiento, @Calle, @Nro_Calle, @Piso, @Depto;
+	CREATE INDEX Nro_Doc_index ON LA_QUERY_DE_PAPEL.Persona (Nro_Documento);
+
+	WHILE (@@FETCH_STATUS = 0)
+	BEGIN	
+
+		SET @Direccion = @Calle + ' ' + CAST(@Nro_Calle AS VARCHAR) + ' Piso ' + CAST(@Piso AS VARCHAR) + ' Depto ' + @Depto
+
+		IF NOT EXISTS(SELECT Nro_Documento FROM [LA_QUERY_DE_PAPEL].Persona WHERE @Nro_pasaporte = Nro_Documento)
+		BEGIN
+			INSERT INTO [LA_QUERY_DE_PAPEL].Persona 
+				(Tipo_Documento, Nro_Documento, Apellido, Nombre, Direccion, Fecha_Nacimiento)
+			VALUES ('Pasaporte', @Nro_pasaporte, @Apellido, @Nombre, @Direccion, @Fecha_Nacimiento);
+			FETCH NEXT FROM cursor_personas INTO @Email, @Nro_pasaporte, @Apellido, @Nombre, @Fecha_Nacimiento, @Calle, @Nro_Calle, @Piso, @Depto;
+		END
+
+		IF EXISTS(SELECT Nro_Documento FROM [LA_QUERY_DE_PAPEL].Persona WHERE @Nro_pasaporte = Nro_Documento)
+		BEGIN
+			INSERT INTO [LA_QUERY_DE_PAPEL].[Persona_conflicto_migracion] 
+				(Tipo_Documento, Nro_Documento, Apellido, Nombre, Direccion, Fecha_Nacimiento)
+			VALUES ('Pasaporte', @Nro_pasaporte, @Apellido, @Nombre, @Direccion, @Fecha_Nacimiento);
+			FETCH NEXT FROM cursor_personas INTO @Email, @Nro_pasaporte, @Apellido, @Nombre, @Fecha_Nacimiento, @Calle, @Nro_Calle, @Piso, @Depto;
+		END
+			
+	END 
+	CLOSE cursor_personas;
+	DEALLOCATE cursor_personas;
+
+	DROP INDEX Nro_Doc_index ON LA_QUERY_DE_PAPEL.Persona;
+
+END
+GO
+
+
+
+CREATE PROCEDURE [LA_QUERY_DE_PAPEL].Cargar_Reservas
+AS
+BEGIN
+
+	DECLARE @Id_Reserva INT, @Fecha_Reserva DATETIME, @Cant_Noches INT, @Id_Regimen INT, @Regimen_Precio NUMERIC(18,2), @Regimen_Descripcion VARCHAR(255), @Tipo_Documento VARCHAR(20), @Nro_Documento INT,
+			@Apellido_cliente VARCHAR(255), @Nombre_cliente VARCHAR(255), @id_hotel INT, @Nro_habitacion INT, @Direccion_hotel VARCHAR(255), @Hotel_ciudad VARCHAR(255), @Hotel_Calle VARCHAR(255), @Hotel_Nro_Calle NUMERIC(18,0);
+
+	SET @Tipo_Documento = 'Pasaporte';
+
+	DECLARE cursor_reservas CURSOR FOR
+	SELECT DISTINCT Cliente_Pasaporte_Nro, Cliente_Apellido, Cliente_Nombre, Reserva_Codigo, Reserva_Fecha_Inicio, Reserva_Cant_Noches, Regimen_Precio, Regimen_Descripcion, Hotel_Ciudad, Hotel_Calle, Hotel_Nro_Calle, Habitacion_Numero FROM gd_esquema.Maestra;
+
+	OPEN cursor_reservas
+	FETCH NEXT FROM cursor_reservas INTO @Nro_Documento, @Apellido_cliente, @Nombre_cliente, @Id_Reserva, @Fecha_Reserva, @Cant_Noches, @Regimen_Precio, @Regimen_Descripcion, @Hotel_Ciudad, @Hotel_Calle, @Hotel_Nro_Calle, @Nro_habitacion;
+
+	CREATE INDEX Nro_Doc_index ON LA_QUERY_DE_PAPEL.Persona (Nro_Documento);
+	CREATE INDEX Apellido_index ON LA_QUERY_DE_PAPEL.Persona (Apellido);
+	CREATE INDEX Nombre_index ON LA_QUERY_DE_PAPEL.Persona (Nombre);
+	CREATE INDEX Ciudad_Hotel_index ON LA_QUERY_DE_PAPEL.Hotel (Ciudad);
+	CREATE INDEX Direccion_Hotel_index ON LA_QUERY_DE_PAPEL.Hotel (Direccion);
+
+	WHILE (@@FETCH_STATUS = 0)
+	BEGIN	
+
+		SET @Id_Regimen = (SELECT TOP 1 id_regimen FROM LA_QUERY_DE_PAPEL.Regimen WHERE Descripcion = @Regimen_Descripcion AND Precio = @Regimen_Precio);
+		SET @Direccion_hotel = @Hotel_Calle + ' ' + CAST(@Hotel_Nro_Calle AS VARCHAR);
+		SET @id_hotel = (SELECT TOP 1 Id_Hotel FROM [LA_QUERY_DE_PAPEL].[Hotel] WHERE Ciudad = @Hotel_Ciudad AND Direccion = @Direccion_hotel)
+
+		IF EXISTS(SELECT Nro_Documento FROM [LA_QUERY_DE_PAPEL].Persona WHERE @Nro_Documento = Nro_Documento AND @Apellido_cliente = Apellido AND @Nombre_cliente = Nombre)
+		BEGIN
+
+			INSERT INTO [LA_QUERY_DE_PAPEL].Reserva (Id_Reserva, Fecha_Reserva, Cant_Noches, Id_Regimen, Tipo_Documento, Nro_Documento)
+			VALUES(@Id_Reserva, @Fecha_Reserva, @Cant_Noches, @Id_Regimen, @Tipo_Documento, @Nro_Documento)
+			
+			--INSERT INTO [LA_QUERY_DE_PAPEL].[ReservaxHabitacion] (Id_Reserva, Id_Hotel, Nro_Habitacion)
+			--VALUES(@Id_Reserva, @id_hotel, @Nro_habitacion)
+
+			FETCH NEXT FROM cursor_reservas INTO @Nro_Documento, @Apellido_cliente, @Nombre_cliente, @Id_Reserva, @Fecha_Reserva, @Cant_Noches, @Regimen_Precio, @Regimen_Descripcion, @Hotel_Ciudad, @Hotel_Calle, @Hotel_Nro_Calle, @Nro_habitacion;
+		END
+
+		ELSE
+		BEGIN
+			INSERT INTO [LA_QUERY_DE_PAPEL].Reserva_Conflicto_Migracion (Id_Reserva, Fecha_Reserva, Cant_Noches, Id_Regimen, Tipo_Documento, Nro_Documento)
+			VALUES(@Id_Reserva, @Fecha_Reserva, @Cant_Noches, @Id_Regimen, @Tipo_Documento, @Nro_Documento)
+
+			--INSERT INTO  [LA_QUERY_DE_PAPEL].[ReservaxHabitacion_Conflicto_Migracion]  (Id_Reserva, Id_Hotel, Nro_Habitacion)
+			--VALUES(@Id_Reserva, @id_hotel, @Nro_habitacion)
+
+			FETCH NEXT FROM cursor_reservas INTO @Nro_Documento, @Apellido_cliente, @Nombre_cliente, @Id_Reserva, @Fecha_Reserva, @Cant_Noches, @Regimen_Precio, @Regimen_Descripcion, @Hotel_Ciudad, @Hotel_Calle, @Hotel_Nro_Calle, @Nro_habitacion;
+		END
+			
+	END 
+	CLOSE cursor_reservas;
+	DEALLOCATE cursor_reservas;
+
+	DROP INDEX Nro_Doc_index ON LA_QUERY_DE_PAPEL.Persona;
+	DROP INDEX Apellido_index ON LA_QUERY_DE_PAPEL.Persona;
+	DROP INDEX Nombre_index ON LA_QUERY_DE_PAPEL.Persona;
+	DROP INDEX Ciudad_Hotel_index ON LA_QUERY_DE_PAPEL.Hotel;
+	DROP INDEX Direccion_Hotel_index ON LA_QUERY_DE_PAPEL.Hotel;
+
+END
+GO
+
 
 
 --Migracion
@@ -357,6 +586,8 @@ GO
 INSERT INTO [LA_QUERY_DE_PAPEL].[Hotel] (Nombre, Pais, Ciudad, Direccion, Cant_Estrellas) 
 SELECT DISTINCT 'Hotel ' + M.Hotel_Ciudad, 'Desconocido', M.Hotel_Ciudad, M.Hotel_Calle + ' ' + CAST(M.Hotel_Nro_Calle AS VARCHAR), M.Hotel_CantEstrella
 FROM gd_esquema.Maestra M
+
+--SELECT * FROM LA_QUERY_DE_PAPEL.Hotel
 
 --Cargo las habitaciones
 
@@ -382,6 +613,24 @@ SELECT DISTINCT
 FROM gd_esquema.Maestra M
 
 
+--Cargo los clientes (Como personas)
+
+EXECUTE [LA_QUERY_DE_PAPEL].Cargar_Personas
+ 
+--SELECT * FROM [LA_QUERY_DE_PAPEL].Persona
+--SELECT * FROM [LA_QUERY_DE_PAPEL].Persona_conflicto_migracion
+
+
+--Cargo las reservas
+
+EXECUTE LA_QUERY_DE_PAPEL.Cargar_Reservas
+
+--SELECT * FROM [LA_QUERY_DE_PAPEL].Reserva
+--SELECT * FROM [LA_QUERY_DE_PAPEL].Reserva_Conflicto_Migracion
+--SELECT * FROM [LA_QUERY_DE_PAPEL].ReservaxHabitacion
+--SELECT * FROM [LA_QUERY_DE_PAPEL].ReservaxHabitacion_Conflicto_Migracion
+
+
 -- Cargo los consumibles
 
 INSERT INTO LA_QUERY_DE_PAPEL.Consumible (Id_Consumible,descripcion,precio)
@@ -389,8 +638,12 @@ SELECT DISTINCT Consumible_Codigo, Consumible_Descripcion, Consumible_Precio
 FROM gd_esquema.Maestra
 WHERE Consumible_Codigo IS NOT NULL
 
+--SELECT * FROM LA_QUERY_DE_PAPEL.Consumible
+
+
+
 --ROLLBACK TRANSACTION
 
 
 INSERT INTO LA_QUERY_DE_PAPEL.UsuarioxHotel (Id_Hotel, Id_Usuario)
-VALUES (1, 1), (1, 2)
+VALUES (1, 1), (2, 1), (1, 2)
