@@ -146,6 +146,15 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[ReservaxHabitacion] (
 	);
 
 
+CREATE TABLE [LA_QUERY_DE_PAPEL].[ReservaxHabitacion_Conflicto_Migracion] (
+	Id_Reserva INT NOT NULL,
+	Id_Hotel INT NOT NULL,
+	Nro_Habitacion INT NOT NULL,
+	
+	PRIMARY KEY (Id_Reserva, Id_Hotel, Nro_Habitacion),
+	FOREIGN KEY (Id_Reserva) REFERENCES [LA_QUERY_DE_PAPEL].[Reserva_Conflicto_Migracion],
+	);
+
 CREATE TABLE [LA_QUERY_DE_PAPEL].[UsuarioxHotel] ( 
 	Id_Hotel INT NOT NULL,
 	Id_Usuario INT NOT NULL,
@@ -488,22 +497,26 @@ AS
 BEGIN
 
 	DECLARE @Id_Reserva INT, @Fecha_Reserva DATETIME, @Cant_Noches INT, @Id_Regimen INT, @Regimen_Precio NUMERIC(18,2), @Regimen_Descripcion VARCHAR(255), @Tipo_Documento VARCHAR(20), @Nro_Documento INT,
-			@Apellido_cliente VARCHAR(255), @Nombre_cliente VARCHAR(255);
+			@Apellido_cliente VARCHAR(255), @Nombre_cliente VARCHAR(255), @id_hotel INT, @Nro_habitacion INT, @Direccion_hotel VARCHAR(255), @Hotel_ciudad VARCHAR(255), @Hotel_Calle VARCHAR(255), @Hotel_Nro_Calle NUMERIC(18,0);
 
 	SET @Tipo_Documento = 'Pasaporte';
 
 	DECLARE cursor_reservas CURSOR FOR
-	SELECT DISTINCT Cliente_Pasaporte_Nro, Cliente_Apellido, Cliente_Nombre, Reserva_Codigo, Reserva_Fecha_Inicio, Reserva_Cant_Noches, Regimen_Precio, Regimen_Descripcion FROM gd_esquema.Maestra;
+	SELECT DISTINCT Cliente_Pasaporte_Nro, Cliente_Apellido, Cliente_Nombre, Reserva_Codigo, Reserva_Fecha_Inicio, Reserva_Cant_Noches, Regimen_Precio, Regimen_Descripcion, Hotel_Ciudad, Hotel_Calle, Hotel_Nro_Calle, Habitacion_Numero FROM gd_esquema.Maestra;
 
 	OPEN cursor_reservas
-	FETCH NEXT FROM cursor_reservas INTO @Nro_Documento, @Apellido_cliente, @Nombre_cliente, @Id_Reserva, @Fecha_Reserva, @Cant_Noches, @Regimen_Precio, @Regimen_Descripcion;
+	FETCH NEXT FROM cursor_reservas INTO @Nro_Documento, @Apellido_cliente, @Nombre_cliente, @Id_Reserva, @Fecha_Reserva, @Cant_Noches, @Regimen_Precio, @Regimen_Descripcion, @Hotel_Ciudad, @Hotel_Calle, @Hotel_Nro_Calle, @Nro_habitacion;
 
 	CREATE INDEX Nro_Doc_index ON LA_QUERY_DE_PAPEL.Persona (Nro_Documento);
+	CREATE INDEX Ciudad_Hotel_index ON LA_QUERY_DE_PAPEL.Hotel (Ciudad);
+	CREATE INDEX Direccion_Hotel_index ON LA_QUERY_DE_PAPEL.Hotel (Direccion);
 
 	WHILE (@@FETCH_STATUS = 0)
 	BEGIN	
 
 		SET @Id_Regimen = (SELECT DISTINCT id_regimen FROM LA_QUERY_DE_PAPEL.Regimen WHERE Descripcion = @Regimen_Descripcion AND Precio = @Regimen_Precio);
+		SET @Direccion_hotel = @Hotel_Calle + ' ' + CAST(@Hotel_Nro_Calle AS VARCHAR);
+		SET @id_hotel = (SELECT DISTINCT Id_Hotel FROM [LA_QUERY_DE_PAPEL].[Hotel] WHERE Ciudad = @Hotel_Ciudad AND Direccion = @Direccion_hotel)
 
 		IF EXISTS(SELECT Nro_Documento FROM [LA_QUERY_DE_PAPEL].Persona WHERE @Nro_Documento = Nro_Documento AND @Apellido_cliente = Apellido AND @Nombre_cliente = Nombre)
 		BEGIN
@@ -511,7 +524,10 @@ BEGIN
 			INSERT INTO [LA_QUERY_DE_PAPEL].Reserva (Id_Reserva, Fecha_Reserva, Cant_Noches, Id_Regimen, Tipo_Documento, Nro_Documento)
 			VALUES(@Id_Reserva, @Fecha_Reserva, @Cant_Noches, @Id_Regimen, @Tipo_Documento, @Nro_Documento)
 			
-			FETCH NEXT FROM cursor_reservas INTO @Nro_Documento, @Apellido_cliente, @Nombre_cliente, @Id_Reserva, @Fecha_Reserva, @Cant_Noches, @Regimen_Precio, @Regimen_Descripcion;
+			INSERT INTO [LA_QUERY_DE_PAPEL].[ReservaxHabitacion] (Id_Reserva, Id_Hotel, Nro_Habitacion)
+			VALUES(@Id_Reserva, @id_hotel, @Nro_habitacion)
+
+			FETCH NEXT FROM cursor_reservas INTO @Nro_Documento, @Apellido_cliente, @Nombre_cliente, @Id_Reserva, @Fecha_Reserva, @Cant_Noches, @Regimen_Precio, @Regimen_Descripcion, @Hotel_Ciudad, @Hotel_Calle, @Hotel_Nro_Calle, @Nro_habitacion;
 		END
 
 		ELSE
@@ -519,7 +535,10 @@ BEGIN
 			INSERT INTO [LA_QUERY_DE_PAPEL].Reserva_Conflicto_Migracion (Id_Reserva, Fecha_Reserva, Cant_Noches, Id_Regimen, Tipo_Documento, Nro_Documento)
 			VALUES(@Id_Reserva, @Fecha_Reserva, @Cant_Noches, @Id_Regimen, @Tipo_Documento, @Nro_Documento)
 
-			FETCH NEXT FROM cursor_reservas INTO @Nro_Documento, @Apellido_cliente, @Nombre_cliente, @Id_Reserva, @Fecha_Reserva, @Cant_Noches, @Regimen_Precio, @Regimen_Descripcion;
+			INSERT INTO  [LA_QUERY_DE_PAPEL].[ReservaxHabitacion_Conflicto_Migracion]  (Id_Reserva, Id_Hotel, Nro_Habitacion)
+			VALUES(@Id_Reserva, @id_hotel, @Nro_habitacion)
+
+			FETCH NEXT FROM cursor_reservas INTO @Nro_Documento, @Apellido_cliente, @Nombre_cliente, @Id_Reserva, @Fecha_Reserva, @Cant_Noches, @Regimen_Precio, @Regimen_Descripcion, @Hotel_Ciudad, @Hotel_Calle, @Hotel_Nro_Calle, @Nro_habitacion;
 		END
 			
 	END 
@@ -527,6 +546,8 @@ BEGIN
 	DEALLOCATE cursor_reservas;
 
 	DROP INDEX Nro_Doc_index ON LA_QUERY_DE_PAPEL.Persona;
+	DROP INDEX Ciudad_Hotel_index ON LA_QUERY_DE_PAPEL.Hotel;
+	DROP INDEX Direccion_Hotel_index ON LA_QUERY_DE_PAPEL.Hotel;
 
 END
 GO
@@ -543,6 +564,8 @@ GO
 INSERT INTO [LA_QUERY_DE_PAPEL].[Hotel] (Nombre, Pais, Ciudad, Direccion, Cant_Estrellas) 
 SELECT DISTINCT 'Hotel ' + M.Hotel_Ciudad, 'Desconocido', M.Hotel_Ciudad, M.Hotel_Calle + ' ' + CAST(M.Hotel_Nro_Calle AS VARCHAR), M.Hotel_CantEstrella
 FROM gd_esquema.Maestra M
+
+--SELECT * FROM LA_QUERY_DE_PAPEL.Hotel
 
 --Cargo las habitaciones
 
@@ -582,7 +605,8 @@ EXECUTE LA_QUERY_DE_PAPEL.Cargar_Reservas
 
 --SELECT * FROM [LA_QUERY_DE_PAPEL].Reserva
 --SELECT * FROM [LA_QUERY_DE_PAPEL].Reserva_Conflicto_Migracion
-
+--SELECT * FROM [LA_QUERY_DE_PAPEL].ReservaxHabitacion
+--SELECT * FROM [LA_QUERY_DE_PAPEL].ReservaxHabitacion_Conflicto_Migracion
 
 
 -- Cargo los consumibles
