@@ -89,6 +89,7 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Habitacion](
     Ubicacion nvarchar(255),
     Tipo_Hab numeric(18),
     Descripcion nvarchar(255),
+	Habilitada bit,
 
 	FOREIGN KEY (Id_Hotel) REFERENCES [LA_QUERY_DE_PAPEL].[Hotel] (Id_Hotel),
 	PRIMARY KEY (Nro_Habitacion, Id_Hotel)
@@ -193,7 +194,7 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Estadia](
 	
 	FOREIGN KEY (Tipo_Documento, Nro_Documento) REFERENCES [LA_QUERY_DE_PAPEL].[Persona] (Tipo_Documento, Nro_Documento)
 	);
-
+	
 
 CREATE TABLE [LA_QUERY_DE_PAPEL].[Funcionalidad] ( 
 	Id_Funcion INT NOT NULL PRIMARY KEY IDENTITY (1, 1),
@@ -215,19 +216,19 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[FuncionalidadxRol] (
 GO
 
 INSERT INTO LA_QUERY_DE_PAPEL.Rol (Nombre)
-VALUES ('Administrador General')
+VALUES ('Administrador General'), ('Guest')
 
 INSERT INTO LA_QUERY_DE_PAPEL.Funcionalidad (Descripcion)
-VALUES ('ABM de rol'), ('ABM de usuario'), ('ABM de hotel'), ('ABM de cliente')
+VALUES ('ABM de rol'), ('ABM de usuario'), ('ABM de hotel'), ('ABM de cliente'), ('Abm de habitacion'), ('Generar o modificar reserva')
 
 INSERT INTO LA_QUERY_DE_PAPEL.FuncionalidadxRol(Id_Rol, Id_Funcion)
-VALUES (1, 1), (1, 2), (1, 3), (1, 4)
+VALUES (1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (2,6)
 
 INSERT INTO LA_QUERY_DE_PAPEL.Persona (Tipo_Documento, Nro_Documento, Apellido, Nombre,	Direccion, Fecha_Nacimiento, Telefono, Habilitado)
 VALUES ('', 1, '', '', '', GETDATE(), '', 1)
 
 INSERT INTO LA_QUERY_DE_PAPEL.Usuario (Tipo_Documento, Nro_Documento, Username,	Password, Id_Rol, Mail)
-VALUES ('', 1, 'admin', CONVERT(varbinary(255),HASHBYTES('SHA2_256','w23e' ),2), 1, '')
+VALUES ('', 1, 'admin', CONVERT(varbinary(255),HASHBYTES('SHA2_256','w23e'),2), 1, ''), ('', 1, 'guest', HASHBYTES('SHA2_256',''), 2, '')
 
 GO
 
@@ -445,8 +446,25 @@ BEGIN
 
 END
 GO
+/*
+CREATE PROCEDURE LA_QUERY_DE_PAPEL.procedure_alta_habitacion
+	@nroHabitacion int,
+	@idHotel int,
+	@piso int,
+	@vistaExterior bit,
+	@tipoHabitacion nvarchar(255),
+	@descripcion nvarchar(255),
+	@habilitada bit
+AS
+BEGIN
+	IF(EXISTS (SELECT 1 FROM LA_QUERY_DE_PAPEL.Habitacion WHERE Nro_Habitacion = @nroHabitacion AND Id_Hotel = @idHotel))
+		RAISERROR('Ya existe el numero de habitacion en el hotel', 16, 1)
 
-
+	INSERT INTO LA_QUERY_DE_PAPEL.Habitacion(Nro_Habitacion, Id_Hotel, Piso, Ubicacion, Tipo_Hab, Descripcion, Habilitada)
+	VALUES (@nroHabitacion, @idHotel, @piso, ubicacion, @tipoHabitacion, @descripcion, @habilitada)
+END
+GO
+*/
 CREATE PROCEDURE [LA_QUERY_DE_PAPEL].Cargar_Personas
 AS
 BEGIN
@@ -624,4 +642,4 @@ WHERE Consumible_Codigo IS NOT NULL
 
 
 INSERT INTO LA_QUERY_DE_PAPEL.UsuarioxHotel (Id_Hotel, Id_Usuario)
-VALUES (1, 1), (2, 1)
+VALUES (1, 1), (2, 1), (1, 2)

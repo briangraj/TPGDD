@@ -86,6 +86,7 @@ namespace FrbaHotel.AbmUsuario
         private void validarDatos()
         {
             Validaciones.validarControles(errorProviderDatosUsuario, Controls);
+            Validaciones.validarFechasPosteriores(errorProviderDatosUsuario, Controls);
             if (!alta)
                 errorProviderDatosUsuario.SetError(textBoxPassword, "");
         }

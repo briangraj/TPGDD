@@ -63,11 +63,29 @@
     <Compile Include="AbmCliente\ListadoClienteModif.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AbmHabitacion\Form1.cs">
+    <Compile Include="AbmHabitacion\AbmHabitacion.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AbmHabitacion\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="AbmHabitacion\AbmHabitacion.Designer.cs">
+      <DependentUpon>AbmHabitacion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmHabitacion\DatosHabitacion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmHabitacion\DatosHabitacion.Designer.cs">
+      <DependentUpon>DatosHabitacion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmHabitacion\DatosHabitacionAlta.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmHabitacion\ListadoHabitacion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmHabitacion\ListadoHabitacion.Designer.cs">
+      <DependentUpon>ListadoHabitacion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmHabitacion\ListadoHabitacionBaja.cs">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="AbmHotel\AbmHotel.cs">
       <SubType>Form</SubType>
@@ -151,8 +169,10 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Entidades\Funcionalidad.cs" />
+    <Compile Include="Entidades\Habitacion.cs" />
     <Compile Include="Entidades\Hotel.cs" />
     <Compile Include="Entidades\Regimen.cs" />
+    <Compile Include="Entidades\Reserva.cs" />
     <Compile Include="Entidades\Usuario.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -160,11 +180,23 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="GenerarModificacionReserva\Form1.cs">
+    <Compile Include="GenerarModificacionReserva\ConfirmacionReserva.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GenerarModificacionReserva\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="GenerarModificacionReserva\ConfirmacionReserva.Designer.cs">
+      <DependentUpon>ConfirmacionReserva.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GenerarModificacionReserva\DatosReserva.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GenerarModificacionReserva\DatosReserva.Designer.cs">
+      <DependentUpon>DatosReserva.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GenerarModificacionReserva\SeleccionRegimen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GenerarModificacionReserva\SeleccionRegimen.Designer.cs">
+      <DependentUpon>SeleccionRegimen.cs</DependentUpon>
     </Compile>
     <Compile Include="ListadoEstadistico\Form1.cs">
       <SubType>Form</SubType>
@@ -213,6 +245,15 @@
     <EmbeddedResource Include="AbmCliente\DatosCliente.resx">
       <DependentUpon>DatosCliente.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="AbmHabitacion\AbmHabitacion.resx">
+      <DependentUpon>AbmHabitacion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmHabitacion\DatosHabitacion.resx">
+      <DependentUpon>DatosHabitacion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmHabitacion\ListadoHabitacion.resx">
+      <DependentUpon>ListadoHabitacion.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AbmHotel\AbmHotel.resx">
       <DependentUpon>AbmHotel.cs</DependentUpon>
     </EmbeddedResource>
@@ -239,6 +280,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AbmUsuario\ListadoPersona.resx">
       <DependentUpon>ListadoPersona.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GenerarModificacionReserva\ConfirmacionReserva.resx">
+      <DependentUpon>ConfirmacionReserva.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GenerarModificacionReserva\DatosReserva.resx">
+      <DependentUpon>DatosReserva.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GenerarModificacionReserva\SeleccionRegimen.resx">
+      <DependentUpon>SeleccionRegimen.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Login\Inicio.resx">
       <DependentUpon>Inicio.cs</DependentUpon>
