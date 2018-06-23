@@ -42,7 +42,9 @@ namespace FrbaHotel.GenerarModificacionReserva
                 reserva.habitaciones.Add(new Habitacion(reserva.usuario.idHotel, Convert.ToInt32(fila.Cells["Nro_Habitacion"].Value)));
             }
 
-
+            ElegirTipoCliente elegir = new ElegirTipoCliente(reserva);
+            Hide();
+            elegir.Show();
         }
     }
 }
