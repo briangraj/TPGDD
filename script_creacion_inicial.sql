@@ -89,7 +89,7 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Habitacion](
     Ubicacion nvarchar(255),
     Tipo_Hab numeric(18),
     Descripcion nvarchar(255),
-	Habilitada bit,
+	Habilitada bit NOT NULL DEFAULT 1,
 
 	FOREIGN KEY (Id_Hotel) REFERENCES [LA_QUERY_DE_PAPEL].[Hotel] (Id_Hotel),
 	PRIMARY KEY (Nro_Habitacion, Id_Hotel)
@@ -111,7 +111,7 @@ CREATE TABLE[LA_QUERY_DE_PAPEL].[RegimenxHotel] (
 	);	
 
 CREATE TABLE [LA_QUERY_DE_PAPEL].[Reserva] ( 
-	Id_Reserva INT NOT NULL PRIMARY KEY,
+	Id_Reserva INT NOT NULL PRIMARY KEY,-- IDENTITY (1, 1),
 	Id_Regimen INT NOT NULL,
 	Fecha_Reserva datetime NOT NULL,
 	Cant_Noches INT NOT NULL,
@@ -138,12 +138,12 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Reserva_Conflicto_Migracion] (
 
 CREATE TABLE [LA_QUERY_DE_PAPEL].[ReservaxHabitacion] (
 	Id_Reserva INT NOT NULL,
-	Id_Hotel INT NOT NULL,
 	Nro_Habitacion INT NOT NULL,
+	Id_Hotel INT NOT NULL,
 	
-	PRIMARY KEY (Id_Reserva, Id_Hotel, Nro_Habitacion),
-	FOREIGN KEY (Id_Reserva) REFERENCES [LA_QUERY_DE_PAPEL].[Reserva],
-	FOREIGN KEY (Id_Hotel, Nro_Habitacion) REFERENCES [LA_QUERY_DE_PAPEL].[Habitacion]
+	PRIMARY KEY (Id_Reserva, Nro_Habitacion, Id_Hotel),
+	FOREIGN KEY (Id_Reserva) REFERENCES [LA_QUERY_DE_PAPEL].[Reserva] (Id_Reserva),
+	FOREIGN KEY (Nro_Habitacion, Id_Hotel) REFERENCES [LA_QUERY_DE_PAPEL].[Habitacion] (Nro_Habitacion, Id_Hotel)
 	);
 
 

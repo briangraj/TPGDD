@@ -178,6 +178,7 @@
             this.dataGridViewReserva.ReadOnly = true;
             this.dataGridViewReserva.Size = new System.Drawing.Size(836, 468);
             this.dataGridViewReserva.TabIndex = 6;
+            this.dataGridViewReserva.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewReserva_CellContentClick);
             // 
             // buttonSiguiente
             // 

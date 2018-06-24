@@ -10,6 +10,7 @@ using System.Windows.Forms;
 
 using FrbaHotel.Entidades;
 using FrbaHotel.Utilidades;
+using System.Data.SqlClient;
 
 namespace FrbaHotel.GenerarModificacionReserva
 {
@@ -27,13 +28,17 @@ namespace FrbaHotel.GenerarModificacionReserva
 
         private void GenerarReserva_Load(object sender, EventArgs e)
         {
-            int idReserva = insertarReserva();
+            try
+            {
+                int idReserva = insertarReserva();
+                idReserva = 10;
+                insertarReservaxHabitacion(idReserva);
 
-            insertarReservaxHabitacion(idReserva);
+                //insertarHistorial(idReserva);
 
-            //insertarHistorial(idReserva);
-
-            labelCodigo.Text = idReserva.ToString();
+                textBoxNroReserva.Text = idReserva.ToString();
+            }
+            catch (SqlException) { }
         }
 
         private int insertarReserva()
@@ -42,8 +47,8 @@ namespace FrbaHotel.GenerarModificacionReserva
             int cantNoches = (reserva.fechaFin - reserva.fechaInicio).Days;
 
             return (int)DB.correrQueryEscalar(
-                "INSERT INTO LA_QUERY_DE_PAPEL.Reserva (Id_Regimen, Fecha_Reserva, Cant_Noches, Fecha_Inicio, Fecha_Fin, Estado, Tipo_Documento, Nro_Documento) output INSERTED.Id_Reserva " +
-                "VALUES (@idRegimen, @fechaDeReserva, @cantNoches, @fechaInicio, @fechaFin, 'Reserva correcta', @tipoDoc, @nroDoc)",
+                "INSERT INTO LA_QUERY_DE_PAPEL.Reserva (Id_Reserva, Id_Regimen, Fecha_Reserva, Cant_Noches, Fecha_Inicio, Fecha_Fin, Estado, Tipo_Documento, Nro_Documento) output INSERTED.Id_Reserva " +
+                "VALUES (10, @idRegimen, @fechaDeReserva, @cantNoches, @fechaInicio, @fechaFin, 'Reserva correcta', @tipoDoc, @nroDoc)",
                 "idRegimen", idRegimen, "fechaDeReserva", Program.fechaActual, "cantNoches", cantNoches, "fechaInicio", reserva.fechaInicio, "fechaFin", reserva.fechaFin,
                 "tipoDoc", cliente.tipoDocumento, "nroDoc", cliente.nroDocumento);
         }
@@ -53,9 +58,9 @@ namespace FrbaHotel.GenerarModificacionReserva
             foreach (Habitacion habitacion in reserva.habitaciones)
             {
                 DB.correrQuery(
-                    "INSERT INTO LA_QUERY_DE_PAPEL.ReservaxHabitacion (Id_Reserva, Id_Hotel, Nro_Habitacion) " +
-                    "VALUES (@idReserva, @idHotel, @nroHabitacion)",
-                    "idReserva", idReserva, "idHotel", habitacion.idHotel, "nroHabitacion", habitacion.nroHabitacion);
+                    "INSERT INTO LA_QUERY_DE_PAPEL.ReservaxHabitacion (Id_Reserva, Nro_Habitacion, Id_Hotel) " +
+                    "VALUES (@idReserva, @nroHabitacion, @idHotel)",
+                    "idReserva", idReserva, "nroHabitacion", habitacion.nroHabitacion, "idHotel", habitacion.idHotel);
             }
         }
 

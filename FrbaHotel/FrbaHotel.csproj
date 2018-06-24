@@ -214,6 +214,9 @@
     <Compile Include="GenerarModificacionReserva\GenerarReserva.Designer.cs">
       <DependentUpon>GenerarReserva.cs</DependentUpon>
     </Compile>
+    <Compile Include="GenerarModificacionReserva\ListadoClienteReserva.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="GenerarModificacionReserva\SeleccionRegimen.cs">
       <SubType>Form</SubType>
     </Compile>

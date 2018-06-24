@@ -28,5 +28,12 @@ namespace FrbaHotel.GenerarModificacionReserva
             Hide();
             datos.Show();
         }
+
+        private void buttonBuscarCliente_Click(object sender, EventArgs e)
+        {
+            ListadoClienteReserva listado = new ListadoClienteReserva(reserva);
+            Hide();
+            listado.Show();
+        }
     }
 }

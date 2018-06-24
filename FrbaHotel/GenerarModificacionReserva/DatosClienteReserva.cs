@@ -32,7 +32,6 @@ namespace FrbaHotel.GenerarModificacionReserva
 
             MessageBox.Show("Se creo el cliente");
 
-
             GenerarReserva generar = new GenerarReserva(reserva, new Cliente(textBoxTipoDoc.Text, Convert.ToInt32(textBoxNroDoc.Text)));
             Hide();
             generar.Show();

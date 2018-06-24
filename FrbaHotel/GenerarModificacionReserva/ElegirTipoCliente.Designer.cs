@@ -41,6 +41,7 @@
             this.buttonBuscarCliente.TabIndex = 9;
             this.buttonBuscarCliente.Text = "Buscar cliente";
             this.buttonBuscarCliente.UseVisualStyleBackColor = true;
+            this.buttonBuscarCliente.Click += new System.EventHandler(this.buttonBuscarCliente_Click);
             // 
             // buttonClienteNuevo
             // 

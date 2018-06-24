@@ -62,10 +62,11 @@ namespace FrbaHotel.GenerarModificacionReserva
         {
             DataGridViewCheckBoxColumn columna = new DataGridViewCheckBoxColumn();
             columna.HeaderText = "Seleccionar";
-            columna.Name = "columnaBoton";
-            columna.ReadOnly = false;
+            columna.Name = "Seleccionar";
+            //columna.ReadOnly = false;
             
             dataGridViewReserva.Columns.Add(columna);
+            //dataGridViewReserva.Columns["Seleccionar"].ReadOnly = false;
         }
 
         private void buttonBuscar_Click(object sender, EventArgs e)
@@ -86,13 +87,13 @@ namespace FrbaHotel.GenerarModificacionReserva
                 comboBoxTipoReg.SelectedIndex = comboBoxTipoReg.Items.IndexOf(regimen.descripcionRegimen);
             }
 
-            cargarHabitaciones();
-
             if (primeraVez)
             {
                 agregarColumna();
                 primeraVez = false;
             }
+
+            cargarHabitaciones();
         }
 
         private void validarDatos()
@@ -113,14 +114,14 @@ namespace FrbaHotel.GenerarModificacionReserva
                 "SELECT h.Nro_Habitacion, Piso, Ubicacion, Tipo_Hab, Descripcion " +
                 "FROM LA_QUERY_DE_PAPEL.Habitacion h " +
                     "JOIN LA_QUERY_DE_PAPEL.RegimenxHotel rho ON h.Id_Hotel = rho.Id_Hotel " +
-                    "JOIN LA_QUERY_DE_PAPEL.ReservaxHabitacion rha ON h.Id_Hotel = rha.Id_Hotel AND h.Nro_Habitacion = rha.Nro_Habitacion " +
-                    "JOIN LA_QUERY_DE_PAPEL.Reserva r ON rha.Id_Reserva = r.Id_Reserva " +
+                    "LEFT JOIN LA_QUERY_DE_PAPEL.ReservaxHabitacion rha ON h.Id_Hotel = rha.Id_Hotel AND h.Nro_Habitacion = rha.Nro_Habitacion " +
+                    "LEFT JOIN LA_QUERY_DE_PAPEL.Reserva r ON rha.Id_Reserva = r.Id_Reserva " +
 	                    "WHERE rho.Id_Hotel = @idHotel " +
 	                        "AND rho.Id_Regimen = @idRegimen " +
 	                        "AND h.Habilitada = 1 " +
-                            "AND Tipo_Hab LIKE @tipoHab " +
-	                        "AND NOT (Fecha_Inicio BETWEEN @fechaDesde AND @fechaHasta OR Fecha_Fin BETWEEN @fechaDesde AND @fechaHasta)",
-                "idHotel", usuario.idHotel, "idRegimen", idRegimen, "tipoHab", tipoHab, "fechaDesde", dateTimePickerDesde.Value, "fechaHasta" , dateTimePickerHasta.Value);
+                            "AND Tipo_Hab LIKE @tipoHab ",// +
+	                        //"AND NOT (Fecha_Inicio BETWEEN @fechaDesde AND @fechaHasta OR Fecha_Fin BETWEEN @fechaDesde AND @fechaHasta)",
+                "idHotel", usuario.idHotel, "idRegimen", idRegimen, "tipoHab", "%" + tipoHab + "%", "fechaDesde", dateTimePickerDesde.Value, "fechaHasta" , dateTimePickerHasta.Value);
 
         }
 
@@ -145,10 +146,18 @@ namespace FrbaHotel.GenerarModificacionReserva
             
             foreach(DataGridViewRow fila in dataGridViewReserva.Rows)
             {
-                if(Convert.ToBoolean(fila.Cells["Seleccionar"].Value))
-                    tabla.Rows.Add(fila);
+                if (Convert.ToBoolean(fila.Cells["Seleccionar"].Value))
+                {
+                    tabla.Rows.Add(fila.Cells["Nro_Habitacion"].Value, fila.Cells["Piso"].Value, fila.Cells["Ubicacion"].Value, fila.Cells["Tipo_Hab"].Value, fila.Cells["Descripcion"].Value);//tabla.Rows.Add(fila.Cells, 0);(nuevaFila.DataBoundItem as DataRowView).Row
+                }
             }
             return tabla;
+        }
+
+        private void dataGridViewReserva_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (dataGridViewReserva.Columns[e.ColumnIndex].HeaderText == "Seleccionar" && e.RowIndex != -1)
+                dataGridViewReserva.Rows[e.RowIndex].Cells["Seleccionar"].Value = !Convert.ToBoolean(dataGridViewReserva.Rows[e.RowIndex].Cells["Seleccionar"].Value);
         }
     }
 }
