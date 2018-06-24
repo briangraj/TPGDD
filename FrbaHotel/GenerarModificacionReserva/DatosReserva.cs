@@ -140,8 +140,9 @@ namespace FrbaHotel.GenerarModificacionReserva
 
         private DataTable tablaHabitacionesSeleccionadas()
         {
-            DataTable tabla = new DataTable();
-            //tabla.Rows.Add(dataGridViewReserva.Rows.SharedRow(0));
+            DataTable tabla = ((DataTable)dataGridViewReserva.DataSource).Clone();
+            tabla.Rows.Clear();
+            
             foreach(DataGridViewRow fila in dataGridViewReserva.Rows)
             {
                 if(Convert.ToBoolean(fila.Cells["Seleccionar"].Value))
