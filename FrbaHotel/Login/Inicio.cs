@@ -48,7 +48,7 @@ namespace FrbaHotel.Login
                 Usuario usuario = new Usuario("guest");
                 usuario.cargar();
 
-                SeleccionarHotel form = new SeleccionarHotel(usuario);
+                GenerarModificacionReserva.SobreCliente.SeleccionarHotelCliente form = new GenerarModificacionReserva.SobreCliente.SeleccionarHotelCliente(usuario);
                 form.Show();
                 Hide();
             }

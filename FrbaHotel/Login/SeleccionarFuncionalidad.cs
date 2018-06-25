@@ -64,7 +64,7 @@ namespace FrbaHotel.Login
                         form = new AbmHabitacion.AbmHabitacion(usuario);
                         break;
                     case "Generar o modificar reserva":
-                        form = new GenerarModificacionReserva.DatosReserva(usuario);
+                        form = new GenerarModificacionReserva.GenerarModificarReserva(usuario);
                         break;
                     default:
                         return;

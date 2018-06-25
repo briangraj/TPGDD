@@ -63,10 +63,8 @@ namespace FrbaHotel.GenerarModificacionReserva
             DataGridViewCheckBoxColumn columna = new DataGridViewCheckBoxColumn();
             columna.HeaderText = "Seleccionar";
             columna.Name = "Seleccionar";
-            //columna.ReadOnly = false;
             
             dataGridViewReserva.Columns.Add(columna);
-            //dataGridViewReserva.Columns["Seleccionar"].ReadOnly = false;
         }
 
         private void buttonBuscar_Click(object sender, EventArgs e)
@@ -148,7 +146,13 @@ namespace FrbaHotel.GenerarModificacionReserva
             {
                 if (Convert.ToBoolean(fila.Cells["Seleccionar"].Value))
                 {
-                    tabla.Rows.Add(fila.Cells["Nro_Habitacion"].Value, fila.Cells["Piso"].Value, fila.Cells["Ubicacion"].Value, fila.Cells["Tipo_Hab"].Value, fila.Cells["Descripcion"].Value);//tabla.Rows.Add(fila.Cells, 0);(nuevaFila.DataBoundItem as DataRowView).Row
+                    tabla.Rows.Add(
+                        fila.Cells["Nro_Habitacion"].Value,
+                        fila.Cells["Piso"].Value,
+                        fila.Cells["Ubicacion"].Value,
+                        fila.Cells["Tipo_Hab"].Value,
+                        fila.Cells["Descripcion"].Value
+                    );
                 }
             }
             return tabla;

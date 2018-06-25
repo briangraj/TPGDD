@@ -193,7 +193,13 @@
     <Compile Include="GenerarModificacionReserva\ConfirmacionReserva.Designer.cs">
       <DependentUpon>ConfirmacionReserva.cs</DependentUpon>
     </Compile>
-    <Compile Include="GenerarModificacionReserva\DatosClienteReserva.cs">
+    <Compile Include="GenerarModificacionReserva\ModificarReserva.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GenerarModificacionReserva\ModificarReserva.Designer.cs">
+      <DependentUpon>ModificarReserva.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GenerarModificacionReserva\SobreCliente\DatosClienteReserva.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GenerarModificacionReserva\DatosReserva.cs">
@@ -202,11 +208,17 @@
     <Compile Include="GenerarModificacionReserva\DatosReserva.Designer.cs">
       <DependentUpon>DatosReserva.cs</DependentUpon>
     </Compile>
-    <Compile Include="GenerarModificacionReserva\ElegirTipoCliente.cs">
+    <Compile Include="GenerarModificacionReserva\SobreCliente\ElegirTipoCliente.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GenerarModificacionReserva\ElegirTipoCliente.Designer.cs">
+    <Compile Include="GenerarModificacionReserva\SobreCliente\ElegirTipoCliente.Designer.cs">
       <DependentUpon>ElegirTipoCliente.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GenerarModificacionReserva\GenerarModificarReserva.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GenerarModificacionReserva\GenerarModificarReserva.Designer.cs">
+      <DependentUpon>GenerarModificarReserva.cs</DependentUpon>
     </Compile>
     <Compile Include="GenerarModificacionReserva\GenerarReserva.cs">
       <SubType>Form</SubType>
@@ -214,7 +226,7 @@
     <Compile Include="GenerarModificacionReserva\GenerarReserva.Designer.cs">
       <DependentUpon>GenerarReserva.cs</DependentUpon>
     </Compile>
-    <Compile Include="GenerarModificacionReserva\ListadoClienteReserva.cs">
+    <Compile Include="GenerarModificacionReserva\SobreCliente\ListadoClienteReserva.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GenerarModificacionReserva\SeleccionRegimen.cs">
@@ -222,6 +234,9 @@
     </Compile>
     <Compile Include="GenerarModificacionReserva\SeleccionRegimen.Designer.cs">
       <DependentUpon>SeleccionRegimen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GenerarModificacionReserva\SobreCliente\SeleccionarHotelCliente.cs">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="ListadoEstadistico\Form1.cs">
       <SubType>Form</SubType>
@@ -312,8 +327,14 @@
     <EmbeddedResource Include="GenerarModificacionReserva\DatosReserva.resx">
       <DependentUpon>DatosReserva.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GenerarModificacionReserva\ElegirTipoCliente.resx">
+    <EmbeddedResource Include="GenerarModificacionReserva\ModificarReserva.resx">
+      <DependentUpon>ModificarReserva.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GenerarModificacionReserva\SobreCliente\ElegirTipoCliente.resx">
       <DependentUpon>ElegirTipoCliente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GenerarModificacionReserva\GenerarModificarReserva.resx">
+      <DependentUpon>GenerarModificarReserva.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GenerarModificacionReserva\GenerarReserva.resx">
       <DependentUpon>GenerarReserva.cs</DependentUpon>

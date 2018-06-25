@@ -26,7 +26,7 @@ namespace FrbaHotel.Login
             cargarHoteles();
         }
 
-        private void cargarHoteles()
+        protected virtual void cargarHoteles()
         {
             DB.ejecutarReader(
                 "SELECT H.Nombre, H.Id_Hotel " +
