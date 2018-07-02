@@ -4,6 +4,8 @@ GO
 --CREATE SCHEMA [LA_QUERY_DE_PAPEL] 
 GO
 
+
+
 CREATE TABLE [LA_QUERY_DE_PAPEL].[Rol] ( 
 	Id_Rol INT NOT NULL PRIMARY KEY IDENTITY (1, 1),
 	Nombre nvarchar(255) NOT NULL,
@@ -213,7 +215,8 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Estadia_conflicto_migracion](
 	FOREIGN KEY (Id_Reserva) REFERENCES [LA_QUERY_DE_PAPEL].[Reserva_conflicto_migracion] (Id_Reserva)
 	);
 
-	CREATE TABLE [LA_QUERY_DE_PAPEL].[Factura] ( 
+
+CREATE TABLE [LA_QUERY_DE_PAPEL].[Factura] ( 
 	Nro_Factura numeric(18) NOT NULL PRIMARY KEY,
 	Tipo_Documento varchar(20) NOT NULL,
 	Nro_Documento INT NOT NULL,
@@ -240,6 +243,29 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[FuncionalidadxRol] (
 	);
 	--Conviene crear otra entidad Forma de Pago con id y descripcion??
 	--
+
+CREATE TABLE [LA_QUERY_DE_PAPEL].[Items_Estadia] (
+	Id_Item_Estadia INT NOT NULL PRIMARY KEY,
+	Codigo_Estadia INT NOT NULL
+
+	FOREIGN KEY (Codigo_Estadia) REFERENCES [LA_QUERY_DE_PAPEL].[Estadia] (Id_Reserva),
+
+	);
+
+
+CREATE TABLE [LA_QUERY_DE_PAPEL].[Items] ( 
+	Nro_Factura numeric(18) NOT NULL,
+	Nro_Item INT NOT NULL,
+	Id_Consumible INT NOT NULL,
+	Cant_Consumible INT NOT NULL,
+	Id_Item_Estadia INT NOT NULL
+
+	PRIMARY KEY (Nro_Factura, Nro_Item),
+	FOREIGN KEY (Id_Consumible) REFERENCES [LA_QUERY_DE_PAPEL].[Consumible] (Id_Consumible),
+	FOREIGN KEY (Nro_Factura) REFERENCES [LA_QUERY_DE_PAPEL].[Factura] (Nro_Factura),
+	FOREIGN KEY (Id_Item_Estadia) REFERENCES [LA_QUERY_DE_PAPEL].[Items_Estadia] (Id_Item_Estadia),
+
+	);
 
 GO
 
