@@ -32,6 +32,8 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Persona_conflicto_migracion] (
 	Direccion nvarchar(255) NOT NULL,
 	Fecha_Nacimiento datetime NOT NULL,
 	Telefono nvarchar(50),
+	Mail nvarchar(255),
+	Nacionalidad nvarchar(255)
 	);
 
 CREATE TABLE [LA_QUERY_DE_PAPEL].[Usuario] ( 
@@ -54,6 +56,17 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Cliente] (
 	Nro_Documento INT NOT NULL,
 	Localidad nvarchar(255),
 	Mail nvarchar(255) UNIQUE,
+	Nacionalidad nvarchar(255) NOT NULL,
+
+	PRIMARY KEY (Tipo_Documento, Nro_Documento),
+	FOREIGN KEY (Tipo_Documento, Nro_Documento) REFERENCES [LA_QUERY_DE_PAPEL].[Persona] (Tipo_Documento, Nro_Documento) ON UPDATE CASCADE,
+	);
+
+CREATE TABLE [LA_QUERY_DE_PAPEL].[Cliente_Conflicto_Migracion] ( 
+	Tipo_Documento varchar(20) NOT NULL,
+	Nro_Documento INT NOT NULL,
+	Localidad nvarchar(255),
+	Mail nvarchar(255),
 	Nacionalidad nvarchar(255) NOT NULL,
 
 	PRIMARY KEY (Tipo_Documento, Nro_Documento),
@@ -173,7 +186,7 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Consumible] (
 
 
 CREATE TABLE [LA_QUERY_DE_PAPEL].[Estadia](
-	Id_Reserva INT NOT NULL PRIMARY KEY IDENTITY (1, 1),
+	Id_Reserva INT NOT NULL PRIMARY KEY,
 	Fecha_ingreso datetime ,
 	Usuario_ingreso_id int,
 	Fecha_egreso datetime ,
@@ -183,6 +196,14 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Estadia](
 	FOREIGN KEY (Usuario_ingreso_id) REFERENCES [LA_QUERY_DE_PAPEL].[Usuario] (Id_Usuario),
 	FOREIGN KEY (Usuario_egreso_id) REFERENCES [LA_QUERY_DE_PAPEL].[Usuario] (Id_Usuario)
 	
+	);
+
+CREATE TABLE [LA_QUERY_DE_PAPEL].[Estadia_conflicto_migracion](
+	Id_Reserva INT NOT NULL PRIMARY KEY,
+	Fecha_ingreso datetime ,
+	Fecha_egreso datetime ,
+
+	FOREIGN KEY (Id_Reserva) REFERENCES [LA_QUERY_DE_PAPEL].[Reserva_conflicto_migracion] (Id_Reserva)
 	);
 
 	CREATE TABLE [LA_QUERY_DE_PAPEL].[Factura] ( 
@@ -482,17 +503,19 @@ BEGIN
 END
 GO
 */
+
+
 CREATE PROCEDURE [LA_QUERY_DE_PAPEL].Cargar_Personas
 AS
 BEGIN
 
-	DECLARE @Email VARCHAR(255), @Nombre VARCHAR(50), @Apellido VARCHAR(50), @Nro_pasaporte INT, @Calle VARCHAR(50), @Nro_Calle INT, @Piso INT, @Depto VARCHAR(5), @Fecha_Nacimiento DATETIME, @Direccion VARCHAR(250)
+	DECLARE @Email VARCHAR(255), @Nombre VARCHAR(50), @Apellido VARCHAR(50), @Nro_pasaporte INT, @Calle VARCHAR(50), @Nro_Calle INT, @Piso INT, @Depto VARCHAR(5), @Fecha_Nacimiento DATETIME, @Direccion VARCHAR(250), @Nacionalidad VARCHAR(255)
 			
 	DECLARE cursor_personas CURSOR FOR
-	SELECT DISTINCT Cliente_Mail, Cliente_Pasaporte_Nro, Cliente_Apellido, Cliente_Nombre, Cliente_Fecha_Nac, Cliente_Dom_Calle, Cliente_Nro_Calle, Cliente_Piso, Cliente_Depto FROM gd_esquema.Maestra
+	SELECT DISTINCT Cliente_Mail, Cliente_Pasaporte_Nro, Cliente_Apellido, Cliente_Nombre, Cliente_Fecha_Nac, Cliente_Dom_Calle, Cliente_Nro_Calle, Cliente_Piso, Cliente_Depto, Cliente_Nacionalidad FROM gd_esquema.Maestra
 
 	OPEN cursor_personas
-	FETCH NEXT FROM cursor_personas INTO @Email, @Nro_pasaporte, @Apellido, @Nombre, @Fecha_Nacimiento, @Calle, @Nro_Calle, @Piso, @Depto;
+	FETCH NEXT FROM cursor_personas INTO @Email, @Nro_pasaporte, @Apellido, @Nombre, @Fecha_Nacimiento, @Calle, @Nro_Calle, @Piso, @Depto, @Nacionalidad;
 	CREATE INDEX Nro_Doc_index ON LA_QUERY_DE_PAPEL.Persona (Nro_Documento);
 
 	WHILE (@@FETCH_STATUS = 0)
@@ -502,18 +525,40 @@ BEGIN
 
 		IF NOT EXISTS(SELECT Nro_Documento FROM [LA_QUERY_DE_PAPEL].Persona WHERE @Nro_pasaporte = Nro_Documento)
 		BEGIN
+
 			INSERT INTO [LA_QUERY_DE_PAPEL].Persona 
 				(Tipo_Documento, Nro_Documento, Apellido, Nombre, Direccion, Fecha_Nacimiento)
 			VALUES ('Pasaporte', @Nro_pasaporte, @Apellido, @Nombre, @Direccion, @Fecha_Nacimiento);
-			FETCH NEXT FROM cursor_personas INTO @Email, @Nro_pasaporte, @Apellido, @Nombre, @Fecha_Nacimiento, @Calle, @Nro_Calle, @Piso, @Depto;
+
+			IF NOT EXISTS (SELECT Nro_Documento FROM LA_QUERY_DE_PAPEL.Cliente WHERE @Email = Mail)
+			BEGIN
+
+				INSERT INTO LA_QUERY_DE_PAPEL.Cliente
+					(Tipo_Documento, Nro_Documento, Mail, Nacionalidad)
+				VALUES ('Pasaporte', @Nro_pasaporte, @Email, @Nacionalidad);
+
+			END
+
+			ELSE
+			BEGIN
+
+				INSERT INTO LA_QUERY_DE_PAPEL.Cliente_Conflicto_Migracion
+					(Tipo_Documento, Nro_Documento, Mail, Nacionalidad)
+				VALUES ('Pasaporte', @Nro_pasaporte, @Email, @Nacionalidad);
+
+			END
+
+			FETCH NEXT FROM cursor_personas INTO @Email, @Nro_pasaporte, @Apellido, @Nombre, @Fecha_Nacimiento, @Calle, @Nro_Calle, @Piso, @Depto, @Nacionalidad;
 		END
 
-		IF EXISTS(SELECT Nro_Documento FROM [LA_QUERY_DE_PAPEL].Persona WHERE @Nro_pasaporte = Nro_Documento)
+		ELSE
 		BEGIN
+
 			INSERT INTO [LA_QUERY_DE_PAPEL].[Persona_conflicto_migracion] 
-				(Tipo_Documento, Nro_Documento, Apellido, Nombre, Direccion, Fecha_Nacimiento)
-			VALUES ('Pasaporte', @Nro_pasaporte, @Apellido, @Nombre, @Direccion, @Fecha_Nacimiento);
-			FETCH NEXT FROM cursor_personas INTO @Email, @Nro_pasaporte, @Apellido, @Nombre, @Fecha_Nacimiento, @Calle, @Nro_Calle, @Piso, @Depto;
+				(Tipo_Documento, Nro_Documento, Apellido, Nombre, Direccion, Fecha_Nacimiento, Mail, Nacionalidad)
+			VALUES ('Pasaporte', @Nro_pasaporte, @Apellido, @Nombre, @Direccion, @Fecha_Nacimiento, @Email, @Nacionalidad);
+
+			FETCH NEXT FROM cursor_personas INTO @Email, @Nro_pasaporte, @Apellido, @Nombre, @Fecha_Nacimiento, @Calle, @Nro_Calle, @Piso, @Depto, @Nacionalidad;
 		END
 			
 	END 
@@ -561,8 +606,8 @@ BEGIN
 			INSERT INTO [LA_QUERY_DE_PAPEL].Reserva (Id_Reserva, Fecha_Reserva, Cant_Noches, Id_Regimen, Tipo_Documento, Nro_Documento)
 			VALUES(@Id_Reserva, @Fecha_Reserva, @Cant_Noches, @Id_Regimen, @Tipo_Documento, @Nro_Documento)
 			
-			--INSERT INTO [LA_QUERY_DE_PAPEL].[ReservaxHabitacion] (Id_Reserva, Id_Hotel, Nro_Habitacion)
-			--VALUES(@Id_Reserva, @id_hotel, @Nro_habitacion)
+			INSERT INTO [LA_QUERY_DE_PAPEL].[ReservaxHabitacion] (Id_Reserva, Id_Hotel, Nro_Habitacion)
+			VALUES(@Id_Reserva, @id_hotel, @Nro_habitacion)
 
 			FETCH NEXT FROM cursor_reservas INTO @Nro_Documento, @Apellido_cliente, @Nombre_cliente, @Id_Reserva, @Fecha_Reserva, @Cant_Noches, @Regimen_Precio, @Regimen_Descripcion, @Hotel_Ciudad, @Hotel_Calle, @Hotel_Nro_Calle, @Nro_habitacion;
 		END
@@ -572,8 +617,8 @@ BEGIN
 			INSERT INTO [LA_QUERY_DE_PAPEL].Reserva_Conflicto_Migracion (Id_Reserva, Fecha_Reserva, Cant_Noches, Id_Regimen, Tipo_Documento, Nro_Documento)
 			VALUES(@Id_Reserva, @Fecha_Reserva, @Cant_Noches, @Id_Regimen, @Tipo_Documento, @Nro_Documento)
 
-			--INSERT INTO  [LA_QUERY_DE_PAPEL].[ReservaxHabitacion_Conflicto_Migracion]  (Id_Reserva, Id_Hotel, Nro_Habitacion)
-			--VALUES(@Id_Reserva, @id_hotel, @Nro_habitacion)
+			INSERT INTO  [LA_QUERY_DE_PAPEL].[ReservaxHabitacion_Conflicto_Migracion]  (Id_Reserva, Id_Hotel, Nro_Habitacion)
+			VALUES(@Id_Reserva, @id_hotel, @Nro_habitacion)
 
 			FETCH NEXT FROM cursor_reservas INTO @Nro_Documento, @Apellido_cliente, @Nombre_cliente, @Id_Reserva, @Fecha_Reserva, @Cant_Noches, @Regimen_Precio, @Regimen_Descripcion, @Hotel_Ciudad, @Hotel_Calle, @Hotel_Nro_Calle, @Nro_habitacion;
 		END
@@ -591,6 +636,53 @@ BEGIN
 END
 GO
 
+
+CREATE PROCEDURE [LA_QUERY_DE_PAPEL].Cargar_Estadias
+AS
+BEGIN
+
+	
+	DECLARE @Id_Reserva INT, @Fecha_Ingreso DATETIME, @Cant_Noches INT, @Fecha_Egreso DATETIME;
+
+
+	DECLARE cursor_estadias CURSOR FOR
+	SELECT DISTINCT Reserva_Codigo, Estadia_Fecha_Inicio, Estadia_Cant_Noches FROM gd_esquema.Maestra WHERE Estadia_Fecha_Inicio IS NOT NULL;
+
+	OPEN cursor_estadias
+	FETCH NEXT FROM cursor_estadias INTO @Id_Reserva, @Fecha_Ingreso, @Cant_Noches;
+
+
+	WHILE (@@FETCH_STATUS = 0)
+	BEGIN	
+
+		SET @Fecha_Egreso = DATEADD (DAY, @Cant_Noches, @Fecha_Ingreso);
+
+		IF EXISTS (SELECT Id_Reserva FROM LA_QUERY_DE_PAPEL.Reserva WHERE Id_Reserva = @Id_Reserva)
+		BEGIN
+
+			INSERT INTO LA_QUERY_DE_PAPEL.Estadia 
+				(Id_Reserva, Fecha_ingreso, Fecha_egreso)
+			VALUES (@Id_Reserva, @Fecha_Ingreso, @Fecha_Egreso)
+
+		END
+
+		ELSE
+		BEGIN
+
+			INSERT INTO LA_QUERY_DE_PAPEL.Estadia_conflicto_migracion 
+				(Id_Reserva, Fecha_ingreso, Fecha_egreso)
+			VALUES (@Id_Reserva, @Fecha_Ingreso, @Fecha_Egreso)
+
+		END
+
+		FETCH NEXT FROM cursor_estadias INTO @Id_Reserva, @Fecha_Ingreso, @Cant_Noches;
+
+	END 
+	CLOSE cursor_estadias;
+	DEALLOCATE cursor_estadias;
+
+END
+GO
 
 
 --Migracion
@@ -614,12 +706,17 @@ SELECT DISTINCT M.Habitacion_Numero,
 				M.Habitacion_Piso, M.Habitacion_Frente, M.Habitacion_Tipo_Codigo, M.Habitacion_Tipo_Descripcion
 FROM gd_esquema.Maestra M
 
+--SELECT * FROM LA_QUERY_DE_PAPEL.Habitacion
+
 
 --Cargo los regimenes
 
 INSERT INTO [LA_QUERY_DE_PAPEL].Regimen (Descripcion, Precio)
 SELECT DISTINCT M.Regimen_Descripcion, M.Regimen_Precio
 FROM gd_esquema.Maestra M
+
+--SELECT * FROM LA_QUERY_DE_PAPEL.Regimen
+
 
 --Cargo los regimenes por hotel
 
@@ -629,12 +726,16 @@ SELECT DISTINCT
 		(SELECT Id_Regimen FROM LA_QUERY_DE_PAPEL.Regimen WHERE Descripcion = M.Regimen_Descripcion AND Precio = M.Regimen_Precio)
 FROM gd_esquema.Maestra M
 
+--SELECT * FROM LA_QUERY_DE_PAPEL.RegimenxHotel
+
 
 --Cargo los clientes (Como personas)
 
 EXECUTE [LA_QUERY_DE_PAPEL].Cargar_Personas
  
 --SELECT * FROM [LA_QUERY_DE_PAPEL].Persona
+--SELECT * FROM [LA_QUERY_DE_PAPEL].Cliente
+--SELECT * FROM [LA_QUERY_DE_PAPEL].Cliente_Conflicto_Migracion
 --SELECT * FROM [LA_QUERY_DE_PAPEL].Persona_conflicto_migracion
 
 
@@ -646,6 +747,14 @@ EXECUTE LA_QUERY_DE_PAPEL.Cargar_Reservas
 --SELECT * FROM [LA_QUERY_DE_PAPEL].Reserva_Conflicto_Migracion
 --SELECT * FROM [LA_QUERY_DE_PAPEL].ReservaxHabitacion
 --SELECT * FROM [LA_QUERY_DE_PAPEL].ReservaxHabitacion_Conflicto_Migracion
+
+
+--Cargo las estadias
+
+EXECUTE LA_QUERY_DE_PAPEL.Cargar_Estadias
+
+--SELECT * FROM [LA_QUERY_DE_PAPEL].Estadia
+--SELECT * FROM [LA_QUERY_DE_PAPEL].Estadia_conflicto_migracion
 
 
 -- Cargo los consumibles
@@ -664,3 +773,5 @@ WHERE Consumible_Codigo IS NOT NULL
 
 INSERT INTO LA_QUERY_DE_PAPEL.UsuarioxHotel (Id_Hotel, Id_Usuario)
 VALUES (1, 1), (2, 1), (1, 2)
+
+
