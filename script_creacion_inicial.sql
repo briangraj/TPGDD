@@ -95,16 +95,23 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Hotel_Baja](
 	FOREIGN KEY (Id_Hotel) REFERENCES [LA_QUERY_DE_PAPEL].[Hotel] (Id_Hotel)
 	);
 
+CREATE TABLE [LA_QUERY_DE_PAPEL].[Tipo_Habitacion](
+	Id_tipo INT PRIMARY KEY IDENTITY(1,1),
+	Tipo numeric(18),
+	Descripcion nvarchar(255), 
+	Porcentual numeric(18,2)
+	);
+
 CREATE TABLE [LA_QUERY_DE_PAPEL].[Habitacion](
-    Nro_Habitacion INT,-- PRIMARY KEY IDENTITY(1,1),
+    Nro_Habitacion INT,
     Id_Hotel INT NOT NULL,
 	Piso INT NOT NULL,
     Ubicacion nvarchar(255),
-    Tipo_Hab numeric(18),
-    Descripcion nvarchar(255),
+    Tipo_Hab INT,
 	Habilitada bit NOT NULL DEFAULT 1,
 
 	FOREIGN KEY (Id_Hotel) REFERENCES [LA_QUERY_DE_PAPEL].[Hotel] (Id_Hotel),
+	FOREIGN KEY (Tipo_Hab) REFERENCES [LA_QUERY_DE_PAPEL].[Tipo_Habitacion] (Id_tipo),
 	PRIMARY KEY (Nro_Habitacion, Id_Hotel)
 	);
 
@@ -371,6 +378,33 @@ DELETE p FROM LA_QUERY_DE_PAPEL.Persona p
 END
 GO
 
+/*
+--para validar si existe alguna reserva o estadia de algun regimen en un hotel
+CREATE TRIGGER LA_QUERY_DE_PAPEL.deleteRegimenxHotel ON LA_QUERY_DE_PAPEL.RegimenxHotel
+INSTEAD OF DELETE
+AS
+BEGIN
+	DECLARE @idHotel INT
+	DECLARE @idRegimen INT
+	SELECT @idHotel = d.Id_Hotel, @idRegimen = d.Id_Regimen
+	FROM deleted d
+
+	IF(EXISTS (SELECT 1 FROM LA_QUERY_DE_PAPEL.Reserva r
+				WHERE r.Id_Hotel IN (SELECT Id_Hotel FROM deleted) AND r.Id_Regimen IN (SELECT Id_Regimen FROM deleted)
+					AND (r.Fecha_Inicio = GETDATE() OR r.Fecha_Fin = GETDATE())))
+	BEGIN
+		DECLARE @descripcion nvarchar(255)
+		SELECT @descripcion = Descripcion FROM LA_QUERY_DE_PAPEL.Regimen WHERE Id_Regimen = @idRegimen
+		DECLARE @error nvarchar (255) = 'Existen reservas para el regimen ' + @descripcion
+		RAISERROR (@error, 16, 1)
+		RETURN
+	END
+	--falta checkear las estadias
+END
+GO
+*/
+
+
 --procedure para actualizar un cliente
 CREATE PROCEDURE LA_QUERY_DE_PAPEL.procedure_update_cliente
 	@nombre nvarchar(255),
@@ -467,6 +501,8 @@ BEGIN
 
 END
 GO
+
+
 /*
 CREATE PROCEDURE LA_QUERY_DE_PAPEL.procedure_alta_habitacion
 	@nroHabitacion int,
@@ -698,15 +734,25 @@ FROM gd_esquema.Maestra M
 
 --SELECT * FROM LA_QUERY_DE_PAPEL.Hotel
 
+
+--Cargo los tipos de habitaciones
+
+INSERT INTO LA_QUERY_DE_PAPEL.Tipo_Habitacion (Tipo, Descripcion, Porcentual)
+SELECT DISTINCT Habitacion_Tipo_Codigo, Habitacion_Tipo_Descripcion, Habitacion_Tipo_Porcentual FROM gd_esquema.Maestra
+
+--SELECT * FROM LA_QUERY_DE_PAPEL.Tipo_Habitacion
+
+
 --Cargo las habitaciones
 
-INSERT INTO [LA_QUERY_DE_PAPEL].[Habitacion] (Nro_Habitacion, Id_Hotel, Piso, Ubicacion, Tipo_Hab, Descripcion)
+INSERT INTO [LA_QUERY_DE_PAPEL].[Habitacion] (Nro_Habitacion, Id_Hotel, Piso, Ubicacion, Tipo_Hab)
 SELECT DISTINCT M.Habitacion_Numero, 
 				(SELECT DISTINCT Id_Hotel FROM [LA_QUERY_DE_PAPEL].[Hotel] H WHERE H.Ciudad = M.Hotel_Ciudad AND H.Direccion = M.Hotel_Calle + ' ' + CAST(M.Hotel_Nro_Calle AS VARCHAR)), 
-				M.Habitacion_Piso, M.Habitacion_Frente, M.Habitacion_Tipo_Codigo, M.Habitacion_Tipo_Descripcion
+				M.Habitacion_Piso, M.Habitacion_Frente,
+				(SELECT Id_tipo FROM LA_QUERY_DE_PAPEL.Tipo_Habitacion WHERE Tipo = Habitacion_Tipo_Codigo)
 FROM gd_esquema.Maestra M
 
---SELECT * FROM LA_QUERY_DE_PAPEL.Habitacion
+--SELECT * FROM LA_QUERY_DE_PAPEL.Habitacion 
 
 
 --Cargo los regimenes
@@ -773,5 +819,4 @@ WHERE Consumible_Codigo IS NOT NULL
 
 INSERT INTO LA_QUERY_DE_PAPEL.UsuarioxHotel (Id_Hotel, Id_Usuario)
 VALUES (1, 1), (2, 1), (1, 2)
-
 
