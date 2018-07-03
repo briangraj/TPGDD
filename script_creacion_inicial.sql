@@ -133,7 +133,7 @@ CREATE TABLE[LA_QUERY_DE_PAPEL].[RegimenxHotel] (
 	);	
 
 CREATE TABLE [LA_QUERY_DE_PAPEL].[Reserva] ( 
-	Id_Reserva INT NOT NULL PRIMARY KEY,-- IDENTITY (1, 1),
+	Id_Reserva INT NOT NULL PRIMARY KEY IDENTITY (1, 1),
 	Id_Regimen INT NOT NULL,
 	Fecha_Reserva datetime NOT NULL,
 	Cant_Noches INT NOT NULL,
@@ -665,8 +665,13 @@ BEGIN
 		IF EXISTS(SELECT Nro_Documento FROM [LA_QUERY_DE_PAPEL].Persona WHERE @Nro_Documento = Nro_Documento AND @Apellido_cliente = Apellido AND @Nombre_cliente = Nombre)
 		BEGIN
 
+			SET IDENTITY_INSERT [LA_QUERY_DE_PAPEL].Reserva ON
+
 			INSERT INTO [LA_QUERY_DE_PAPEL].Reserva (Id_Reserva, Fecha_Reserva, Cant_Noches, Id_Regimen, Tipo_Documento, Nro_Documento)
 			VALUES(@Id_Reserva, @Fecha_Reserva, @Cant_Noches, @Id_Regimen, @Tipo_Documento, @Nro_Documento)
+
+			SET IDENTITY_INSERT [LA_QUERY_DE_PAPEL].Reserva OFF
+
 			
 			INSERT INTO [LA_QUERY_DE_PAPEL].[ReservaxHabitacion] (Id_Reserva, Id_Hotel, Nro_Habitacion)
 			VALUES(@Id_Reserva, @id_hotel, @Nro_habitacion)
