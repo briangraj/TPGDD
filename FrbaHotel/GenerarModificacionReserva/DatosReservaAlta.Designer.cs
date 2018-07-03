@@ -1,6 +1,6 @@
 ﻿namespace FrbaHotel.GenerarModificacionReserva
 {
-    partial class DatosReserva
+    partial class DatosReservaAlta
     {
         /// <summary>
         /// Required designer variable.
@@ -216,11 +216,7 @@
 
         #endregion
 
-        private System.Windows.Forms.DateTimePicker dateTimePickerDesde;
-        private System.Windows.Forms.DateTimePicker dateTimePickerHasta;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.ComboBox comboBoxTipoHab;
-        private System.Windows.Forms.ComboBox comboBoxTipoReg;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label1;
@@ -230,5 +226,9 @@
         protected System.Windows.Forms.DataGridView dataGridViewReserva;
         private System.Windows.Forms.Button buttonSiguiente;
         private System.Windows.Forms.ErrorProvider errorProviderReserva;
+        protected System.Windows.Forms.DateTimePicker dateTimePickerDesde;
+        protected System.Windows.Forms.DateTimePicker dateTimePickerHasta;
+        protected System.Windows.Forms.ComboBox comboBoxTipoHab;
+        protected System.Windows.Forms.ComboBox comboBoxTipoReg;
     }
 }

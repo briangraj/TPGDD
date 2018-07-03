@@ -193,20 +193,35 @@
     <Compile Include="GenerarModificacionReserva\ConfirmacionReserva.Designer.cs">
       <DependentUpon>ConfirmacionReserva.cs</DependentUpon>
     </Compile>
+    <Compile Include="GenerarModificacionReserva\DatosReserv.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GenerarModificacionReserva\DatosReservaMod.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GenerarModificacionReserva\DatosReservaMod.Designer.cs">
+      <DependentUpon>DatosReservaMod.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GenerarModificacionReserva\DatosReservaModif.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="GenerarModificacionReserva\ModificarReserva.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GenerarModificacionReserva\ModificarReserva.Designer.cs">
       <DependentUpon>ModificarReserva.cs</DependentUpon>
     </Compile>
+    <Compile Include="GenerarModificacionReserva\Parche.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="GenerarModificacionReserva\SobreCliente\DatosClienteReserva.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GenerarModificacionReserva\DatosReserva.cs">
+    <Compile Include="GenerarModificacionReserva\DatosReservaAlta.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GenerarModificacionReserva\DatosReserva.Designer.cs">
-      <DependentUpon>DatosReserva.cs</DependentUpon>
+    <Compile Include="GenerarModificacionReserva\DatosReservaAlta.Designer.cs">
+      <DependentUpon>DatosReservaAlta.cs</DependentUpon>
     </Compile>
     <Compile Include="GenerarModificacionReserva\SobreCliente\ElegirTipoCliente.cs">
       <SubType>Form</SubType>
@@ -324,8 +339,11 @@
     <EmbeddedResource Include="GenerarModificacionReserva\ConfirmacionReserva.resx">
       <DependentUpon>ConfirmacionReserva.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GenerarModificacionReserva\DatosReserva.resx">
-      <DependentUpon>DatosReserva.cs</DependentUpon>
+    <EmbeddedResource Include="GenerarModificacionReserva\DatosReservaAlta.resx">
+      <DependentUpon>DatosReservaAlta.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GenerarModificacionReserva\DatosReservaMod.resx">
+      <DependentUpon>DatosReservaMod.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GenerarModificacionReserva\ModificarReserva.resx">
       <DependentUpon>ModificarReserva.cs</DependentUpon>
