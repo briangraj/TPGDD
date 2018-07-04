@@ -244,11 +244,13 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[FuncionalidadxRol] (
 	--Conviene crear otra entidad Forma de Pago con id y descripcion??
 	--
 
-CREATE TABLE [LA_QUERY_DE_PAPEL].[Items_Estadia] (
-	Id_Item_Estadia INT NOT NULL PRIMARY KEY,
-	Codigo_Estadia INT NOT NULL
+CREATE TABLE [LA_QUERY_DE_PAPEL].[Consumible_estadia] (
+	Id_Reserva INT NOT NULL PRIMARY KEY,
+	Id_Consumible INT NOT NULL,
+	cantidad INT
 
-	FOREIGN KEY (Codigo_Estadia) REFERENCES [LA_QUERY_DE_PAPEL].[Estadia] (Id_Reserva),
+	FOREIGN KEY (Id_Reserva) REFERENCES [LA_QUERY_DE_PAPEL].[Estadia] (Id_Reserva),
+	FOREIGN KEY (Id_Consumible) REFERENCES [LA_QUERY_DE_PAPEL].[Consumible] (Id_Consumible),
 
 	);
 
@@ -258,12 +260,12 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Items] (
 	Nro_Item INT NOT NULL,
 	Id_Consumible INT NOT NULL,
 	Cant_Consumible INT NOT NULL,
-	Id_Item_Estadia INT NOT NULL
+	
 
 	PRIMARY KEY (Nro_Factura, Nro_Item),
 	FOREIGN KEY (Id_Consumible) REFERENCES [LA_QUERY_DE_PAPEL].[Consumible] (Id_Consumible),
 	FOREIGN KEY (Nro_Factura) REFERENCES [LA_QUERY_DE_PAPEL].[Factura] (Nro_Factura),
-	FOREIGN KEY (Id_Item_Estadia) REFERENCES [LA_QUERY_DE_PAPEL].[Items_Estadia] (Id_Item_Estadia),
+	
 
 	);
 
@@ -851,3 +853,15 @@ WHERE Consumible_Codigo IS NOT NULL
 INSERT INTO LA_QUERY_DE_PAPEL.UsuarioxHotel (Id_Hotel, Id_Usuario)
 VALUES (1, 1), (2, 1), (1, 2)
 
+/*cargar consumible_estadia 
+
+insert into LA_QUERY_DE_PAPEL.Consumible_estadia (Id_Reserva,Id_Consumible,cantidad)
+select distinct e.Id_Reserva, c.Id_Consumible, COUNT(m.Consumible_Descripcion)
+from gd_esquema.Maestra m join LA_QUERY_DE_PAPEL.consumible c on m.Consumible_Codigo= c.Id_Consumible
+							join LA_QUERY_DE_PAPEL.estadia e on m.Reserva_Codigo=e.Id_Reserva
+							
+group by e.Id_Reserva,c.Id_Consumible
+
+SELECT*from LA_QUERY_DE_PAPEL.Consumible_estadia
+
+*/
