@@ -216,16 +216,25 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Estadia_conflicto_migracion](
 	);
 
 
+CREATE TABLE [LA_QUERY_DE_PAPEL].[MedioPago] ( 
+	Id_medio_pago INT NOT NULL PRIMARY KEY,
+	Desc_medio_pago nvarchar(50) NOT NULL
+	);	
+
 CREATE TABLE [LA_QUERY_DE_PAPEL].[Factura] ( 
 	Nro_Factura numeric(18) NOT NULL PRIMARY KEY,
-	Tipo_Documento varchar(20) NOT NULL,
-	Nro_Documento INT NOT NULL,
+	Id_Reserva INT NOT NULL,
+	Tipo_Documento_Cliente varchar(20) NOT NULL,
+	Nro_Documento_Cliente INT NOT NULL,
 	Fecha_Emision datetime NOT NULL,
-	Forma_Pago nvarchar(255) NOT NULL,
+	Forma_Pago nvarchar(50) NOT NULL,
 	
-	FOREIGN KEY (Tipo_Documento, Nro_Documento) REFERENCES [LA_QUERY_DE_PAPEL].[Persona] (Tipo_Documento, Nro_Documento)
+	FOREIGN KEY (Tipo_Documento_Cliente, Nro_Documento_Cliente) REFERENCES [LA_QUERY_DE_PAPEL].[Persona] (Tipo_Documento, Nro_Documento),
+	FOREIGN KEY (Id_Reserva) REFERENCES [LA_QUERY_DE_PAPEL].[Estadia] (Id_Reserva),
+
 	);
 	
+
 
 CREATE TABLE [LA_QUERY_DE_PAPEL].[Funcionalidad] ( 
 	Id_Funcion INT NOT NULL PRIMARY KEY IDENTITY (1, 1),
@@ -245,10 +254,11 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[FuncionalidadxRol] (
 	--
 
 CREATE TABLE [LA_QUERY_DE_PAPEL].[Consumible_estadia] (
-	Id_Reserva INT NOT NULL PRIMARY KEY,
-	Id_Consumible INT NOT NULL,
+	Id_Reserva INT NOT NULL ,
+	Id_Consumible INT NOT NULL ,
 	cantidad INT
 
+	PRIMARY KEY (Id_Reserva,Id_Consumible),
 	FOREIGN KEY (Id_Reserva) REFERENCES [LA_QUERY_DE_PAPEL].[Estadia] (Id_Reserva),
 	FOREIGN KEY (Id_Consumible) REFERENCES [LA_QUERY_DE_PAPEL].[Consumible] (Id_Consumible),
 
@@ -256,14 +266,13 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Consumible_estadia] (
 
 
 CREATE TABLE [LA_QUERY_DE_PAPEL].[Items] ( 
-	Nro_Factura numeric(18) NOT NULL,
-	Nro_Item INT NOT NULL,
-	Id_Consumible INT NOT NULL,
-	Cant_Consumible INT NOT NULL,
+	Nro_Factura numeric(18) PRIMARY KEY NOT NULL,
+	Id_Reserva INT NOT NULL,
+	Descripcion INT NOT NULL,
+	Precio NUMERIC (18,2) NOT NULL DEFAULT 0.0,
+	Cantidad INT NOT NULL,
 	
-
-	PRIMARY KEY (Nro_Factura, Nro_Item),
-	FOREIGN KEY (Id_Consumible) REFERENCES [LA_QUERY_DE_PAPEL].[Consumible] (Id_Consumible),
+	FOREIGN KEY (Id_Reserva) REFERENCES [LA_QUERY_DE_PAPEL].[Estadia] (Id_Reserva),
 	FOREIGN KEY (Nro_Factura) REFERENCES [LA_QUERY_DE_PAPEL].[Factura] (Nro_Factura),
 	
 
@@ -286,6 +295,8 @@ VALUES ('', 1, '', '', '', GETDATE(), '', 1)
 INSERT INTO LA_QUERY_DE_PAPEL.Usuario (Tipo_Documento, Nro_Documento, Username,	Password, Id_Rol, Mail)
 VALUES ('', 1, 'admin', CONVERT(varbinary(255),HASHBYTES('SHA2_256','w23e'),2), 1, ''), ('', 1, 'guest', HASHBYTES('SHA2_256',''), 2, '')
 
+INSERT INTO LA_QUERY_DE_PAPEL.MedioPago(Id_medio_pago, Desc_medio_pago)
+VALUES (1, 'Efectivo'), (2, 'Tarjeta de Crédito')
 GO
 
 --baja logica del rol
@@ -853,15 +864,23 @@ WHERE Consumible_Codigo IS NOT NULL
 INSERT INTO LA_QUERY_DE_PAPEL.UsuarioxHotel (Id_Hotel, Id_Usuario)
 VALUES (1, 1), (2, 1), (1, 2)
 
-/*cargar consumible_estadia 
+--cargo consumible_estadia 
 
-insert into LA_QUERY_DE_PAPEL.Consumible_estadia (Id_Reserva,Id_Consumible,cantidad)
-select distinct e.Id_Reserva, c.Id_Consumible, COUNT(m.Consumible_Descripcion)
-from gd_esquema.Maestra m join LA_QUERY_DE_PAPEL.consumible c on m.Consumible_Codigo= c.Id_Consumible
-							join LA_QUERY_DE_PAPEL.estadia e on m.Reserva_Codigo=e.Id_Reserva
+INSERT INTO LA_QUERY_DE_PAPEL.Consumible_estadia (Id_Reserva,Id_Consumible,cantidad)
+SELECT DISTINCT e.Id_Reserva, c.Id_Consumible, COUNT(m.Consumible_Descripcion)
+FROM gd_esquema.Maestra m JOIN LA_QUERY_DE_PAPEL.consumible c on m.Consumible_Codigo= c.Id_Consumible
+						  JOIN LA_QUERY_DE_PAPEL.estadia e on m.Reserva_Codigo=e.Id_Reserva
 							
-group by e.Id_Reserva,c.Id_Consumible
+GROUP BY e.Id_Reserva,c.Id_Consumible
 
-SELECT*from LA_QUERY_DE_PAPEL.Consumible_estadia
+--SELECT*FROM LA_QUERY_DE_PAPEL.Consumible_estadia
 
-*/
+
+--Migro los consumibles de cada factura
+--INSERT INTO LA_QUERY_DE_PAPEL.Items (Nro_Factura, Id_Reserva, Descripcion, Precio, Cantidad)
+--SELECT m.Factura_Nro, e.Id_Reserva, m.Consumible_Descripcion , m.Item_Factura_Monto, m.Item_Factura_Cantidad
+--FROM gd_esquema.Maestra m JOIN LA_QUERY_DE_PAPEL.Estadia e
+--ON m.Reserva_Codigo = e.Id_Reserva
+--WHERE m.Consumible_Codigo IS NOT NULL
+--AND m.Item_Factura_Monto IS NOT NULL /*
+
