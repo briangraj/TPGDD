@@ -33,9 +33,9 @@
             this.label2 = new System.Windows.Forms.Label();
             this.buttonLimpiar = new System.Windows.Forms.Button();
             this.buttonBuscar = new System.Windows.Forms.Button();
-            this.dataGridViewHabitaciones = new System.Windows.Forms.DataGridView();
             this.textBoxPiso = new System.Windows.Forms.TextBox();
             this.textBoxNroHab = new System.Windows.Forms.TextBox();
+            this.dataGridViewHabitaciones = new System.Windows.Forms.DataGridView();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewHabitaciones)).BeginInit();
             this.SuspendLayout();
@@ -92,6 +92,7 @@
             this.buttonLimpiar.TabIndex = 13;
             this.buttonLimpiar.Text = "Limpiar";
             this.buttonLimpiar.UseVisualStyleBackColor = true;
+            this.buttonLimpiar.Click += new System.EventHandler(this.buttonLimpiar_Click);
             // 
             // buttonBuscar
             // 
@@ -103,14 +104,6 @@
             this.buttonBuscar.Text = "Buscar";
             this.buttonBuscar.UseVisualStyleBackColor = true;
             this.buttonBuscar.Click += new System.EventHandler(this.buttonBuscar_Click);
-            // 
-            // dataGridViewHabitaciones
-            // 
-            this.dataGridViewHabitaciones.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewHabitaciones.Location = new System.Drawing.Point(51, 225);
-            this.dataGridViewHabitaciones.Name = "dataGridViewHabitaciones";
-            this.dataGridViewHabitaciones.Size = new System.Drawing.Size(614, 398);
-            this.dataGridViewHabitaciones.TabIndex = 1;
             // 
             // textBoxPiso
             // 
@@ -125,6 +118,15 @@
             this.textBoxNroHab.Name = "textBoxNroHab";
             this.textBoxNroHab.Size = new System.Drawing.Size(100, 20);
             this.textBoxNroHab.TabIndex = 16;
+            // 
+            // dataGridViewHabitaciones
+            // 
+            this.dataGridViewHabitaciones.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewHabitaciones.Location = new System.Drawing.Point(51, 225);
+            this.dataGridViewHabitaciones.Name = "dataGridViewHabitaciones";
+            this.dataGridViewHabitaciones.Size = new System.Drawing.Size(614, 398);
+            this.dataGridViewHabitaciones.TabIndex = 1;
+            this.dataGridViewHabitaciones.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewHabitaciones_CellContentClick);
             // 
             // ListadoHabitacion
             // 

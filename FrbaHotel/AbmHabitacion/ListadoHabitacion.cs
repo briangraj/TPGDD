@@ -17,8 +17,6 @@ namespace FrbaHotel.AbmHabitacion
     {
         protected Usuario usuario;
 
-        protected ListadoHabitacion() { }
-
         public ListadoHabitacion(Usuario usuario)
         {
             InitializeComponent();
@@ -32,10 +30,10 @@ namespace FrbaHotel.AbmHabitacion
             llenarTabla();
         }
 
-        private void llenarTabla()
+        protected void llenarTabla()
         {
             dataGridViewHabitaciones.DataSource = DB.correrQueryTabla(queryTabla(),
-                "nroHab", "%" + textBoxNroHab.Text + "%", "piso", "%" + textBoxPiso + "%");
+                "nroHab", "%" + textBoxNroHab.Text + "%", "piso", "%" + textBoxPiso + "%", "idHotel", usuario.idHotel);
         }
 
         protected abstract string queryTabla();
@@ -52,5 +50,18 @@ namespace FrbaHotel.AbmHabitacion
         }
 
         protected abstract string textoBoton();
+
+        private void dataGridViewHabitaciones_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (dataGridViewHabitaciones.Columns[e.ColumnIndex].HeaderText == "Seleccionar" && e.RowIndex != -1)
+                accionBoton(e);
+        }
+
+        protected abstract void accionBoton(DataGridViewCellEventArgs e);
+
+        private void buttonLimpiar_Click(object sender, EventArgs e)
+        {
+            Limpiador.limpiarControles(Controls);
+        }
     }
 }
