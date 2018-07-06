@@ -227,6 +227,7 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Factura] (
 	Tipo_Documento_Cliente varchar(20) NOT NULL,
 	Nro_Documento_Cliente INT NOT NULL,
 	Fecha_Emision datetime NOT NULL,
+	Total_Factura numeric(18,2),
 	Forma_Pago nvarchar(50) NOT NULL,
 	
 	FOREIGN KEY (Tipo_Documento_Cliente, Nro_Documento_Cliente) REFERENCES [LA_QUERY_DE_PAPEL].[Persona] (Tipo_Documento, Nro_Documento),
@@ -268,7 +269,7 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Consumible_estadia] (
 CREATE TABLE [LA_QUERY_DE_PAPEL].[Items] ( 
 	Nro_Factura numeric(18) PRIMARY KEY NOT NULL,
 	Id_Reserva INT NOT NULL,
-	Descripcion INT NOT NULL,
+	Descripcion VARCHAR(50) NOT NULL,
 	Precio NUMERIC (18,2) NOT NULL DEFAULT 0.0,
 	Cantidad INT NOT NULL,
 	
@@ -884,3 +885,17 @@ GROUP BY e.Id_Reserva,c.Id_Consumible
 --WHERE m.Consumible_Codigo IS NOT NULL
 --AND m.Item_Factura_Monto IS NOT NULL /*
 
+INSERT INTO LA_QUERY_DE_PAPEL.Factura (Nro_Factura, Id_Reserva, Tipo_Documento_cliente, Nro_Documento_cliente, Fecha_Emision, Forma_Pago)
+
+select distinct m.Factura_Nro, e.Id_Reserva, c.Tipo_Documento, c.Nro_Documento,CAST(m.Factura_Fecha as DATE),(select id_medio_pago from LA_QUERY_DE_PAPEL.MedioPago where Desc_medio_pago='Efectivo')
+from gd_esquema.Maestra m join LA_QUERY_DE_PAPEL.Estadia e on m.Reserva_Codigo=e.Id_Reserva JOIN LA_QUERY_DE_PAPEL.Cliente c ON m.Cliente_Pasaporte_Nro = c.Nro_Documento
+where m.Factura_Fecha is not null
+
+SELECT*FROM LA_QUERY_DE_PAPEL.Factura
+
+/* Inserto todos los items de consumibles */
+INSERT INTO LA_QUERY_DE_PAPEL.Items (Nro_Factura, Id_Reserva, Descripcion, Precio, Cantidad)
+SELECT Nro_Factura, f.Id_Reserva ,consumible.descripcion, consumible.precio,consumible_estadia.cantidad
+FROM LA_QUERY_DE_PAPEL.Factura f
+JOIN LA_QUERY_DE_PAPEL.consumible_estadia ON (consumible_estadia.Id_Reserva = f.Id_Reserva)
+JOIN LA_QUERY_DE_PAPEL.consumible ON (consumible.Id_Consumible = consumible_estadia.Id_Consumible)
