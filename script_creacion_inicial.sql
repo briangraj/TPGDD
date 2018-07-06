@@ -291,10 +291,10 @@ INSERT INTO LA_QUERY_DE_PAPEL.FuncionalidadxRol(Id_Rol, Id_Funcion)
 VALUES (1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (2,6)
 
 INSERT INTO LA_QUERY_DE_PAPEL.Persona (Tipo_Documento, Nro_Documento, Apellido, Nombre,	Direccion, Fecha_Nacimiento, Telefono, Habilitado)
-VALUES ('', 1, '', '', '', GETDATE(), '', 1)
+VALUES ('DNI', 1, '', '', '', GETDATE(), '', 1)
 
 INSERT INTO LA_QUERY_DE_PAPEL.Usuario (Tipo_Documento, Nro_Documento, Username,	Password, Id_Rol, Mail)
-VALUES ('', 1, 'admin', CONVERT(varbinary(255),HASHBYTES('SHA2_256','w23e'),2), 1, ''), ('', 1, 'guest', HASHBYTES('SHA2_256',''), 2, '')
+VALUES ('DNI', 1, 'admin', CONVERT(varbinary(255),HASHBYTES('SHA2_256','w23e'),2), 1, ''), ('DNI', 1, 'guest', HASHBYTES('SHA2_256',''), 2, '')
 
 INSERT INTO LA_QUERY_DE_PAPEL.MedioPago(Id_medio_pago, Desc_medio_pago)
 VALUES (1, 'Efectivo'), (2, 'Tarjeta de Crédito')

@@ -36,7 +36,6 @@
             this.textBoxTelefono = new System.Windows.Forms.TextBox();
             this.textBoxMail = new System.Windows.Forms.TextBox();
             this.textBoxNroDoc = new System.Windows.Forms.TextBox();
-            this.textBoxTipoDoc = new System.Windows.Forms.TextBox();
             this.textBoxApellido = new System.Windows.Forms.TextBox();
             this.labelHabilitado = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -55,6 +54,7 @@
             this.buttonLimpiar = new System.Windows.Forms.Button();
             this.buttonAceptar = new System.Windows.Forms.Button();
             this.errorProviderCliente = new System.Windows.Forms.ErrorProvider(this.components);
+            this.comboBoxTipoDoc = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProviderCliente)).BeginInit();
             this.SuspendLayout();
@@ -67,11 +67,10 @@
             this.tableLayoutPanel1.Controls.Add(this.textBoxNacionalidad, 1, 8);
             this.tableLayoutPanel1.Controls.Add(this.textBoxLocalidad, 1, 7);
             this.tableLayoutPanel1.Controls.Add(this.textBoxDireccion, 1, 6);
+            this.tableLayoutPanel1.Controls.Add(this.comboBoxTipoDoc, 1, 2);
             this.tableLayoutPanel1.Controls.Add(this.textBoxTelefono, 1, 5);
             this.tableLayoutPanel1.Controls.Add(this.textBoxMail, 1, 4);
             this.tableLayoutPanel1.Controls.Add(this.textBoxNroDoc, 1, 3);
-            this.tableLayoutPanel1.Controls.Add(this.textBoxTipoDoc, 1, 2);
-            this.tableLayoutPanel1.Controls.Add(this.textBoxApellido, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.labelHabilitado, 0, 10);
             this.tableLayoutPanel1.Controls.Add(this.label2, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 1);
@@ -86,6 +85,7 @@
             this.tableLayoutPanel1.Controls.Add(this.textBoxNombre, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.dateTimePickerFechaNac, 1, 9);
             this.tableLayoutPanel1.Controls.Add(this.checkBoxHabilitado, 1, 10);
+            this.tableLayoutPanel1.Controls.Add(this.textBoxApellido, 1, 1);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 62);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 11;
@@ -106,7 +106,7 @@
             // textBoxNacionalidad
             // 
             this.textBoxNacionalidad.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.textBoxNacionalidad.Location = new System.Drawing.Point(219, 211);
+            this.textBoxNacionalidad.Location = new System.Drawing.Point(219, 212);
             this.textBoxNacionalidad.Name = "textBoxNacionalidad";
             this.textBoxNacionalidad.Size = new System.Drawing.Size(333, 20);
             this.textBoxNacionalidad.TabIndex = 26;
@@ -114,7 +114,7 @@
             // textBoxLocalidad
             // 
             this.textBoxLocalidad.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.textBoxLocalidad.Location = new System.Drawing.Point(219, 185);
+            this.textBoxLocalidad.Location = new System.Drawing.Point(219, 186);
             this.textBoxLocalidad.Name = "textBoxLocalidad";
             this.textBoxLocalidad.Size = new System.Drawing.Size(333, 20);
             this.textBoxLocalidad.TabIndex = 25;
@@ -122,7 +122,7 @@
             // textBoxDireccion
             // 
             this.textBoxDireccion.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.textBoxDireccion.Location = new System.Drawing.Point(219, 159);
+            this.textBoxDireccion.Location = new System.Drawing.Point(219, 160);
             this.textBoxDireccion.Name = "textBoxDireccion";
             this.textBoxDireccion.Size = new System.Drawing.Size(333, 20);
             this.textBoxDireccion.TabIndex = 24;
@@ -130,7 +130,7 @@
             // textBoxTelefono
             // 
             this.textBoxTelefono.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.textBoxTelefono.Location = new System.Drawing.Point(219, 133);
+            this.textBoxTelefono.Location = new System.Drawing.Point(219, 134);
             this.textBoxTelefono.Name = "textBoxTelefono";
             this.textBoxTelefono.Size = new System.Drawing.Size(333, 20);
             this.textBoxTelefono.TabIndex = 23;
@@ -138,7 +138,7 @@
             // textBoxMail
             // 
             this.textBoxMail.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.textBoxMail.Location = new System.Drawing.Point(219, 107);
+            this.textBoxMail.Location = new System.Drawing.Point(219, 108);
             this.textBoxMail.Name = "textBoxMail";
             this.textBoxMail.Size = new System.Drawing.Size(333, 20);
             this.textBoxMail.TabIndex = 22;
@@ -146,18 +146,10 @@
             // textBoxNroDoc
             // 
             this.textBoxNroDoc.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.textBoxNroDoc.Location = new System.Drawing.Point(219, 81);
+            this.textBoxNroDoc.Location = new System.Drawing.Point(219, 82);
             this.textBoxNroDoc.Name = "textBoxNroDoc";
             this.textBoxNroDoc.Size = new System.Drawing.Size(333, 20);
             this.textBoxNroDoc.TabIndex = 21;
-            // 
-            // textBoxTipoDoc
-            // 
-            this.textBoxTipoDoc.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.textBoxTipoDoc.Location = new System.Drawing.Point(219, 55);
-            this.textBoxTipoDoc.Name = "textBoxTipoDoc";
-            this.textBoxTipoDoc.Size = new System.Drawing.Size(333, 20);
-            this.textBoxTipoDoc.TabIndex = 20;
             // 
             // textBoxApellido
             // 
@@ -216,7 +208,7 @@
             this.label4.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(45, 83);
+            this.label4.Location = new System.Drawing.Point(45, 84);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(126, 16);
             this.label4.TabIndex = 10;
@@ -227,7 +219,7 @@
             this.label5.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(91, 109);
+            this.label5.Location = new System.Drawing.Point(91, 110);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(33, 16);
             this.label5.TabIndex = 11;
@@ -238,7 +230,7 @@
             this.label6.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(77, 135);
+            this.label6.Location = new System.Drawing.Point(77, 136);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(62, 16);
             this.label6.TabIndex = 12;
@@ -249,7 +241,7 @@
             this.label7.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(75, 161);
+            this.label7.Location = new System.Drawing.Point(75, 162);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(65, 16);
             this.label7.TabIndex = 13;
@@ -260,7 +252,7 @@
             this.label8.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(74, 187);
+            this.label8.Location = new System.Drawing.Point(74, 188);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(68, 16);
             this.label8.TabIndex = 14;
@@ -271,7 +263,7 @@
             this.label9.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(63, 213);
+            this.label9.Location = new System.Drawing.Point(63, 214);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(89, 16);
             this.label9.TabIndex = 15;
@@ -282,7 +274,7 @@
             this.label10.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(41, 239);
+            this.label10.Location = new System.Drawing.Point(41, 240);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(133, 16);
             this.label10.TabIndex = 16;
@@ -298,7 +290,7 @@
             // 
             // dateTimePickerFechaNac
             // 
-            this.dateTimePickerFechaNac.Location = new System.Drawing.Point(219, 237);
+            this.dateTimePickerFechaNac.Location = new System.Drawing.Point(219, 238);
             this.dateTimePickerFechaNac.Name = "dateTimePickerFechaNac";
             this.dateTimePickerFechaNac.Size = new System.Drawing.Size(333, 20);
             this.dateTimePickerFechaNac.TabIndex = 27;
@@ -337,6 +329,15 @@
             // errorProviderCliente
             // 
             this.errorProviderCliente.ContainerControl = this;
+            // 
+            // comboBoxTipoDoc
+            // 
+            this.comboBoxTipoDoc.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxTipoDoc.FormattingEnabled = true;
+            this.comboBoxTipoDoc.Location = new System.Drawing.Point(219, 55);
+            this.comboBoxTipoDoc.Name = "comboBoxTipoDoc";
+            this.comboBoxTipoDoc.Size = new System.Drawing.Size(333, 21);
+            this.comboBoxTipoDoc.TabIndex = 30;
             // 
             // DatosCliente
             // 
@@ -377,11 +378,11 @@
         protected System.Windows.Forms.TextBox textBoxTelefono;
         protected System.Windows.Forms.TextBox textBoxMail;
         protected System.Windows.Forms.TextBox textBoxNroDoc;
-        protected System.Windows.Forms.TextBox textBoxTipoDoc;
         protected System.Windows.Forms.TextBox textBoxApellido;
         protected System.Windows.Forms.TextBox textBoxNombre;
         protected System.Windows.Forms.DateTimePicker dateTimePickerFechaNac;
         protected System.Windows.Forms.CheckBox checkBoxHabilitado;
         protected System.Windows.Forms.Label labelHabilitado;
+        protected System.Windows.Forms.ComboBox comboBoxTipoDoc;
     }
 }

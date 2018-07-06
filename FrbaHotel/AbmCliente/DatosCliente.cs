@@ -18,6 +18,7 @@ namespace FrbaHotel.AbmCliente
         public DatosCliente()
         {
             InitializeComponent();
+            cargarTiposDoc();
         }
 
         private void buttonAceptar_Click(object sender, EventArgs e)
@@ -46,5 +47,18 @@ namespace FrbaHotel.AbmCliente
         }
 
         protected abstract void accionAceptar();
+
+        private void cargarTiposDoc()
+        {
+            DB.ejecutarReader(
+                "SELECT distinct(Tipo_Documento) " +
+                "FROM LA_QUERY_DE_PAPEL.Persona",
+                cargarTipoDoc);
+        }
+
+        public void cargarTipoDoc(SqlDataReader reader)
+        {
+            comboBoxTipoDoc.Items.Add(reader.GetString(0));
+        }
     }
 }

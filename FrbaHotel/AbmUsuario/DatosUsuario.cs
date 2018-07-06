@@ -26,6 +26,7 @@ namespace FrbaHotel.AbmUsuario
             alta = true;
             cargarHoteles();
             cargarRoles();
+            cargarTiposDoc();
         }
 
         public DatosUsuario(DataGridViewRow filaSeleccionada)
@@ -34,6 +35,7 @@ namespace FrbaHotel.AbmUsuario
             alta = false;
             cargarHoteles();
             cargarRoles();
+            cargarTiposDoc();
             cargarUsuario(filaSeleccionada);
             pictureBoxWarning.Image = SystemIcons.Warning.ToBitmap();
             toolTipDatosUsuario.SetToolTip(pictureBoxWarning, "Si no se deasea cambiar su password \ndeje el campo en blanco");
@@ -108,7 +110,7 @@ namespace FrbaHotel.AbmUsuario
                     "INSERT INTO LA_QUERY_DE_PAPEL.usuarios (Username, Password , Id_Rol, Nombre, Apellido, Tipo_Documento, Nro_Documento, Mail, Telefono, Direccion, Fecha_Nacimiento, Habilitado) " +
                     "VALUES (@username, @password, @idRol, @nombre, @apellido, @tipoDocumento, @nroDocumento, @mail, @telefono, @direccion, @fechaNacimiento, @habilitado)",
                     "username", textBoxUsername.Text, "password", Usuario.encriptar(textBoxPassword.Text), "idRol", idRol,
-                    "nombre", textBoxNombre.Text, "apellido", textBoxApellido.Text, "tipoDocumento", textBoxTipoDocumento.Text, "nroDocumento", textBoxNroDocumento.Text,
+                    "nombre", textBoxNombre.Text, "apellido", textBoxApellido.Text, "tipoDocumento", comboBoxTipoDoc.SelectedItem, "nroDocumento", textBoxNroDocumento.Text,
                     "mail", textBoxMail.Text, "telefono", textBoxTelefono.Text, "direccion", textBoxDireccion.Text, "fechaNacimiento", dateTimePickerFechaNac.Value,
                     "habilitado", checkBoxHabilitado.Checked);
         }
@@ -139,7 +141,7 @@ namespace FrbaHotel.AbmUsuario
                 querySet() + 
                 "WHERE Id_Usuario = @idUsuario",
                 "username", textBoxUsername.Text, "password", Usuario.encriptar(textBoxPassword.Text), "idRol", idRol,
-                "nombre", textBoxNombre.Text, "apellido", textBoxApellido.Text, "tipoDoc", textBoxTipoDocumento.Text, "nroDoc", textBoxNroDocumento.Text,
+                "nombre", textBoxNombre.Text, "apellido", textBoxApellido.Text, "tipoDoc", comboBoxTipoDoc.SelectedItem, "nroDoc", textBoxNroDocumento.Text,
                 "mail", textBoxMail.Text, "telefono", textBoxTelefono.Text, "direccion", textBoxDireccion.Text, "fechaNac", dateTimePickerFechaNac.Value,
                 "habilitado", checkBoxHabilitado.Checked, "idUsuario", idUsuarioAModificar);
 
@@ -170,7 +172,7 @@ namespace FrbaHotel.AbmUsuario
             textBoxUsername.Text = filaSeleccionada.Cells["Username"].Value.ToString();
             textBoxNombre.Text = filaSeleccionada.Cells["Nombre"].Value.ToString();
             textBoxApellido.Text = filaSeleccionada.Cells["Apellido"].Value.ToString();
-            textBoxTipoDocumento.Text = filaSeleccionada.Cells["Tipo_Documento"].Value.ToString();
+            comboBoxTipoDoc.SelectedIndex = comboBoxTipoDoc.Items.IndexOf(filaSeleccionada.Cells["Tipo_Documento"].Value.ToString());
             textBoxNroDocumento.Text = filaSeleccionada.Cells["Nro_Documento"].Value.ToString();
             textBoxMail.Text = filaSeleccionada.Cells["Mail"].Value.ToString();
             textBoxTelefono.Text = filaSeleccionada.Cells["Telefono"].Value.ToString();
@@ -211,6 +213,19 @@ namespace FrbaHotel.AbmUsuario
         private void buttonLimpiar_Click(object sender, EventArgs e)
         {
             Limpiador.limpiarControles(Controls);
+        }
+
+        private void cargarTiposDoc()
+        {
+            DB.ejecutarReader(
+                "SELECT distinct(Tipo_Documento) " +
+                "FROM LA_QUERY_DE_PAPEL.Persona",
+                cargarTipoDoc);
+        }
+
+        public void cargarTipoDoc(SqlDataReader reader)
+        {
+            comboBoxTipoDoc.Items.Add(reader.GetString(0));
         }
     }
 }

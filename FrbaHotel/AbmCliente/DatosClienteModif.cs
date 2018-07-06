@@ -22,7 +22,7 @@ namespace FrbaHotel.AbmCliente
         protected override void accionAceptar()
         {
             DB.ejecutarProcedimiento(
-                "LA_QUERY_DE_PAPEL.procedure_update_cliente", "nombre", textBoxNombre.Text, "apellido", textBoxApellido.Text, "tipoDoc", textBoxTipoDoc.Text, "nroDoc", textBoxNroDoc.Text,
+                "LA_QUERY_DE_PAPEL.procedure_update_cliente", "nombre", textBoxNombre.Text, "apellido", textBoxApellido.Text, "tipoDoc", comboBoxTipoDoc.SelectedItem, "nroDoc", textBoxNroDoc.Text,
                 "mail", textBoxMail.Text, "telefono", textBoxTelefono.Text, "direccion", textBoxDireccion.Text, "localidad", textBoxLocalidad.Text,
                 "nacionalidad", textBoxNacionalidad.Text, "fechaNac", dateTimePickerFechaNac.Value, "habilitado", checkBoxHabilitado.Checked,
                 "tipoDocOriginal", tipoDocClienteAModificar, "nroDocOriginal", nroDocClienteAModificar);
@@ -34,7 +34,7 @@ namespace FrbaHotel.AbmCliente
         {
             textBoxNombre.Text = filaSeleccionada.Cells["Nombre"].Value.ToString();
             textBoxApellido.Text = filaSeleccionada.Cells["Apellido"].Value.ToString();
-            textBoxTipoDoc.Text = filaSeleccionada.Cells["Tipo_Documento"].Value.ToString();
+            comboBoxTipoDoc.SelectedIndex = comboBoxTipoDoc.Items.IndexOf(filaSeleccionada.Cells["Tipo_Documento"].Value.ToString());
             textBoxNroDoc.Text = filaSeleccionada.Cells["Nro_Documento"].Value.ToString();
             textBoxMail.Text = filaSeleccionada.Cells["Mail"].Value.ToString();
             textBoxTelefono.Text = filaSeleccionada.Cells["Telefono"].Value.ToString();
@@ -44,7 +44,7 @@ namespace FrbaHotel.AbmCliente
             dateTimePickerFechaNac.Value = Convert.ToDateTime(filaSeleccionada.Cells["Fecha_Nacimiento"].Value);
             checkBoxHabilitado.Checked = Convert.ToBoolean(filaSeleccionada.Cells["Habilitado"].Value);
 
-            tipoDocClienteAModificar = textBoxTipoDoc.Text;
+            tipoDocClienteAModificar = comboBoxTipoDoc.SelectedItem.ToString();
             nroDocClienteAModificar = textBoxNroDoc.Text;
         }
     }
