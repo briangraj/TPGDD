@@ -31,7 +31,7 @@ namespace FrbaHotel.GenerarModificacionReserva
             try
             {
                 int idReserva = insertarReserva();
-                idReserva = 10;
+                
                 insertarReservaxHabitacion(idReserva);
 
                 //insertarHistorial(idReserva);
@@ -47,8 +47,8 @@ namespace FrbaHotel.GenerarModificacionReserva
             int cantNoches = (reserva.fechaFin - reserva.fechaInicio).Days;
 
             return (int)DB.correrQueryEscalar(
-                "INSERT INTO LA_QUERY_DE_PAPEL.Reserva (Id_Reserva, Id_Regimen, Fecha_Reserva, Cant_Noches, Fecha_Inicio, Fecha_Fin, Estado, Tipo_Documento, Nro_Documento) output INSERTED.Id_Reserva " +
-                "VALUES (10, @idRegimen, @fechaDeReserva, @cantNoches, @fechaInicio, @fechaFin, 'Reserva correcta', @tipoDoc, @nroDoc)",
+                "INSERT INTO LA_QUERY_DE_PAPEL.Reserva (Id_Regimen, Fecha_Reserva, Cant_Noches, Fecha_Inicio, Fecha_Fin, Estado, Tipo_Documento, Nro_Documento) output INSERTED.Id_Reserva " +
+                "VALUES (@idRegimen, @fechaDeReserva, @cantNoches, @fechaInicio, @fechaFin, 'Reserva correcta', @tipoDoc, @nroDoc)",
                 "idRegimen", idRegimen, "fechaDeReserva", Program.fechaActual, "cantNoches", cantNoches, "fechaInicio", reserva.fechaInicio, "fechaFin", reserva.fechaFin,
                 "tipoDoc", cliente.tipoDocumento, "nroDoc", cliente.nroDocumento);
         }

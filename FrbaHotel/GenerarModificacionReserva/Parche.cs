@@ -8,7 +8,7 @@ using FrbaHotel.Entidades;
 
 namespace FrbaHotel.GenerarModificacionReserva
 {
-    public class Parche : DatosReserv
+    public class Parche : DatosReserva
     {
         public Parche() { }
 

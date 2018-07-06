@@ -9,17 +9,21 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using FrbaHotel.Entidades;
+using FrbaHotel.Utilidades;
 
 namespace FrbaHotel.GenerarModificacionReserva
 {
     public partial class DatosReservaMod : Parche
     {
+        private Reserva reserva;
+
         public DatosReservaMod(Reserva reserva, Usuario usuario) : base(usuario)
         {
-            cargarReserva(reserva);
+            this.reserva = reserva;
+            cargarReserva();
         }
 
-        private void cargarReserva(Reserva reserva)
+        private void cargarReserva()
         {
             dateTimePickerDesde.Value = reserva.fechaInicio;
             dateTimePickerHasta.Value = reserva.fechaFin;
@@ -30,6 +34,16 @@ namespace FrbaHotel.GenerarModificacionReserva
         private void buttonBuscar_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void DatosReservaMod_Load(object sender, EventArgs e)
+        {
+            dataGridViewHabReservadas.DataSource = DB.correrQueryTabla(
+                "SELECT h.Nro_Habitacion, Piso, Ubicacion, Tipo_Hab, Descripcion " +
+                "FROM LA_QUERY_DE_PAPEL.Habitacion h " +
+                    "JOIN LA_QUERY_DE_PAPEL.ReservaxHabitacion rh ON h.Id_Hotel = rh.Id_Hotel AND h.Nro_Habitacion = rh.Nro_Habitacion " +
+                        "WHERE rh.Id_Reserva = @idReserva",
+                "idReserva", reserva.id);
         }
 
         protected override DataTable tablaHabitacionesSeleccionadas()

@@ -231,6 +231,7 @@
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "DatosReservaMod";
             this.Text = "DatosReservaMod";
+            this.Load += new System.EventHandler(this.DatosReservaMod_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewReservaModif)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
