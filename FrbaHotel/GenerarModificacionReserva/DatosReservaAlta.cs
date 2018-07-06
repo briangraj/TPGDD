@@ -50,7 +50,16 @@ namespace FrbaHotel.GenerarModificacionReserva
 
         private void buttonSiguiente_Click(object sender, EventArgs e)
         {
-            accionSiguiente();
+            ErrorProviderReserva().Clear();
+            validarDatos();
+            if (Validaciones.errorProviderConError(ErrorProviderReserva(), Controls))
+                return;
+
+            Reserva reserva = new Reserva(DateTimePickerDesde().Value, DateTimePickerHasta().Value, ComboBoxTipoHab().SelectedItem.ToString(), ComboBoxTipoReg().SelectedItem.ToString(), usuario);
+
+            ConfirmacionReserva confirmacion = new ConfirmacionReserva(reserva, tablaHabitacionesSeleccionadas(), this);
+            confirmacion.Show();
+            Hide();
         }
 
         protected override DataTable tablaHabitacionesSeleccionadas()

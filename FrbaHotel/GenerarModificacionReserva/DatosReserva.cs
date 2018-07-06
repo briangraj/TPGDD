@@ -12,15 +12,15 @@ using System.Data;
 
 namespace FrbaHotel.GenerarModificacionReserva
 {
-    public abstract class DatosReserv : Form
+    public abstract class DatosReserva : Form
     {
         protected Usuario usuario;
         protected bool primeraVez = true;
         protected int idRegimen;
 
-        public DatosReserv() { }
+        public DatosReserva() { }
 
-        public DatosReserv(Usuario usuario)
+        public DatosReserva(Usuario usuario)
         {
             this.usuario = usuario;
             cargarTiposHab(usuario.idHotel);
@@ -30,10 +30,9 @@ namespace FrbaHotel.GenerarModificacionReserva
         private void cargarTiposHab(int idHotel)
         {
             DB.ejecutarReader(
-                "SELECT distinct(Descripcion) " +
-                "FROM LA_QUERY_DE_PAPEL.Habitacion " +
-                    "WHERE Id_Hotel = @idHotel",
-            cargarComboBoxTiposHab, "idHotel", idHotel);
+                "SELECT Descripcion " +
+                "FROM LA_QUERY_DE_PAPEL.Tipo_Habitacion ",
+            cargarComboBoxTiposHab);
         }
 
         public void cargarComboBoxTiposHab(SqlDataReader reader)
@@ -72,7 +71,7 @@ namespace FrbaHotel.GenerarModificacionReserva
 
         protected abstract DataGridView DataGridViewReserva();
 
-        private void validarDatos()
+        protected void validarDatos()
         {
             Validaciones.validarControles(ErrorProviderReserva(), Controls);
             Validaciones.validarFechasAnteriores(ErrorProviderReserva(), Controls);
@@ -105,21 +104,12 @@ namespace FrbaHotel.GenerarModificacionReserva
         protected abstract DateTimePicker DateTimePickerDesde();
 
         protected abstract DateTimePicker DateTimePickerHasta();
-
+        /*
         protected void accionSiguiente()
         {
-            ErrorProviderReserva().Clear();
-            validarDatos();
-            if (Validaciones.errorProviderConError(ErrorProviderReserva(), Controls))
-                return;
-
-            Reserva reserva = new Reserva(DateTimePickerDesde().Value, DateTimePickerHasta().Value, ComboBoxTipoHab().SelectedItem.ToString(), ComboBoxTipoReg().SelectedItem.ToString(), usuario);
-
-            ConfirmacionReserva confirmacion = new ConfirmacionReserva(reserva, tablaHabitacionesSeleccionadas(), this);
-            confirmacion.Show();
-            Hide();
+            
         }
-
+        */
         protected abstract DataTable tablaHabitacionesSeleccionadas();
 
         protected void clickEnDataGrid(DataGridViewCellEventArgs e)

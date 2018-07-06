@@ -193,7 +193,7 @@
     <Compile Include="GenerarModificacionReserva\ConfirmacionReserva.Designer.cs">
       <DependentUpon>ConfirmacionReserva.cs</DependentUpon>
     </Compile>
-    <Compile Include="GenerarModificacionReserva\DatosReserv.cs">
+    <Compile Include="GenerarModificacionReserva\DatosReserva.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GenerarModificacionReserva\DatosReservaMod.cs">
@@ -201,9 +201,6 @@
     </Compile>
     <Compile Include="GenerarModificacionReserva\DatosReservaMod.Designer.cs">
       <DependentUpon>DatosReservaMod.cs</DependentUpon>
-    </Compile>
-    <Compile Include="GenerarModificacionReserva\DatosReservaModif.cs">
-      <SubType>Form</SubType>
     </Compile>
     <Compile Include="GenerarModificacionReserva\ModificarReserva.cs">
       <SubType>Form</SubType>
