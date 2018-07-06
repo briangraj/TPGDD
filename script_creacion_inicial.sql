@@ -285,7 +285,7 @@ INSERT INTO LA_QUERY_DE_PAPEL.Rol (Nombre)
 VALUES ('Administrador General'), ('Guest')
 
 INSERT INTO LA_QUERY_DE_PAPEL.Funcionalidad (Descripcion)
-VALUES ('ABM de rol'), ('ABM de usuario'), ('ABM de hotel'), ('ABM de cliente'), ('Abm de habitacion'), ('Generar o modificar reserva')
+VALUES ('ABM de rol'), ('ABM de usuario'), ('ABM de hotel'), ('ABM de cliente'), ('ABM de habitacion'), ('Generar o modificar reserva')
 
 INSERT INTO LA_QUERY_DE_PAPEL.FuncionalidadxRol(Id_Rol, Id_Funcion)
 VALUES (1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (2,6)
