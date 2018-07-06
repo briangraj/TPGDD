@@ -98,8 +98,7 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Hotel_Baja](
 	);
 
 CREATE TABLE [LA_QUERY_DE_PAPEL].[Tipo_Habitacion](
-	Id_tipo INT PRIMARY KEY IDENTITY(1,1),
-	Tipo numeric(18),
+	Id_tipo INT PRIMARY KEY,
 	Descripcion nvarchar(255), 
 	Porcentual numeric(18,2)
 	);
@@ -782,7 +781,7 @@ FROM gd_esquema.Maestra M
 
 --Cargo los tipos de habitaciones
 
-INSERT INTO LA_QUERY_DE_PAPEL.Tipo_Habitacion (Tipo, Descripcion, Porcentual)
+INSERT INTO LA_QUERY_DE_PAPEL.Tipo_Habitacion (Id_tipo, Descripcion, Porcentual)
 SELECT DISTINCT Habitacion_Tipo_Codigo, Habitacion_Tipo_Descripcion, Habitacion_Tipo_Porcentual FROM gd_esquema.Maestra
 
 --SELECT * FROM LA_QUERY_DE_PAPEL.Tipo_Habitacion
@@ -793,8 +792,7 @@ SELECT DISTINCT Habitacion_Tipo_Codigo, Habitacion_Tipo_Descripcion, Habitacion_
 INSERT INTO [LA_QUERY_DE_PAPEL].[Habitacion] (Nro_Habitacion, Id_Hotel, Piso, Ubicacion, Tipo_Hab)
 SELECT DISTINCT M.Habitacion_Numero, 
 				(SELECT DISTINCT Id_Hotel FROM [LA_QUERY_DE_PAPEL].[Hotel] H WHERE H.Ciudad = M.Hotel_Ciudad AND H.Direccion = M.Hotel_Calle + ' ' + CAST(M.Hotel_Nro_Calle AS VARCHAR)), 
-				M.Habitacion_Piso, M.Habitacion_Frente,
-				(SELECT Id_tipo FROM LA_QUERY_DE_PAPEL.Tipo_Habitacion WHERE Tipo = Habitacion_Tipo_Codigo)
+				M.Habitacion_Piso, M.Habitacion_Frente, Habitacion_Tipo_Codigo
 FROM gd_esquema.Maestra M
 
 --SELECT * FROM LA_QUERY_DE_PAPEL.Habitacion 
