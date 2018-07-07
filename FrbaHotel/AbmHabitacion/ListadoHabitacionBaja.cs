@@ -17,8 +17,9 @@ namespace FrbaHotel.AbmHabitacion
         protected override string queryTabla()
         {
             return 
-                "SELECT Nro_Habitacion, Id_Hotel, Piso, Ubicacion, Tipo_Hab, Descripcion, Habilitada " +
-                "FROM LA_QUERY_DE_PAPEL.Habitacion " +
+                "SELECT Nro_Habitacion, Piso, Ubicacion, th.Descripcion AS Tipo_Habitacion, h.Descripcion, Habilitada " +
+                "FROM LA_QUERY_DE_PAPEL.Habitacion h" +
+                "JOIN LA_QUERY_DE_PAPEL.Tipo_Habitacion th ON h.Tipo_Hab = th.Id_tipo " +
                     "WHERE Nro_Habitacion LIKE @nroHab " +
                         "AND Piso LIKE @piso " +
                         "AND Id_Hotel = @idHotel " +
@@ -34,10 +35,11 @@ namespace FrbaHotel.AbmHabitacion
         {
             //todo falta trigger para hacer baja logica
             DB.correrQuery(
-                "DELETE FROM LA_QUERY_DE_PAPEL.Habitacion " +
-                "WHERE Id_Hotel = @idHotel " +
+                "UPDATE LA_QUERY_DE_PAPEL.Habitacion (Habilitada)" +
+                "VALUES (0)" +
+                    "WHERE Id_Hotel = @idHotel " +
                     "AND Nro_Habitacion = @nroHabitacion",
-                "idHotel", usuario.idHotel, "nroHabitacion", dataGridViewHabitaciones.CurrentRow.Cells["Nro_Habitacion"].Value.ToString());
+                "idHotel", usuario.idHotel, "nroHabitacion", Convert.ToInt32(dataGridViewHabitaciones.CurrentRow.Cells["Nro_Habitacion"].Value));
 
             llenarTabla();
             MessageBox.Show("Habitacion eliminada");

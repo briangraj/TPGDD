@@ -16,10 +16,6 @@ namespace FrbaHotel.AbmHabitacion
 
         protected override void accionAceptar()
         {
-            string ubicacion = "N";
-            if(checkBoxVistaExterior.Checked)
-                ubicacion = "S";
-
             int idTipoHab = (int)DB.correrQueryEscalar(
                 "SELECT Id_tipo " +
                 "FROM LA_QUERY_DE_PAPEL.Tipo_Habitacion " +
@@ -27,10 +23,10 @@ namespace FrbaHotel.AbmHabitacion
                 "descripcion", comboBoxTipoHab.SelectedItem);
 
             DB.correrQuery(
-                "INSERT INTO LA_QUERY_DE_PAPEL.Habitacion(Nro_Habitacion, Id_Hotel, Piso, Ubicacion, Tipo_Hab, Habilitada) " +
+                "INSERT INTO LA_QUERY_DE_PAPEL.Habitacion(Nro_Habitacion, Id_Hotel, Piso, Ubicacion, Tipo_Hab, Descripcion, Habilitada) " +
                 "VALUES (@nroHabitacion, @idHotel, @piso, @ubicacion, @tipoHab, @habilitada)",
-                "nroHabitacion", numericUpDownNroHab.Value, "idHotel", usuario.idHotel, "piso", numericUpDownPiso.Value, "ubicacion", ubicacion, "tipoHab", idTipoHab,
-                "habilitada", checkBoxHabilitada.Checked);
+                "nroHabitacion", numericUpDownNroHab.Value, "idHotel", usuario.idHotel, "piso", numericUpDownPiso.Value, "ubicacion", ubicacion(), "tipoHab", idTipoHab,
+                "descripcion", textBoxDescripcion.Text, "habilitada", checkBoxHabilitada.Checked);
 
             MessageBox.Show("Se creo la habitacion");
         }

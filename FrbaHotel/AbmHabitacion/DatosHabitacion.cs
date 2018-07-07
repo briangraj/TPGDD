@@ -55,6 +55,11 @@ namespace FrbaHotel.AbmHabitacion
             catch (SqlException) { }
         }
 
+        protected string ubicacion()
+        {
+            return checkBoxVistaExterior.Checked ? "S" : "N";
+        }
+
         private void validarDatos()
         {
             Validaciones.validarControles(errorProviderHabitacion, Controls);

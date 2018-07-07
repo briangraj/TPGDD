@@ -36,7 +36,8 @@ namespace FrbaHotel.AbmHabitacion
 
         private void buttonModificacion_Click(object sender, EventArgs e)
         {
-
+            ListadoHabitacionModif listadoModif = new ListadoHabitacionModif(usuario);
+            listadoModif.Show();
         }
     }
 }
