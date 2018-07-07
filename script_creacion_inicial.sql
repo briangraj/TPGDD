@@ -882,7 +882,7 @@ select distinct m.Factura_Nro, e.Id_Reserva, c.Tipo_Documento, c.Nro_Documento,C
 from gd_esquema.Maestra m join LA_QUERY_DE_PAPEL.Estadia e on m.Reserva_Codigo=e.Id_Reserva JOIN LA_QUERY_DE_PAPEL.Cliente c ON m.Cliente_Pasaporte_Nro = c.Nro_Documento
 where m.Factura_Fecha is not null
 
---SELECT*FROM LA_QUERY_DE_PAPEL.Factura
+--SELECT*FROM LA_QUERY_DE_PAPEL.Hotel
 
 --Inserto todos los items de consumibles 
 INSERT INTO LA_QUERY_DE_PAPEL.Item (Nro_Factura, Id_Reserva, Descripcion, Precio, Cantidad)
@@ -919,3 +919,21 @@ SELECT f.Nro_Factura, e.Id_Reserva, 'Estadia',  m.Item_Factura_Cantidad,m.Item_F
 
 --Cargo el total de las facturas 
 UPDATE LA_QUERY_DE_PAPEL.Factura SET Total_Factura =(SELECT SUM(cantidad*precio) FROM LA_QUERY_DE_PAPEL.Item WHERE item.Nro_Factura = factura.Nro_Factura)
+
+
+-- Hoteles con mayor cantidad de consumibles facturados
+
+CREATE PROCEDURE LA_QUERY_DE_PAPEL.HotelesMayoresConsumibles 
+@año int, @InicioTrimestre int, @FinTrimestre int
+AS
+SELECT TOP 5 Hotel.Id_Hotel, nombre AS 'Hotel Nombre', COUNT(Id_Consumible) AS Cantidad FROM LA_QUERY_DE_PAPEL.consumible_estadia
+JOIN LA_QUERY_DE_PAPEL.estadia ON (consumible_estadia.Id_Reserva = estadia.Id_Reserva)
+JOIN LA_QUERY_DE_PAPEL.reserva ON (estadia.Id_Reserva = reserva.Id_Reserva)
+JOIN LA_QUERY_DE_PAPEL.ReservaxHabitacion ON (ReservaxHabitacion.Id_Reserva = reserva.Id_Reserva)
+JOIN LA_QUERY_DE_PAPEL.hotel ON (hotel.Id_Hotel = ReservaxHabitacion.Id_Hotel)
+WHERE Fecha_ingreso IS NOT NULL AND Fecha_egreso IS NOT NULL AND(MONTH(Fecha_ingreso) BETWEEN @InicioTrimestre AND @FinTrimestre) AND YEAR(Fecha_ingreso) = @año
+GROUP BY Hotel.Id_Hotel, nombre
+ORDER BY cantidad DESC
+GO
+
+--EXEC LA_QUERY_DE_PAPEL.HotelesMayoresConsumibles'2017', '3', '8'
