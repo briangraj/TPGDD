@@ -878,11 +878,11 @@ GROUP BY e.Id_Reserva,c.Id_Consumible
 
 INSERT INTO LA_QUERY_DE_PAPEL.Factura (Nro_Factura, Id_Reserva, Tipo_Documento_cliente, Nro_Documento_cliente, Fecha_Emision, Forma_Pago)
 
-select distinct m.Factura_Nro, e.Id_Reserva, c.Tipo_Documento, c.Nro_Documento,CAST(m.Factura_Fecha as DATE),(select id_medio_pago from LA_QUERY_DE_PAPEL.MedioPago where Desc_medio_pago='Efectivo')
+select distinct m.Factura_Nro, e.Id_Reserva, c.Tipo_Documento, c.Nro_Documento,CAST(m.Factura_Fecha as DATE),(select Desc_medio_pago from LA_QUERY_DE_PAPEL.MedioPago where Id_medio_pago = 1)
 from gd_esquema.Maestra m join LA_QUERY_DE_PAPEL.Estadia e on m.Reserva_Codigo=e.Id_Reserva JOIN LA_QUERY_DE_PAPEL.Cliente c ON m.Cliente_Pasaporte_Nro = c.Nro_Documento
 where m.Factura_Fecha is not null
 
-SELECT*FROM LA_QUERY_DE_PAPEL.Factura
+--SELECT*FROM LA_QUERY_DE_PAPEL.Factura
 
 --Inserto todos los items de consumibles 
 INSERT INTO LA_QUERY_DE_PAPEL.Item (Nro_Factura, Id_Reserva, Descripcion, Precio, Cantidad)
@@ -892,33 +892,8 @@ JOIN LA_QUERY_DE_PAPEL.consumible_estadia ON (consumible_estadia.Id_Reserva = f.
 JOIN LA_QUERY_DE_PAPEL.consumible ON (consumible.Id_Consumible = consumible_estadia.Id_Consumible)
 
 
-/* Inserto en tabla items todas las estadias 
-INSERT INTO LA_QUERY_DE_PAPEL.Item (Nro_Factura, Id_Reserva, Cantidad, Descripcion, Precio)
-SELECT DISTINCT f.Nro_Factura, e.Id_Reserva,  DATEDIFF(DAY, Fecha_ingreso, Fecha_egreso), 'Habitación '+ tipo_habitacion.descripcion, (precio*porcentual + Cant_Estrellas*Recarga_Estrella) 
-FROM LA_QUERY_DE_PAPEL.Factura f
-JOIN LA_QUERY_DE_PAPEL.Estadia e ON (f.Id_Reserva = e.Id_Reserva)
-JOIN LA_QUERY_DE_PAPEL.Reserva r ON (e.Id_Reserva = r.Id_Reserva)
-JOIN LA_QUERY_DE_PAPEL.ReservaxHabitacion RxH ON (r.Id_Reserva = RxH.Id_Reserva)
-JOIN LA_QUERY_DE_PAPEL.Habitacion h ON (RxH.Nro_Habitacion = h.Nro_Habitacion)
-JOIN LA_QUERY_DE_PAPEL.Tipo_Habitacion ON (h.Tipo_Hab=Tipo_Habitacion.Id_tipo)
-JOIN LA_QUERY_DE_PAPEL.Regimen reg ON (reg.Id_Regimen = r.Id_Regimen)
-JOIN LA_QUERY_DE_PAPEL.Hotel ON (Hotel.Id_Hotel = RxH.Id_Hotel)
-WHERE Fecha_ingreso IS NOT NULL AND Fecha_egreso IS NOT NULL
+--SELECT*FROM LA_QUERY_DE_PAPEL.Item ORDER BY Id_Reserva
 
-Select*from LA_QUERY_DE_PAPEL.Factura
-Select*from LA_QUERY_DE_PAPEL.Estadia
-Select*from LA_QUERY_DE_PAPEL.Reserva
-Select*from LA_QUERY_DE_PAPEL.ReservaxHabitacion
-Select*from LA_QUERY_DE_PAPEL.Habitacion
-Select*from LA_QUERY_DE_PAPEL.Tipo_Habitacion
-Select*from LA_QUERY_DE_PAPEL.Regimen
-Select*from LA_QUERY_DE_PAPEL.Hotel
-Select*from LA_QUERY_DE_PAPEL.Reserva where Id_Reserva = 26702
-
-DELETE FROM LA_QUERY_DE_PAPEL.Item WHERE Precio > 100.00
-
-SELECT*FROM LA_QUERY_DE_PAPEL.Item ORDER BY Id_Reserva
-*/
 
 
 --Inserto los descuentos por all inclusive
@@ -932,4 +907,15 @@ JOIN LA_QUERY_DE_PAPEL.Reserva ON (reserva.Id_Reserva = e.Id_Reserva)
 where reserva.Id_Regimen = 4
 GROUP BY f.Nro_Factura, e.Id_Reserva
 
+--Cargo las estadias en tabla items
+INSERT INTO LA_QUERY_DE_PAPEL.Item (Nro_Factura, Id_Reserva, Descripcion, Precio, Cantidad)
+SELECT f.Nro_Factura, e.Id_Reserva, 'Estadia',  m.Item_Factura_Cantidad,m.Item_Factura_Monto
+	FROM gd_esquema.Maestra m
+	 JOIN LA_QUERY_DE_PAPEL.Estadia e
+		ON m.Reserva_Codigo = e.Id_Reserva
+	JOIN LA_QUERY_DE_PAPEL.Factura f ON (e.Id_Reserva = f.Id_Reserva)
+	WHERE m.Consumible_Codigo IS NULL
+		AND m.Item_Factura_Monto IS NOT NULL
 
+--Cargo el total de las facturas 
+UPDATE LA_QUERY_DE_PAPEL.Factura SET Total_Factura =(SELECT SUM(cantidad*precio) FROM LA_QUERY_DE_PAPEL.Item WHERE item.Nro_Factura = factura.Nro_Factura)
