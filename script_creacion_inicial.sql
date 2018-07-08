@@ -989,16 +989,43 @@ UPDATE LA_QUERY_DE_PAPEL.Factura SET Total_Factura =(SELECT SUM(cantidad*precio)
 -- Hoteles con mayor cantidad de consumibles facturados
 
 CREATE PROCEDURE LA_QUERY_DE_PAPEL.HotelesMayoresConsumibles 
-@año int, @InicioTrimestre int, @FinTrimestre int
+@año int, @Trimestre int
 AS
 SELECT TOP 5 Hotel.Id_Hotel, nombre AS 'Hotel Nombre', COUNT(Id_Consumible) AS Cantidad FROM LA_QUERY_DE_PAPEL.consumible_estadia
 JOIN LA_QUERY_DE_PAPEL.estadia ON (consumible_estadia.Id_Reserva = estadia.Id_Reserva)
 JOIN LA_QUERY_DE_PAPEL.reserva ON (estadia.Id_Reserva = reserva.Id_Reserva)
 JOIN LA_QUERY_DE_PAPEL.ReservaxHabitacion ON (ReservaxHabitacion.Id_Reserva = reserva.Id_Reserva)
 JOIN LA_QUERY_DE_PAPEL.hotel ON (hotel.Id_Hotel = ReservaxHabitacion.Id_Hotel)
-WHERE Fecha_ingreso IS NOT NULL AND Fecha_egreso IS NOT NULL AND(MONTH(Fecha_ingreso) BETWEEN @InicioTrimestre AND @FinTrimestre) AND YEAR(Fecha_ingreso) = @año
+WHERE Fecha_ingreso IS NOT NULL AND Fecha_egreso IS NOT NULL AND((floor(MONTH(Estadia.Fecha_ingreso)/4) + 1) = @trimestre
+		and YEAR(Estadia.Fecha_ingreso) = @año)
 GROUP BY Hotel.Id_Hotel, nombre
 ORDER BY cantidad DESC
 GO
 
---EXEC LA_QUERY_DE_PAPEL.HotelesMayoresConsumibles'2017', '3', '8'
+--EXEC LA_QUERY_DE_PAPEL.HotelesMayoresConsumibles'2017', '1'
+
+
+--SELECT Estadia.Id_Reserva, ReservaxHabitacion.Nro_Habitacion, Estadia.Fecha_ingreso, Estadia.Fecha_egreso, ReservaxHabitacion.Id_Hotel FROM LA_QUERY_DE_PAPEL.ReservaxHabitacion JOIN LA_QUERY_DE_PAPEL.Reserva ON (ReservaxHabitacion.Id_Reserva = Reserva.Id_Reserva) JOIN LA_QUERY_DE_PAPEL.Estadia ON (Estadia.Id_Reserva = Reserva.Id_Reserva)
+--where Fecha_ingreso BETWEEN '2017-01-01' AND '2017-03-31' AND Fecha_egreso BETWEEN  '2017-01-01' AND '2017-03-31' AND Id_Hotel = 2 AND Nro_Habitacion = 2
+
+
+-- Habitaciones con mayor cantidad de días y veces ocupadas
+CREATE PROCEDURE [LA_QUERY_DE_PAPEL].[habitacionesMasOcupadas](
+@anio int,
+@trimestre int
+)
+AS
+BEGIN
+	
+
+	SELECT TOP 5 RxH.Nro_Habitacion 'Número de Habitación', RxH.Id_Hotel 'Id Hotel', nombre AS 'Nombre Hotel', SUM(DATEDIFF(DAY, e.Fecha_ingreso, e.Fecha_egreso)) 'Cantidad de Días', COUNT(1) 'Cantidad de Veces'
+	FROM LA_QUERY_DE_PAPEL.Estadia e JOIN LA_QUERY_DE_PAPEL.Reserva r ON (e.Id_Reserva = r.Id_Reserva) JOIN LA_QUERY_DE_PAPEL.ReservaxHabitacion RxH
+	ON e.Id_Reserva = RxH.Id_Reserva JOIN LA_QUERY_DE_PAPEL.Hotel ON (RxH.Id_Hotel = Hotel.Id_Hotel)
+	WHERE ((floor(MONTH(e.fecha_ingreso)/4) + 1) = @trimestre
+		and YEAR(e.fecha_ingreso) = @anio)
+	GROUP BY RxH.Id_Hotel, RxH.Nro_Habitacion, Nombre
+	ORDER BY 4 DESC, 5 DESC
+END
+GO
+
+--EXEC LA_QUERY_DE_PAPEL.habitacionesMasOcupadas '2017', '1'
