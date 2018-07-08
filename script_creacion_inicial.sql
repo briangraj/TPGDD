@@ -418,6 +418,39 @@ DELETE p FROM LA_QUERY_DE_PAPEL.Persona p
 END
 GO
 
+CREATE PROCEDURE LA_QUERY_DE_PAPEL.validar_regimen
+	@idHotel int,
+	@idRegimen int,
+	@fechaActual date
+AS
+BEGIN
+	DECLARE @descripcion nvarchar(255)
+	DECLARE @error nvarchar (255)
+
+	IF(EXISTS (SELECT 1 FROM LA_QUERY_DE_PAPEL.Reserva r
+			   JOIN LA_QUERY_DE_PAPEL.ReservaxHabitacion rh ON r.Id_Reserva = rh.Id_Reserva
+				WHERE rh.Id_Hotel = @idHotel AND r.Id_Regimen = @idRegimen
+					AND r.Fecha_Inicio >= @fechaActual))
+	BEGIN
+		SELECT @descripcion = Descripcion FROM LA_QUERY_DE_PAPEL.Regimen WHERE Id_Regimen = @idRegimen
+		SET @error = 'Existen reservas para el regimen ' + @descripcion
+		RAISERROR (@error, 16, 1)
+		RETURN
+	END
+	
+	IF(EXISTS (SELECT 1 FROM LA_QUERY_DE_PAPEL.Estadia e
+			   JOIN LA_QUERY_DE_PAPEL.ReservaxHabitacion rh ON e.Id_Reserva = rh.Id_Reserva
+			   JOIN LA_QUERY_DE_PAPEL.Reserva r ON e.Id_Reserva = r.Id_Reserva
+				WHERE rh.Id_Hotel = @idHotel AND r.Id_Regimen = @idRegimen
+					AND e.Fecha_ingreso <= @fechaActual AND e.Fecha_egreso IS NULL))
+	BEGIN
+		SELECT @descripcion = Descripcion FROM LA_QUERY_DE_PAPEL.Regimen WHERE Id_Regimen = @idRegimen
+		SET @error = 'Existen estadias para el regimen ' + @descripcion
+		RAISERROR (@error, 16, 1)
+		RETURN
+	END
+END
+GO
 /*
 --para validar si existe alguna reserva o estadia de algun regimen en un hotel
 CREATE TRIGGER LA_QUERY_DE_PAPEL.deleteRegimenxHotel ON LA_QUERY_DE_PAPEL.RegimenxHotel

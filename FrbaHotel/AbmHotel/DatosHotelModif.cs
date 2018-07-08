@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using FrbaHotel.Entidades;
 using FrbaHotel.Utilidades;
 using System.Windows.Forms;
 using System.Data.SqlClient;
@@ -13,6 +14,7 @@ namespace FrbaHotel.AbmHotel
     class DatosHotelModif : DatosHotel
     {
         private int idHotelAModif;
+        private List<Regimen> regimenesOriginales;
 
         public DatosHotelModif(DataGridViewRow filaHotel)
             : base()
@@ -22,11 +24,11 @@ namespace FrbaHotel.AbmHotel
 
         private void atenderModificacion()
         {
-            //todo checkear que no tenga reservas con este regimen
-            DB.correrQuery(
-                "DELETE FROM LA_QUERY_DE_PAPEL.RegimenxHotel " +
-                "WHERE Id_Hotel = @idHotel",
-                "idHotel", idHotelAModif);
+            recorrerRegimenesOriginales(validarRegimen);
+
+            recorrerRegimenesOriginales(borrarRegimen);
+
+            insertarNuevosRegimenes();
 
             DB.correrQuery(
                 "UPDATE LA_QUERY_DE_PAPEL.Hotel " +
@@ -37,9 +39,45 @@ namespace FrbaHotel.AbmHotel
                 "cantEstrellas", Convert.ToInt32(comboBoxCantEstrellas.SelectedItem), "ciudad", textBoxCiudad.Text, "pais", textBoxPais.Text,
                 "fechaCreacion", dateTimePickerFechaCreacion.Value, "idHotel", idHotelAModif);
 
-            insertarRegimenxHotel(idHotelAModif);
-
             MessageBox.Show("Se modifico el hotel");
+        }
+
+        private void recorrerRegimenesOriginales(Action<Regimen> accion)
+        {
+            foreach (Regimen regimen in regimenesOriginales)
+            {
+                if (!estaCheckeado(regimen))
+                    accion(regimen);
+            }
+        }
+
+        private bool estaCheckeado(Regimen regimen)
+        {
+            int indiceRegimen = checkedListBoxRegimenes.Items.IndexOf(regimen.descripcion);
+            return checkedListBoxRegimenes.GetItemChecked(indiceRegimen);
+        }
+
+        private void validarRegimen(Regimen regimen)
+        {
+            DB.ejecutarProcedimiento("LA_QUERY_DE_PAPEL.validar_regimen", "idHotel", idHotelAModif, "idRegimen", regimen.id, "fechaActual", Program.fechaActual);
+        }
+
+        private void borrarRegimen(Regimen regimen)
+        {
+            DB.correrQuery(
+                "DELETE FROM LA_QUERY_DE_PAPEL.RegimenxHotel " +
+                "WHERE Id_Hotel = @idHotel " +
+                    "AND Id_Regimen = @idRegimen",
+                "idHotel", idHotelAModif, "idRegimen", regimen.id);
+        }
+
+        private void insertarNuevosRegimenes()
+        {
+            foreach (Regimen regimen in regimenes)
+            {
+                if (estaCheckeado(regimen) && !regimenesOriginales.Contains(regimen))
+                    insertarRegimen(idHotelAModif, regimen.id);
+            }
         }
 
         private void cargarHotel(DataGridViewRow filaHotel)
@@ -69,9 +107,11 @@ namespace FrbaHotel.AbmHotel
 
         public void cargarHotel(SqlDataReader reader)
         {
-            string descripcion = regimenes.Find(regimen => regimen.id == reader.GetInt32(0)).descripcion;
+            Regimen regimenOriginal = regimenes.Find(regimen => regimen.id == reader.GetInt32(0));
 
-            int indice = checkedListBoxRegimenes.Items.IndexOf(descripcion);
+            regimenesOriginales.Add(regimenOriginal);
+
+            int indice = checkedListBoxRegimenes.Items.IndexOf(regimenOriginal.descripcion);
 
             checkedListBoxRegimenes.SetItemChecked(indice, true);
         }
