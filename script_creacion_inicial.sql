@@ -612,8 +612,15 @@ CREATE PROCEDURE LA_QUERY_DE_PAPEL.cancelar_reserva
 	@idUsuario int
 AS
 BEGIN
+	INSERT INTO LA_QUERY_DE_PAPEL.Historial_Reserva (Id_Reserva, Tipo, Fecha_Cancelacion, Id_Usuario)
+	VALUES (@nroReserva, 'Cancelada: ' + @motivo, @fechaCancelacion, @idUsuario)
+
+	DECLARE @estado nvarchar(255) = 'Reserva cancelada por recepcion'
+	IF(EXISTS(SELECT 1 FROM LA_QUERY_DE_PAPEL.Usuario WHERE Id_Usuario = @idUsuario AND Username = 'guest'))
+		SET @estado = 'Reserva cancelada por cliente'
+
 	UPDATE LA_QUERY_DE_PAPEL.Reserva
-		SET Estado = 'cancelada'
+		SET Estado = @estado
 		WHERE Id_Reserva = @nroReserva
 END
 GO
@@ -1022,7 +1029,7 @@ SELECT f.Nro_Factura, e.Id_Reserva, 'Estadia',  m.Item_Factura_Cantidad,m.Item_F
 --Cargo el total de las facturas 
 UPDATE LA_QUERY_DE_PAPEL.Factura SET Total_Factura =(SELECT SUM(cantidad*precio) FROM LA_QUERY_DE_PAPEL.Item WHERE item.Nro_Factura = factura.Nro_Factura)
 
-
+GO
 -- Hoteles con mayor cantidad de consumibles facturados
 
 CREATE PROCEDURE LA_QUERY_DE_PAPEL.HotelesMayoresConsumibles 
