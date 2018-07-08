@@ -110,6 +110,7 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Habitacion](
 	Piso INT NOT NULL,
     Ubicacion nvarchar(255),
     Tipo_Hab INT,
+	Descripcion nvarchar(255),
 	Habilitada bit NOT NULL DEFAULT 1,
 
 	FOREIGN KEY (Id_Hotel) REFERENCES [LA_QUERY_DE_PAPEL].[Hotel] (Id_Hotel),
@@ -855,10 +856,10 @@ SELECT DISTINCT Habitacion_Tipo_Codigo, Habitacion_Tipo_Descripcion, Habitacion_
 
 --Cargo las habitaciones
 
-INSERT INTO [LA_QUERY_DE_PAPEL].[Habitacion] (Nro_Habitacion, Id_Hotel, Piso, Ubicacion, Tipo_Hab)
+INSERT INTO [LA_QUERY_DE_PAPEL].[Habitacion] (Nro_Habitacion, Id_Hotel, Piso, Ubicacion, Tipo_Hab, Descripcion)
 SELECT DISTINCT M.Habitacion_Numero, 
 				(SELECT DISTINCT Id_Hotel FROM [LA_QUERY_DE_PAPEL].[Hotel] H WHERE H.Ciudad = M.Hotel_Ciudad AND H.Direccion = M.Hotel_Calle + ' ' + CAST(M.Hotel_Nro_Calle AS VARCHAR)), 
-				M.Habitacion_Piso, M.Habitacion_Frente, Habitacion_Tipo_Codigo
+				M.Habitacion_Piso, M.Habitacion_Frente, Habitacion_Tipo_Codigo, Habitacion_Tipo_Descripcion
 FROM gd_esquema.Maestra M
 
 --SELECT * FROM LA_QUERY_DE_PAPEL.Habitacion 
