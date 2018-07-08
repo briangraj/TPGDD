@@ -529,31 +529,6 @@ BEGIN
 	END
 END
 GO
-/*
---para validar si existe alguna reserva o estadia de algun regimen en un hotel
-CREATE TRIGGER LA_QUERY_DE_PAPEL.deleteRegimenxHotel ON LA_QUERY_DE_PAPEL.RegimenxHotel
-INSTEAD OF DELETE
-AS
-BEGIN
-	DECLARE @idHotel INT
-	DECLARE @idRegimen INT
-	SELECT @idHotel = d.Id_Hotel, @idRegimen = d.Id_Regimen
-	FROM deleted d
-
-	IF(EXISTS (SELECT 1 FROM LA_QUERY_DE_PAPEL.Reserva r
-				WHERE r.Id_Hotel IN (SELECT Id_Hotel FROM deleted) AND r.Id_Regimen IN (SELECT Id_Regimen FROM deleted)
-					AND (r.Fecha_Inicio = GETDATE() OR r.Fecha_Fin = GETDATE())))
-	BEGIN
-		DECLARE @descripcion nvarchar(255)
-		SELECT @descripcion = Descripcion FROM LA_QUERY_DE_PAPEL.Regimen WHERE Id_Regimen = @idRegimen
-		DECLARE @error nvarchar (255) = 'Existen reservas para el regimen ' + @descripcion
-		RAISERROR (@error, 16, 1)
-		RETURN
-	END
-	--falta checkear las estadias
-END
-GO
-*/
 
 CREATE VIEW LA_QUERY_DE_PAPEL.reservas_sin_cancelar
 AS
@@ -648,6 +623,21 @@ BEGIN
 		EXECUTE LA_QUERY_DE_PAPEL.cancelar_reserva @nroReserva, 'Ingreso fuera de termino', @fechaActual, @idUsuario
 		RAISERROR('Ya paso la fecha de ingreso. La reserva fue cancelada', 16, 1)
 	END
+END
+GO
+
+CREATE PROCEDURE LA_QUERY_DE_PAPEL.registrar_ingreso
+	@nroReserva int,
+	@idUsuario int,
+	@fechaActual datetime
+AS
+BEGIN
+	INSERT INTO LA_QUERY_DE_PAPEL.Estadia (Id_Reserva, Usuario_ingreso_id, Fecha_ingreso)
+	VALUES (@nroReserva, @idUsuario, @fechaActual)
+
+	UPDATE LA_QUERY_DE_PAPEL.Reserva
+	SET Estado = 'Reserva con ingreso'
+		WHERE Id_Reserva = @nroReserva
 END
 GO
 

@@ -41,6 +41,7 @@
             this.buttonEgreso.TabIndex = 6;
             this.buttonEgreso.Text = "Egreso";
             this.buttonEgreso.UseVisualStyleBackColor = true;
+            this.buttonEgreso.Click += new System.EventHandler(this.buttonEgreso_Click);
             // 
             // buttonIngreso
             // 
@@ -51,6 +52,7 @@
             this.buttonIngreso.TabIndex = 5;
             this.buttonIngreso.Text = "Ingreso";
             this.buttonIngreso.UseVisualStyleBackColor = true;
+            this.buttonIngreso.Click += new System.EventHandler(this.buttonIngreso_Click);
             // 
             // IngresoEgreso
             // 

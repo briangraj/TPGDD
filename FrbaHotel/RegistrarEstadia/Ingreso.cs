@@ -29,9 +29,46 @@ namespace FrbaHotel.RegistrarEstadia
             try
             {
                 validarDatos();
+
+                if (numericUpDownCantHuespedes.Value == 1)
+                {
+                    registrarIngreso();
+                }
+                else if (numericUpDownCantHuespedes.Value > 1)
+                {
+                    ingresoDeHuespedes(Convert.ToInt32(numericUpDownCantHuespedes.Value));
+                }
+                else
+                {
+                    MessageBox.Show("Debe ingresar una cantidad de huespedes valida");
+                }
             }
             catch (Exception) { }
         }
+
+        private void registrarIngreso()
+        {
+            DB.ejecutarProcedimiento("LA_QUERY_DE_PAPEL.registrar_ingreso",
+                "nroReserva", Convert.ToInt32(textBoxNroReserva.Text), "idUsuario", usuario.id, "fechaActual", Program.fechaActual);
+        }
+
+        private void ingresoDeHuespedes(int cantidadTotal)
+        {
+            //el que hizo la reserva ya se ingreso
+            while (cantidadTotal > 1)
+            {
+                ResgistrarHuespedes regimen = new ResgistrarHuespedes();
+                if (regimen.ShowDialog() == DialogResult.OK)
+                {
+                    cantidadTotal--;
+                }
+                else
+                {
+                    MessageBox.Show("Debe registrar un cliente");
+                }
+            }
+        }
+
 
         private void validarDatos()
         {
