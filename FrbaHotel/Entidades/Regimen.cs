@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FrbaHotel.Entidades
 {
-    class Regimen
+    public class Regimen
     {
         public String descripcion;
         public int id;

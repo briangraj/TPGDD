@@ -418,6 +418,58 @@ DELETE p FROM LA_QUERY_DE_PAPEL.Persona p
 END
 GO
 
+--procedure para actualizar un cliente
+CREATE PROCEDURE LA_QUERY_DE_PAPEL.procedure_update_cliente
+	@nombre nvarchar(255),
+	@apellido nvarchar(255),
+	@tipoDoc varchar(20),
+	@nroDoc int,
+	@mail nvarchar(255),
+	@telefono nvarchar(50),
+	@direccion nvarchar(255),
+	@localidad nvarchar(255),
+	@nacionalidad nvarchar(255),
+	@fechaNac datetime,
+	@habilitado bit,
+	@tipoDocOriginal varchar(20),
+	@nroDocOriginal int
+AS
+BEGIN
+	DECLARE @mailOriginal nvarchar(255)
+	SELECT @mailOriginal = Mail FROM LA_QUERY_DE_PAPEL.Cliente WHERE Tipo_Documento = @tipoDocOriginal AND Nro_Documento = @nroDocOriginal
+
+	IF(@mail <> @mailOriginal AND EXISTS (SELECT 1 FROM LA_QUERY_DE_PAPEL.Cliente WHERE Mail = @mail AND Tipo_Documento <> @tipoDocOriginal AND Nro_Documento <> @nroDocOriginal))
+		RAISERROR('El mail ya esta en uso', 16, 1)
+
+	IF(@tipoDoc <> @tipoDocOriginal AND @nroDoc <> @nroDocOriginal AND EXISTS (SELECT 1 FROM LA_QUERY_DE_PAPEL.Cliente WHERE Tipo_Documento = @tipoDoc AND Nro_Documento = @nroDoc)
+		OR @tipoDoc <> @tipoDocOriginal AND EXISTS (SELECT 1 FROM LA_QUERY_DE_PAPEL.Cliente WHERE Tipo_Documento = @tipoDoc AND Nro_Documento = @nroDocOriginal)
+		OR @nroDoc <> @nroDocOriginal AND EXISTS (SELECT 1 FROM LA_QUERY_DE_PAPEL.Cliente WHERE Tipo_Documento = @tipoDocOriginal AND Nro_Documento = @nroDoc))
+	BEGIN
+		RAISERROR('El tipo y numero de documento ya estan en uso', 16, 1)
+	END
+
+	UPDATE LA_QUERY_DE_PAPEL.Persona
+		SET Tipo_Documento = @tipoDoc, Nro_Documento = @nroDoc, Apellido = @apellido, Nombre = @nombre, Direccion = @direccion,
+			Fecha_Nacimiento = @fechaNac, Telefono = @telefono, Habilitado = @habilitado
+		WHERE Tipo_Documento = @tipoDocOriginal AND Nro_Documento = @nroDocOriginal
+
+	UPDATE LA_QUERY_DE_PAPEL.Cliente
+		SET Localidad = @localidad, Mail = @mail, Nacionalidad = @nacionalidad
+		WHERE Tipo_Documento = @tipoDoc AND Nro_Documento = @nroDoc
+END
+GO
+
+--baja logica de una persona
+CREATE TRIGGER LA_QUERY_DE_PAPEL.deletePersonas ON LA_QUERY_DE_PAPEL.Persona
+INSTEAD OF DELETE
+AS
+BEGIN
+UPDATE LA_QUERY_DE_PAPEL.Persona
+	SET Habilitado = 0
+	WHERE LA_QUERY_DE_PAPEL.Persona.Tipo_Documento IN (SELECT Tipo_Documento FROM deleted) AND LA_QUERY_DE_PAPEL.Persona.Nro_Documento IN (SELECT Nro_Documento FROM deleted)
+END
+GO
+
 CREATE PROCEDURE LA_QUERY_DE_PAPEL.validar_regimen
 	@idHotel int,
 	@idRegimen int,
@@ -477,56 +529,55 @@ END
 GO
 */
 
+CREATE VIEW LA_QUERY_DE_PAPEL.reservas_sin_cancelar
+AS
+	SELECT Id_Reserva, Id_Regimen, Fecha_Reserva, Cant_Noches, Fecha_Inicio, Fecha_Fin, Estado, Tipo_Documento, Nro_Documento
+	FROM LA_QUERY_DE_PAPEL.Reserva
+		WHERE UPPER(Estado) NOT LIKE '%CANCELADA%' 
+GO
 
---procedure para actualizar un cliente
-CREATE PROCEDURE LA_QUERY_DE_PAPEL.procedure_update_cliente
-	@nombre nvarchar(255),
-	@apellido nvarchar(255),
-	@tipoDoc varchar(20),
-	@nroDoc int,
-	@mail nvarchar(255),
-	@telefono nvarchar(50),
-	@direccion nvarchar(255),
-	@localidad nvarchar(255),
-	@nacionalidad nvarchar(255),
-	@fechaNac datetime,
-	@habilitado bit,
-	@tipoDocOriginal varchar(20),
-	@nroDocOriginal int
+CREATE PROCEDURE LA_QUERY_DE_PAPEL.validar_baja_hotel
+	@idHotel int,
+	@fechaInicio date,
+	@fechaFin date
 AS
 BEGIN
-	DECLARE @mailOriginal nvarchar(255)
-	SELECT @mailOriginal = Mail FROM LA_QUERY_DE_PAPEL.Cliente WHERE Tipo_Documento = @tipoDocOriginal AND Nro_Documento = @nroDocOriginal
-
-	IF(@mail <> @mailOriginal AND EXISTS (SELECT 1 FROM LA_QUERY_DE_PAPEL.Cliente WHERE Mail = @mail AND Tipo_Documento <> @tipoDocOriginal AND Nro_Documento <> @nroDocOriginal))
-		RAISERROR('El mail ya esta en uso', 16, 1)
-
-	IF(@tipoDoc <> @tipoDocOriginal AND @nroDoc <> @nroDocOriginal AND EXISTS (SELECT 1 FROM LA_QUERY_DE_PAPEL.Cliente WHERE Tipo_Documento = @tipoDoc AND Nro_Documento = @nroDoc)
-		OR @tipoDoc <> @tipoDocOriginal AND EXISTS (SELECT 1 FROM LA_QUERY_DE_PAPEL.Cliente WHERE Tipo_Documento = @tipoDoc AND Nro_Documento = @nroDocOriginal)
-		OR @nroDoc <> @nroDocOriginal AND EXISTS (SELECT 1 FROM LA_QUERY_DE_PAPEL.Cliente WHERE Tipo_Documento = @tipoDocOriginal AND Nro_Documento = @nroDoc))
+	IF(EXISTS(
+		SELECT 1 FROM LA_QUERY_DE_PAPEL.reservas_sin_cancelar r
+		JOIN LA_QUERY_DE_PAPEL.ReservaxHabitacion rh ON r.Id_Reserva = rh.Id_Reserva
+			WHERE rh.Id_Hotel = @idHotel 
+				AND(Fecha_Inicio BETWEEN @fechaInicio AND @fechaFin OR Fecha_Fin BETWEEN @fechaInicio AND @fechaFin OR Fecha_Inicio < @fechaInicio AND Fecha_Fin > @fechaFin)))
 	BEGIN
-		RAISERROR('El tipo y numero de documento ya estan en uso', 16, 1)
+		RAISERROR('Existen reservas en el periodo elegido', 16, 1)
 	END
 
-	UPDATE LA_QUERY_DE_PAPEL.Persona
-		SET Tipo_Documento = @tipoDoc, Nro_Documento = @nroDoc, Apellido = @apellido, Nombre = @nombre, Direccion = @direccion,
-			Fecha_Nacimiento = @fechaNac, Telefono = @telefono, Habilitado = @habilitado
-		WHERE Tipo_Documento = @tipoDocOriginal AND Nro_Documento = @nroDocOriginal
-
-	UPDATE LA_QUERY_DE_PAPEL.Cliente
-		SET Localidad = @localidad, Mail = @mail, Nacionalidad = @nacionalidad
-		WHERE Tipo_Documento = @tipoDoc AND Nro_Documento = @nroDoc
+	IF(EXISTS(
+		SELECT 1 FROM LA_QUERY_DE_PAPEL.Estadia e
+		JOIN LA_QUERY_DE_PAPEL.Reserva r ON e.Id_Reserva = r.Id_Reserva
+		JOIN LA_QUERY_DE_PAPEL.ReservaxHabitacion rh ON e.Id_Reserva = rh.Id_Reserva
+			WHERE rh.Id_Hotel = @idHotel 
+				AND e.Fecha_egreso IS NULL AND r.Fecha_Fin <= @fechaInicio))
+	BEGIN
+		RAISERROR('Existen estadias en el periodo elegido', 16, 1)
+	END
 END
 GO
 
---baja logica de una persona
-CREATE TRIGGER LA_QUERY_DE_PAPEL.deletePersonas ON LA_QUERY_DE_PAPEL.Persona
-INSTEAD OF DELETE
+CREATE PROCEDURE LA_QUERY_DE_PAPEL.procedure_alta_habitacion
+	@nroHabitacion int,
+	@idHotel int,
+	@piso int,
+	@ubicacion char,
+	@tipoHabitacion nvarchar(255),
+	@descripcion nvarchar(255),
+	@habilitada bit
 AS
 BEGIN
-UPDATE LA_QUERY_DE_PAPEL.Persona
-	SET Habilitado = 0
-	WHERE LA_QUERY_DE_PAPEL.Persona.Tipo_Documento IN (SELECT Tipo_Documento FROM deleted) AND LA_QUERY_DE_PAPEL.Persona.Nro_Documento IN (SELECT Nro_Documento FROM deleted)
+	IF(EXISTS (SELECT 1 FROM LA_QUERY_DE_PAPEL.Habitacion WHERE Nro_Habitacion = @nroHabitacion AND Id_Hotel = @idHotel))
+		RAISERROR('Ya existe el numero de habitacion en el hotel', 16, 1)
+
+	INSERT INTO LA_QUERY_DE_PAPEL.Habitacion(Nro_Habitacion, Id_Hotel, Piso, Ubicacion, Tipo_Hab, Descripcion, Habilitada)
+	VALUES (@nroHabitacion, @idHotel, @piso, @ubicacion, @tipoHabitacion, @descripcion, @habilitada)
 END
 GO
 
@@ -576,25 +627,6 @@ END
 GO
 
 
-/*
-CREATE PROCEDURE LA_QUERY_DE_PAPEL.procedure_alta_habitacion
-	@nroHabitacion int,
-	@idHotel int,
-	@piso int,
-	@vistaExterior bit,
-	@tipoHabitacion nvarchar(255),
-	@descripcion nvarchar(255),
-	@habilitada bit
-AS
-BEGIN
-	IF(EXISTS (SELECT 1 FROM LA_QUERY_DE_PAPEL.Habitacion WHERE Nro_Habitacion = @nroHabitacion AND Id_Hotel = @idHotel))
-		RAISERROR('Ya existe el numero de habitacion en el hotel', 16, 1)
-
-	INSERT INTO LA_QUERY_DE_PAPEL.Habitacion(Nro_Habitacion, Id_Hotel, Piso, Ubicacion, Tipo_Hab, Descripcion, Habilitada)
-	VALUES (@nroHabitacion, @idHotel, @piso, ubicacion, @tipoHabitacion, @descripcion, @habilitada)
-END
-GO
-*/
 /*
 CREATE PROCEDURE LA_QUERY_DE_PAPEL.procedure_generar_reserva
 	@descripcionRegimen nvarchar(255),

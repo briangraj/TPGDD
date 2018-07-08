@@ -22,9 +22,7 @@ namespace FrbaHotel.AbmHabitacion
                     "WHERE Descripcion = @descripcion",
                 "descripcion", comboBoxTipoHab.SelectedItem);
 
-            DB.correrQuery(
-                "INSERT INTO LA_QUERY_DE_PAPEL.Habitacion(Nro_Habitacion, Id_Hotel, Piso, Ubicacion, Tipo_Hab, Descripcion, Habilitada) " +
-                "VALUES (@nroHabitacion, @idHotel, @piso, @ubicacion, @tipoHab, @habilitada)",
+            DB.ejecutarProcedimiento("LA_QUERY_DE_PAPEL.procedure_alta_habitacion",
                 "nroHabitacion", numericUpDownNroHab.Value, "idHotel", usuario.idHotel, "piso", numericUpDownPiso.Value, "ubicacion", ubicacion(), "tipoHab", idTipoHab,
                 "descripcion", textBoxDescripcion.Text, "habilitada", checkBoxHabilitada.Checked);
 

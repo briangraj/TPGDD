@@ -105,17 +105,32 @@
     <Compile Include="AbmHotel\AbmHotel.Designer.cs">
       <DependentUpon>AbmHotel.cs</DependentUpon>
     </Compile>
+    <Compile Include="AbmHotel\BajaHotel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmHotel\BajaHotel.Designer.cs">
+      <DependentUpon>BajaHotel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmHotel\DatosHotelAlta.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="AbmHotel\DatosHotel.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="AbmHotel\DatosHotel.Designer.cs">
       <DependentUpon>DatosHotel.cs</DependentUpon>
     </Compile>
+    <Compile Include="AbmHotel\DatosHotelModif.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="AbmHotel\ListadoHotel.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="AbmHotel\ListadoHotel.Designer.cs">
       <DependentUpon>ListadoHotel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmHotel\ListadoHotelBaja.cs">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="AbmHotel\ListadoHotelModif.cs">
       <SubType>Form</SubType>
@@ -308,6 +323,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AbmHotel\AbmHotel.resx">
       <DependentUpon>AbmHotel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmHotel\BajaHotel.resx">
+      <DependentUpon>BajaHotel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AbmHotel\DatosHotel.resx">
       <DependentUpon>DatosHotel.cs</DependentUpon>

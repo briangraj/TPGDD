@@ -22,7 +22,7 @@ namespace FrbaHotel.AbmHotel
             cargarHotel(filaHotel);
         }
 
-        private void atenderModificacion()
+        protected override void accionAceptar()
         {
             recorrerRegimenesOriginales(validarRegimen);
 

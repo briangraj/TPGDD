@@ -24,7 +24,7 @@ namespace FrbaHotel.AbmHotel
 
         private void buttonAlta_Click(object sender, EventArgs e)
         {
-            DatosHotel datosHotel = new DatosHotel(usuario);
+            DatosHotelAlta datosHotel = new DatosHotelAlta(usuario);
             datosHotel.Show();
         }
 

@@ -37,7 +37,15 @@ namespace FrbaHotel.AbmHotel
                 "pais", "%" + textBoxPais.Text + "%");
         }
 
-        protected abstract string queryTabla();
+        private string queryTabla()
+        {
+            return "SELECT Id_Hotel, Nombre, Mail, Telefono, Direccion, Cant_Estrellas, Ciudad, Pais, Fecha_Creacion " +
+                    "FROM LA_QUERY_DE_PAPEL.Hotel " +
+                        "WHERE Nombre LIKE @nombre " +
+                            "AND Cant_Estrellas LIKE @cantEstrellas " +
+                            "AND Ciudad LIKE @ciudad " +
+                            "AND Pais LIKE @pais";
+        }
 
         protected void agregarColumna()
         {

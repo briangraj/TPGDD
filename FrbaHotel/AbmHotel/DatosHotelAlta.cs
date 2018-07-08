@@ -19,7 +19,7 @@ namespace FrbaHotel.AbmHotel
             this.usuario = usuario;
         }
 
-        private void atenderAlta()
+        protected override void accionAceptar()
         {
             int idHotel = insertarHotel();
 
