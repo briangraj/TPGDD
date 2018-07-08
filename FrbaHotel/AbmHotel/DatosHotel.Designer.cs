@@ -66,7 +66,6 @@
             this.tableLayoutPanel1.Controls.Add(this.textBoxDireccion, 1, 3);
             this.tableLayoutPanel1.Controls.Add(this.label6, 0, 5);
             this.tableLayoutPanel1.Controls.Add(this.textBoxTelefono, 1, 2);
-            this.tableLayoutPanel1.Controls.Add(this.textBoxMail, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.label5, 0, 4);
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.textBoxNombre, 1, 0);
@@ -75,6 +74,7 @@
             this.tableLayoutPanel1.Controls.Add(this.label3, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.dateTimePickerFechaCreacion, 1, 7);
             this.tableLayoutPanel1.Controls.Add(this.comboBoxCantEstrellas, 1, 4);
+            this.tableLayoutPanel1.Controls.Add(this.textBoxMail, 1, 1);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(90, 41);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 8;
@@ -295,9 +295,7 @@
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.TextBox textBoxMail;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBoxNombre;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
@@ -305,15 +303,17 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox textBoxPais;
-        private System.Windows.Forms.TextBox textBoxCiudad;
-        private System.Windows.Forms.TextBox textBoxDireccion;
-        private System.Windows.Forms.TextBox textBoxTelefono;
-        private System.Windows.Forms.DateTimePicker dateTimePickerFechaCreacion;
-        private System.Windows.Forms.CheckedListBox checkedListBoxRegimenes;
         private System.Windows.Forms.Button buttonLimpiar;
         private System.Windows.Forms.Button buttonAceptar;
         private System.Windows.Forms.ErrorProvider errorProviderHoteles;
-        private System.Windows.Forms.ComboBox comboBoxCantEstrellas;
+        protected System.Windows.Forms.TextBox textBoxMail;
+        protected System.Windows.Forms.TextBox textBoxNombre;
+        protected System.Windows.Forms.TextBox textBoxPais;
+        protected System.Windows.Forms.TextBox textBoxCiudad;
+        protected System.Windows.Forms.TextBox textBoxDireccion;
+        protected System.Windows.Forms.TextBox textBoxTelefono;
+        protected System.Windows.Forms.DateTimePicker dateTimePickerFechaCreacion;
+        protected System.Windows.Forms.CheckedListBox checkedListBoxRegimenes;
+        protected System.Windows.Forms.ComboBox comboBoxCantEstrellas;
     }
 }
