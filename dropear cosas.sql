@@ -48,6 +48,7 @@ DROP PROCEDURE LA_QUERY_DE_PAPEL.validar_reserva_cancelable
 DROP PROCEDURE LA_QUERY_DE_PAPEL.cancelar_reserva
 DROP PROCEDURE LA_QUERY_DE_PAPEL.validar_reserva_para_ingreso
 DROP PROCEDURE LA_QUERY_DE_PAPEL.registrar_ingreso
+DROP PROCEDURE LA_QUERY_DE_PAPEL.validar_reserva_para_egreso
 DROP PROCEDURE LA_QUERY_DE_PAPEL.procedure_login
 DROP PROCEDURE LA_QUERY_DE_PAPEL.Cargar_personas
 DROP PROCEDURE LA_QUERY_DE_PAPEL.Cargar_reservas

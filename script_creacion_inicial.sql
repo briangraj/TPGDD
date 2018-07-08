@@ -641,6 +641,20 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE LA_QUERY_DE_PAPEL.validar_reserva_para_egreso
+	@nroReserva int,
+	@fechaActual datetime,
+	@idUsuario int
+AS
+BEGIN
+	IF(NOT EXISTS(SELECT 1 FROM LA_QUERY_DE_PAPEL.Estadia WHERE Id_Reserva = @nroReserva))
+		RAISERROR('La reserva no tiene registrada el ingreso', 16, 1)
+
+	IF(EXISTS(SELECT 1 FROM LA_QUERY_DE_PAPEL.Estadia WHERE Id_Reserva = @nroReserva AND Fecha_egreso IS NOT NULL))
+		RAISERROR('Ya se realizo el egreso de la reserva', 16, 1)
+END
+GO
+
 CREATE PROCEDURE LA_QUERY_DE_PAPEL.procedure_login
 	@usuario nvarchar(20),
 	@contrasenia varbinary(255)

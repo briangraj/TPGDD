@@ -43,7 +43,12 @@ namespace FrbaHotel.RegistrarEstadia
                     MessageBox.Show("Debe ingresar una cantidad de huespedes valida");
                 }
             }
-            catch (Exception) { }
+            catch (SqlException) { }
+
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void registrarIngreso()
@@ -68,7 +73,6 @@ namespace FrbaHotel.RegistrarEstadia
                 }
             }
         }
-
 
         private void validarDatos()
         {
