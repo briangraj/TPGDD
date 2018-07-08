@@ -178,6 +178,13 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[ReservaxHabitacion_Conflicto_Migracion] (
 	FOREIGN KEY (Id_Reserva) REFERENCES [LA_QUERY_DE_PAPEL].[Reserva_Conflicto_Migracion],
 	);
 
+CREATE TABLE [LA_QUERY_DE_PAPEL].[Historial_Reserva] (
+	Id_Reserva INT NOT NULL REFERENCES [LA_QUERY_DE_PAPEL].[Reserva] (Id_Reserva),
+	Tipo nvarchar(255) NOT NULL,
+	Fecha_Cancelacion datetime NOT NULL,
+	Id_Usuario INT NOT NULL REFERENCES [LA_QUERY_DE_PAPEL].[Usuario] (Id_Usuario)
+);
+
 CREATE TABLE [LA_QUERY_DE_PAPEL].[UsuarioxHotel] ( 
 	Id_Hotel INT NOT NULL,
 	Id_Usuario INT NOT NULL,
@@ -470,10 +477,28 @@ UPDATE LA_QUERY_DE_PAPEL.Persona
 END
 GO
 
+CREATE PROCEDURE LA_QUERY_DE_PAPEL.procedure_alta_habitacion
+	@nroHabitacion int,
+	@idHotel int,
+	@piso int,
+	@ubicacion char,
+	@tipoHabitacion nvarchar(255),
+	@descripcion nvarchar(255),
+	@habilitada bit
+AS
+BEGIN
+	IF(EXISTS (SELECT 1 FROM LA_QUERY_DE_PAPEL.Habitacion WHERE Nro_Habitacion = @nroHabitacion AND Id_Hotel = @idHotel))
+		RAISERROR('Ya existe el numero de habitacion en el hotel', 16, 1)
+		
+	INSERT INTO LA_QUERY_DE_PAPEL.Habitacion(Nro_Habitacion, Id_Hotel, Piso, Ubicacion, Tipo_Hab, Descripcion, Habilitada)
+	VALUES (@nroHabitacion, @idHotel, @piso, @ubicacion, @tipoHabitacion, @descripcion, @habilitada)
+END
+GO
+
 CREATE PROCEDURE LA_QUERY_DE_PAPEL.validar_regimen
 	@idHotel int,
 	@idRegimen int,
-	@fechaActual date
+	@fechaActual datetime
 AS
 BEGIN
 	DECLARE @descripcion nvarchar(255)
@@ -536,10 +561,11 @@ AS
 		WHERE UPPER(Estado) NOT LIKE '%CANCELADA%' 
 GO
 
+--verifico si existen reservas o estadias en el periodo que se quiere dar de baja el hotel
 CREATE PROCEDURE LA_QUERY_DE_PAPEL.validar_baja_hotel
 	@idHotel int,
-	@fechaInicio date,
-	@fechaFin date
+	@fechaInicio datetime,
+	@fechaFin datetime
 AS
 BEGIN
 	IF(EXISTS(
@@ -563,21 +589,31 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE LA_QUERY_DE_PAPEL.procedure_alta_habitacion
-	@nroHabitacion int,
-	@idHotel int,
-	@piso int,
-	@ubicacion char,
-	@tipoHabitacion nvarchar(255),
-	@descripcion nvarchar(255),
-	@habilitada bit
+CREATE PROCEDURE LA_QUERY_DE_PAPEL.validar_reserva_cancelable
+	@nroReserva int
 AS
 BEGIN
-	IF(EXISTS (SELECT 1 FROM LA_QUERY_DE_PAPEL.Habitacion WHERE Nro_Habitacion = @nroHabitacion AND Id_Hotel = @idHotel))
-		RAISERROR('Ya existe el numero de habitacion en el hotel', 16, 1)
+	IF(NOT EXISTS(SELECT 1 FROM LA_QUERY_DE_PAPEL.Reserva WHERE Id_Reserva = @nroReserva))
+		RAISERROR('El numero de reserva no existe', 16, 1)
+	
+	IF(EXISTS(SELECT 1 FROM LA_QUERY_DE_PAPEL.Reserva WHERE Id_Reserva = @nroReserva AND UPPER(Estado) LIKE '%CANCELADA%'))
+		RAISERROR('La reserva ya fue cancelada', 16, 1)
 
-	INSERT INTO LA_QUERY_DE_PAPEL.Habitacion(Nro_Habitacion, Id_Hotel, Piso, Ubicacion, Tipo_Hab, Descripcion, Habilitada)
-	VALUES (@nroHabitacion, @idHotel, @piso, @ubicacion, @tipoHabitacion, @descripcion, @habilitada)
+	IF(EXISTS(SELECT 1 FROM LA_QUERY_DE_PAPEL.Reserva WHERE Id_Reserva = @nroReserva AND UPPER(Estado) LIKE '%INGRESO%'))
+		RAISERROR('La reserva ya fue efectivizada', 16, 1)
+END
+GO
+
+CREATE PROCEDURE LA_QUERY_DE_PAPEL.cancelar_reserva
+	@nroReserva int,
+	@motivo nvarchar(242),
+	@fechaCancelacion datetime,
+	@idUsuario int
+AS
+BEGIN
+	UPDATE LA_QUERY_DE_PAPEL.Reserva
+		SET Estado = 'cancelada'
+		WHERE Id_Reserva = @nroReserva
 END
 GO
 
@@ -630,9 +666,9 @@ GO
 /*
 CREATE PROCEDURE LA_QUERY_DE_PAPEL.procedure_generar_reserva
 	@descripcionRegimen nvarchar(255),
-	@fechaDeReserva date,
-	@fechaInicio date,
-	@fechaFin date,
+	@fechaDeReserva datetime,
+	@fechaInicio datetime,
+	@fechaFin datetime,
 	@idUsuario int
 AS
 BEGIN

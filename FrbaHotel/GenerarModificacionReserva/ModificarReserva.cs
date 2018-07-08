@@ -28,10 +28,26 @@ namespace FrbaHotel.GenerarModificacionReserva
         {
             try
             {
+                if(!reservaValida())
+                    return;
+
                 Reserva reserva = new Reserva(Convert.ToInt32(textBoxNroReserva.Text));
                 reserva.cargar();
             }
             catch (SqlException) { }
+        }
+
+        private bool reservaValida()
+        {
+            if (textBoxNroReserva.Text == "")
+            {
+                MessageBox.Show("Debe escribir un numero de reserva");
+                return false;
+            }
+            
+            //sp validar reserva
+
+            return true;
         }
     }
 }
