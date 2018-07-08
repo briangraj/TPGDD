@@ -32,12 +32,12 @@ namespace FrbaHotel.AbmHotel
 
             DB.correrQuery(
                 "UPDATE LA_QUERY_DE_PAPEL.Hotel " +
-                "SET Nombre = @nombre, Mail = @mail, Telefono = @telefono, Direccion = @direccion, Cant_Estrellas = @cantEstrellas, Ciudad = @ciudad, " +
+                "SET Nombre = @nombre, Mail = @mail, Telefono = @telefono, Direccion = @direccion, Cant_Estrellas = @cantEstrellas, Recarga_Estrella = @recarga, Ciudad = @ciudad, " +
                 "Pais = @pais, Fecha_Creacion = @fechaCreacion " +
-                "WHERE Id_Hotel = @idHotel",
+                    "WHERE Id_Hotel = @idHotel",
                 "nombre", textBoxNombre.Text, "mail", textBoxMail.Text, "telefono", textBoxTelefono.Text, "direccion", textBoxDireccion.Text,
-                "cantEstrellas", Convert.ToInt32(comboBoxCantEstrellas.SelectedItem), "ciudad", textBoxCiudad.Text, "pais", textBoxPais.Text,
-                "fechaCreacion", dateTimePickerFechaCreacion.Value, "idHotel", idHotelAModif);
+                "cantEstrellas", Convert.ToInt32(comboBoxCantEstrellas.SelectedItem), "recarga", Convert.ToInt32(textBoxRecarga.Text), "ciudad", textBoxCiudad.Text,
+                "pais", textBoxPais.Text, "fechaCreacion", dateTimePickerFechaCreacion.Value, "idHotel", idHotelAModif);
 
             MessageBox.Show("Se modifico el hotel");
         }
@@ -87,6 +87,7 @@ namespace FrbaHotel.AbmHotel
             textBoxTelefono.Text = filaHotel.Cells["Telefono"].Value.ToString();
             textBoxDireccion.Text = filaHotel.Cells["Direccion"].Value.ToString();
             comboBoxCantEstrellas.SelectedIndex = Convert.ToInt32(filaHotel.Cells["Cant_Estrellas"].Value) - 1;
+            textBoxRecarga.Text = filaHotel.Cells["Recarga_Estrella"].Value.ToString();
             textBoxCiudad.Text = filaHotel.Cells["Ciudad"].Value.ToString();
             textBoxPais.Text = filaHotel.Cells["Pais"].Value.ToString();
             dateTimePickerFechaCreacion.Value = Convert.ToDateTime(filaHotel.Cells["Fecha_Creacion"].Value);

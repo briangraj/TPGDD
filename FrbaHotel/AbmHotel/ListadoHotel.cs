@@ -39,7 +39,7 @@ namespace FrbaHotel.AbmHotel
 
         private string queryTabla()
         {
-            return "SELECT Id_Hotel, Nombre, Mail, Telefono, Direccion, Cant_Estrellas, Ciudad, Pais, Fecha_Creacion " +
+            return "SELECT Id_Hotel, Nombre, Mail, Telefono, Direccion, Cant_Estrellas, Recarga_Estrella, Ciudad, Pais, Fecha_Creacion " +
                     "FROM LA_QUERY_DE_PAPEL.Hotel " +
                         "WHERE Nombre LIKE @nombre " +
                             "AND Cant_Estrellas LIKE @cantEstrellas " +

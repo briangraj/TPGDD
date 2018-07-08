@@ -33,10 +33,11 @@ namespace FrbaHotel.AbmHotel
         private int insertarHotel()
         {
             return (int)DB.correrQueryEscalar(
-                "INSERT INTO LA_QUERY_DE_PAPEL.Hotel (Nombre, Mail,	Telefono, Direccion, Cant_Estrellas, Ciudad, Pais, Fecha_Creacion) output INSERTED.Id_Hotel " +
-                "VALUES (@nombre, @mail, @telefono, @direccion, @cantEstrellas, @ciudad, @pais, @fechaCreacion)",
+                "INSERT INTO LA_QUERY_DE_PAPEL.Hotel (Nombre, Mail,	Telefono, Direccion, Cant_Estrellas, Recarga_Estrella, Ciudad, Pais, Fecha_Creacion) output INSERTED.Id_Hotel " +
+                "VALUES (@nombre, @mail, @telefono, @direccion, @cantEstrellas, @recargaEstrellas, @ciudad, @pais, @fechaCreacion)",
                 "nombre", textBoxNombre.Text, "mail", textBoxMail.Text, "telefono", textBoxTelefono.Text, "direccion", textBoxDireccion.Text,
-                "cantEstrellas", Convert.ToInt32(comboBoxCantEstrellas.SelectedItem), "ciudad", textBoxCiudad.Text, "pais", textBoxPais.Text, "fechaCreacion", dateTimePickerFechaCreacion.Value);
+                "cantEstrellas", Convert.ToInt32(comboBoxCantEstrellas.SelectedItem), "recargaEstrellas", Convert.ToInt32(textBoxRecarga.Text), 
+                "ciudad", textBoxCiudad.Text, "pais", textBoxPais.Text, "fechaCreacion", dateTimePickerFechaCreacion.Value);
         }
 
         private void insertarUsuarioxHotel(int idHotel)

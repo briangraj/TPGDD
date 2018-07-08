@@ -625,6 +625,32 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE LA_QUERY_DE_PAPEL.validar_reserva_para_ingreso
+	@nroReserva int,
+	@fechaActual datetime,
+	@idUsuario int
+AS
+BEGIN
+	IF(NOT EXISTS(SELECT 1 FROM LA_QUERY_DE_PAPEL.Reserva WHERE Id_Reserva = @nroReserva))
+		RAISERROR('La reserva no existe', 16, 1)
+
+	IF(EXISTS(SELECT 1 FROM LA_QUERY_DE_PAPEL.Estadia WHERE Id_Reserva = @nroReserva))
+		RAISERROR('Ya se realizo el ingreso de la reserva', 16, 1)
+
+	IF(NOT EXISTS(SELECT 1 FROM LA_QUERY_DE_PAPEL.reservas_sin_cancelar WHERE Id_Reserva = @nroReserva))
+		RAISERROR('La reserva se cancelo', 16, 1)
+
+	IF(EXISTS(SELECT 1 FROM LA_QUERY_DE_PAPEL.Reserva WHERE Id_Reserva = @nroReserva AND Fecha_Inicio > @fechaActual))
+		RAISERROR('Todavia no se puede registrar el ingreso', 16, 1)
+
+	IF(EXISTS(SELECT 1 FROM LA_QUERY_DE_PAPEL.Reserva WHERE Id_Reserva = @nroReserva AND Fecha_Inicio < @fechaActual))
+	BEGIN
+		EXECUTE LA_QUERY_DE_PAPEL.cancelar_reserva @nroReserva, 'Ingreso fuera de termino', @fechaActual, @idUsuario
+		RAISERROR('Ya paso la fecha de ingreso. La reserva fue cancelada', 16, 1)
+	END
+END
+GO
+
 CREATE PROCEDURE LA_QUERY_DE_PAPEL.procedure_login
 	@usuario nvarchar(20),
 	@contrasenia varbinary(255)
