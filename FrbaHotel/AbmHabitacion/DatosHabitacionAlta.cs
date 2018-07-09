@@ -23,7 +23,7 @@ namespace FrbaHotel.AbmHabitacion
                 "descripcion", comboBoxTipoHab.SelectedItem);
 
             DB.ejecutarProcedimiento("LA_QUERY_DE_PAPEL.procedure_alta_habitacion",
-                "nroHabitacion", numericUpDownNroHab.Value, "idHotel", usuario.idHotel, "piso", numericUpDownPiso.Value, "ubicacion", ubicacion(), "tipoHab", idTipoHab,
+                "nroHabitacion", numericUpDownNroHab.Value, "idHotel", usuario.idHotel, "piso", numericUpDownPiso.Value, "ubicacion", ubicacion(), "idTipoHab", idTipoHab,
                 "descripcion", textBoxDescripcion.Text, "habilitada", checkBoxHabilitada.Checked);
 
             MessageBox.Show("Se creo la habitacion");

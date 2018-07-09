@@ -217,6 +217,12 @@
     <Compile Include="GenerarModificacionReserva\DatosReservaMod.Designer.cs">
       <DependentUpon>DatosReservaMod.cs</DependentUpon>
     </Compile>
+    <Compile Include="GenerarModificacionReserva\FormaNueva\DatosReserv.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GenerarModificacionReserva\FormaNueva\DatosReserv.Designer.cs">
+      <DependentUpon>DatosReserv.cs</DependentUpon>
+    </Compile>
     <Compile Include="GenerarModificacionReserva\ModificarReserva.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -386,6 +392,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GenerarModificacionReserva\DatosReservaMod.resx">
       <DependentUpon>DatosReservaMod.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GenerarModificacionReserva\FormaNueva\DatosReserv.resx">
+      <DependentUpon>DatosReserv.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GenerarModificacionReserva\ModificarReserva.resx">
       <DependentUpon>ModificarReserva.cs</DependentUpon>

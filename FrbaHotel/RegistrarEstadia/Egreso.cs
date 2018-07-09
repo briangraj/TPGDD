@@ -38,6 +38,13 @@ namespace FrbaHotel.RegistrarEstadia
             }
         }
 
-        
+        private void validarDatos()
+        {
+            if (textBoxNroReserva.Text == "")
+                throw new Exception("Debe ingresar un numero de reserva");
+
+            DB.ejecutarProcedimiento("LA_QUERY_DE_PAPEL.validar_reserva_para_egreso", "nroReserva", Convert.ToInt32(textBoxNroReserva.Text), "fechaActual", Program.fechaActual,
+                "idUsuario", usuario.id);
+        }
     }
 }

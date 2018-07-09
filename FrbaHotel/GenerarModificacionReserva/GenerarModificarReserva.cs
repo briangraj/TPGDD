@@ -24,7 +24,12 @@ namespace FrbaHotel.GenerarModificacionReserva
 
         private void buttonGenerar_Click(object sender, EventArgs e)
         {
+            /*
             DatosReservaAlta datosReserva = new DatosReservaAlta(usuario);
+            Hide();
+            datosReserva.Show();
+             * */
+            FormaNueva.DatosReserv datosReserva = new FormaNueva.DatosReserv(usuario);
             Hide();
             datosReserva.Show();
         }

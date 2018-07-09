@@ -447,13 +447,17 @@ BEGIN
 	SELECT @mailOriginal = Mail FROM LA_QUERY_DE_PAPEL.Cliente WHERE Tipo_Documento = @tipoDocOriginal AND Nro_Documento = @nroDocOriginal
 
 	IF(@mail <> @mailOriginal AND EXISTS (SELECT 1 FROM LA_QUERY_DE_PAPEL.Cliente WHERE Mail = @mail AND Tipo_Documento <> @tipoDocOriginal AND Nro_Documento <> @nroDocOriginal))
+	BEGIN
 		RAISERROR('El mail ya esta en uso', 16, 1)
+		RETURN
+	END
 
 	IF(@tipoDoc <> @tipoDocOriginal AND @nroDoc <> @nroDocOriginal AND EXISTS (SELECT 1 FROM LA_QUERY_DE_PAPEL.Cliente WHERE Tipo_Documento = @tipoDoc AND Nro_Documento = @nroDoc)
 		OR @tipoDoc <> @tipoDocOriginal AND EXISTS (SELECT 1 FROM LA_QUERY_DE_PAPEL.Cliente WHERE Tipo_Documento = @tipoDoc AND Nro_Documento = @nroDocOriginal)
 		OR @nroDoc <> @nroDocOriginal AND EXISTS (SELECT 1 FROM LA_QUERY_DE_PAPEL.Cliente WHERE Tipo_Documento = @tipoDocOriginal AND Nro_Documento = @nroDoc))
 	BEGIN
 		RAISERROR('El tipo y numero de documento ya estan en uso', 16, 1)
+		RETURN
 	END
 
 	UPDATE LA_QUERY_DE_PAPEL.Persona
@@ -483,16 +487,19 @@ CREATE PROCEDURE LA_QUERY_DE_PAPEL.procedure_alta_habitacion
 	@idHotel int,
 	@piso int,
 	@ubicacion char,
-	@tipoHabitacion nvarchar(255),
+	@idTipoHab int,
 	@descripcion nvarchar(255),
 	@habilitada bit
 AS
 BEGIN
 	IF(EXISTS (SELECT 1 FROM LA_QUERY_DE_PAPEL.Habitacion WHERE Nro_Habitacion = @nroHabitacion AND Id_Hotel = @idHotel))
+	BEGIN
 		RAISERROR('Ya existe el numero de habitacion en el hotel', 16, 1)
+		RETURN
+	END
 		
 	INSERT INTO LA_QUERY_DE_PAPEL.Habitacion(Nro_Habitacion, Id_Hotel, Piso, Ubicacion, Tipo_Hab, Descripcion, Habilitada)
-	VALUES (@nroHabitacion, @idHotel, @piso, @ubicacion, @tipoHabitacion, @descripcion, @habilitada)
+	VALUES (@nroHabitacion, @idHotel, @piso, @ubicacion, @idTipoHab, @descripcion, @habilitada)
 END
 GO
 
@@ -551,6 +558,7 @@ BEGIN
 				AND(Fecha_Inicio BETWEEN @fechaInicio AND @fechaFin OR Fecha_Fin BETWEEN @fechaInicio AND @fechaFin OR Fecha_Inicio < @fechaInicio AND Fecha_Fin > @fechaFin)))
 	BEGIN
 		RAISERROR('Existen reservas en el periodo elegido', 16, 1)
+		RETURN
 	END
 
 	IF(EXISTS(
@@ -561,6 +569,7 @@ BEGIN
 				AND e.Fecha_egreso IS NULL AND r.Fecha_Fin <= @fechaInicio))
 	BEGIN
 		RAISERROR('Existen estadias en el periodo elegido', 16, 1)
+		RETURN
 	END
 END
 GO
@@ -570,13 +579,22 @@ CREATE PROCEDURE LA_QUERY_DE_PAPEL.validar_reserva_cancelable
 AS
 BEGIN
 	IF(NOT EXISTS(SELECT 1 FROM LA_QUERY_DE_PAPEL.Reserva WHERE Id_Reserva = @nroReserva))
+	BEGIN
 		RAISERROR('El numero de reserva no existe', 16, 1)
+		RETURN
+	END
 	
 	IF(EXISTS(SELECT 1 FROM LA_QUERY_DE_PAPEL.Reserva WHERE Id_Reserva = @nroReserva AND UPPER(Estado) LIKE '%CANCELADA%'))
+	BEGIN
 		RAISERROR('La reserva ya fue cancelada', 16, 1)
+		RETURN
+	END
 
 	IF(EXISTS(SELECT 1 FROM LA_QUERY_DE_PAPEL.Reserva WHERE Id_Reserva = @nroReserva AND UPPER(Estado) LIKE '%INGRESO%'))
+	BEGIN
 		RAISERROR('La reserva ya fue efectivizada', 16, 1)
+		RETURN
+	END
 END
 GO
 
@@ -607,21 +625,34 @@ CREATE PROCEDURE LA_QUERY_DE_PAPEL.validar_reserva_para_ingreso
 AS
 BEGIN
 	IF(NOT EXISTS(SELECT 1 FROM LA_QUERY_DE_PAPEL.Reserva WHERE Id_Reserva = @nroReserva))
+	BEGIN
 		RAISERROR('La reserva no existe', 16, 1)
+		RETURN
+	END
 
 	IF(EXISTS(SELECT 1 FROM LA_QUERY_DE_PAPEL.Estadia WHERE Id_Reserva = @nroReserva))
+	BEGIN
 		RAISERROR('Ya se realizo el ingreso de la reserva', 16, 1)
+		RETURN
+	END
 
 	IF(NOT EXISTS(SELECT 1 FROM LA_QUERY_DE_PAPEL.reservas_sin_cancelar WHERE Id_Reserva = @nroReserva))
+	BEGIN
 		RAISERROR('La reserva se cancelo', 16, 1)
+		RETURN
+	END
 
 	IF(EXISTS(SELECT 1 FROM LA_QUERY_DE_PAPEL.Reserva WHERE Id_Reserva = @nroReserva AND Fecha_Inicio > @fechaActual))
+	BEGIN
 		RAISERROR('Todavia no se puede registrar el ingreso', 16, 1)
+		RETURN
+	END
 
 	IF(EXISTS(SELECT 1 FROM LA_QUERY_DE_PAPEL.Reserva WHERE Id_Reserva = @nroReserva AND Fecha_Inicio < @fechaActual))
 	BEGIN
 		EXECUTE LA_QUERY_DE_PAPEL.cancelar_reserva @nroReserva, 'Ingreso fuera de termino', @fechaActual, @idUsuario
 		RAISERROR('Ya paso la fecha de ingreso. La reserva fue cancelada', 16, 1)
+		RETURN
 	END
 END
 GO
@@ -648,10 +679,16 @@ CREATE PROCEDURE LA_QUERY_DE_PAPEL.validar_reserva_para_egreso
 AS
 BEGIN
 	IF(NOT EXISTS(SELECT 1 FROM LA_QUERY_DE_PAPEL.Estadia WHERE Id_Reserva = @nroReserva))
+	BEGIN
 		RAISERROR('La reserva no tiene registrada el ingreso', 16, 1)
+		RETURN
+	END
 
 	IF(EXISTS(SELECT 1 FROM LA_QUERY_DE_PAPEL.Estadia WHERE Id_Reserva = @nroReserva AND Fecha_egreso IS NOT NULL))
+	BEGIN
 		RAISERROR('Ya se realizo el egreso de la reserva', 16, 1)
+		RETURN
+	END
 END
 GO
 
