@@ -96,8 +96,6 @@ namespace FrbaHotel.GenerarModificacionReserva.FormaNueva
                 dataGridViewHabReservadas.DataSource = tablaHabSeleccionadas;
                 primeraVez = false;
             }
-
-            dataGridViewHabitaciones.DataSource = tabla;
         }
 
         protected abstract DataTable tablaDeHabitaciones(int idRegimen, string tipoHab);

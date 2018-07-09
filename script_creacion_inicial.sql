@@ -725,6 +725,28 @@ AS
 	)
 GO
 
+CREATE FUNCTION LA_QUERY_DE_PAPEL.habitaciones_de_reserva (@nroReserva int)
+RETURNS TABLE
+AS
+	RETURN (
+		SELECT h.Nro_Habitacion, Piso, Ubicacion, th.Descripcion AS Tipo_Habitacion, h.Descripcion
+		FROM LA_QUERY_DE_PAPEL.Habitacion h
+			JOIN LA_QUERY_DE_PAPEL.Tipo_Habitacion th ON h.Tipo_Hab = th.Id_tipo
+			JOIN LA_QUERY_DE_PAPEL.ReservaxHabitacion rh ON h.Id_Hotel = rh.Id_Hotel AND h.Nro_Habitacion = rh.Nro_Habitacion
+				WHERE rh.Id_Reserva = @nroReserva
+	)
+GO
+
+CREATE FUNCTION LA_QUERY_DE_PAPEL.habitaciones_disponibles_para_reserva (@idHotel int, @idRegimen int, @tipoHab nvarchar(255), @fechaDesde datetime, @fechaHasta datetime, @nroReserva int)
+RETURNS TABLE
+AS
+	RETURN (
+		SELECT * FROM LA_QUERY_DE_PAPEL.habitaciones_libres(@idHotel, @idRegimen, @tipoHab, @fechaDesde, @fechaHasta)
+		UNION
+		SELECT * FROM LA_QUERY_DE_PAPEL.habitaciones_de_reserva(@nroReserva)
+	)
+GO
+
 CREATE PROCEDURE LA_QUERY_DE_PAPEL.procedure_login
 	@usuario nvarchar(20),
 	@contrasenia varbinary(255)
