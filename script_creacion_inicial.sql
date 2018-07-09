@@ -150,7 +150,7 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Reserva] (
 
 CREATE TABLE [LA_QUERY_DE_PAPEL].[Reserva_Conflicto_Migracion] ( 
 	Id_Reserva INT NOT NULL PRIMARY KEY,
-	Id_Regimen INT NOT NULL,
+	Id_Regimen INT NOT NULL REFERENCES [LA_QUERY_DE_PAPEL].[Regimen] (Id_Regimen),
 	Fecha_Reserva datetime NOT NULL,
 	Cant_Noches INT NOT NULL,
 	Fecha_Inicio datetime,
@@ -158,6 +158,7 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Reserva_Conflicto_Migracion] (
 	Estado VARCHAR(255) NOT NULL,
 	Tipo_Documento VARCHAR(20) NOT NULL,
 	Nro_Documento INT NOT NULL, 
+	Id_Persona_Conflicto INT REFERENCES [LA_QUERY_DE_PAPEL].[Persona_conflicto_migracion] (id_persona_conflicto)
 	);
 
 CREATE TABLE [LA_QUERY_DE_PAPEL].[ReservaxHabitacion] (
@@ -178,6 +179,7 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[ReservaxHabitacion_Conflicto_Migracion] (
 	
 	PRIMARY KEY (Id_Reserva, Id_Hotel, Nro_Habitacion),
 	FOREIGN KEY (Id_Reserva) REFERENCES [LA_QUERY_DE_PAPEL].[Reserva_Conflicto_Migracion],
+	FOREIGN KEY (Nro_Habitacion, Id_Hotel) REFERENCES [LA_QUERY_DE_PAPEL].[Habitacion] (Nro_Habitacion, Id_Hotel)
 	);
 
 CREATE TABLE [LA_QUERY_DE_PAPEL].[Historial_Reserva] (
@@ -245,6 +247,21 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Factura] (
 	);
 	
 
+CREATE TABLE [LA_QUERY_DE_PAPEL].[Factura_Conflicto_Migracion] ( 
+	Nro_Factura numeric(18) NOT NULL PRIMARY KEY,
+	Id_Reserva INT NOT NULL,
+	Tipo_Documento_Cliente varchar(20) NOT NULL,
+	Nro_Documento_Cliente INT NOT NULL,
+	Fecha_Emision datetime NOT NULL,
+	Total_Factura numeric(18,2),
+	Forma_Pago nvarchar(50) NOT NULL,
+	Id_Persona INT,
+	
+	FOREIGN KEY (Id_Persona) REFERENCES [LA_QUERY_DE_PAPEL].[Persona_Conflicto_Migracion] (Id_Persona_Conflicto),
+	FOREIGN KEY (Id_Reserva) REFERENCES [LA_QUERY_DE_PAPEL].[Estadia_Conflicto_Migracion] (Id_Reserva),
+
+	);
+
 
 CREATE TABLE [LA_QUERY_DE_PAPEL].[Funcionalidad] ( 
 	Id_Funcion INT NOT NULL PRIMARY KEY IDENTITY (1, 1),
@@ -275,6 +292,16 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Consumible_estadia] (
 	);
 
 
+CREATE TABLE [LA_QUERY_DE_PAPEL].[Consumible_estadia_Conflicto_Migracion] (
+	Id_Reserva INT NOT NULL ,
+	Id_Consumible INT NOT NULL ,
+	cantidad INT
+
+	PRIMARY KEY (Id_Reserva,Id_Consumible),
+	FOREIGN KEY (Id_Reserva) REFERENCES [LA_QUERY_DE_PAPEL].Estadia_Conflicto_Migracion (Id_Reserva),
+	FOREIGN KEY (Id_Consumible) REFERENCES [LA_QUERY_DE_PAPEL].[Consumible] (Id_Consumible)
+	);
+
 CREATE TABLE [LA_QUERY_DE_PAPEL].[Item] ( 
 	Nro_Factura numeric(18) NOT NULL,
 	Id_Reserva INT NOT NULL,
@@ -285,6 +312,19 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Item] (
 	
 	FOREIGN KEY (Nro_Factura) REFERENCES [LA_QUERY_DE_PAPEL].[Factura] (Nro_Factura),
 	FOREIGN KEY (Id_Reserva) REFERENCES [LA_QUERY_DE_PAPEL].[Estadia] (Id_Reserva)
+
+	);
+
+CREATE TABLE [LA_QUERY_DE_PAPEL].[Item_Conflicto_Migracion] ( 
+	Nro_Factura numeric(18) NOT NULL,
+	Id_Reserva INT NOT NULL,
+	Descripcion VARCHAR(50) NOT NULL,
+	Precio NUMERIC (18,2) NOT NULL DEFAULT 0.0,
+	Cantidad INT NOT NULL,
+	
+	
+	FOREIGN KEY (Nro_Factura) REFERENCES [LA_QUERY_DE_PAPEL].[Factura_Conflicto_Migracion] (Nro_Factura),
+	FOREIGN KEY (Id_Reserva) REFERENCES [LA_QUERY_DE_PAPEL].[Estadia_Conflicto_Migracion] (Id_Reserva)
 
 	);
 
@@ -956,8 +996,10 @@ BEGIN
 
 		ELSE
 		BEGIN
-			INSERT INTO [LA_QUERY_DE_PAPEL].Reserva_Conflicto_Migracion (Id_Reserva, Fecha_Reserva, Cant_Noches, Id_Regimen, Tipo_Documento, Nro_Documento, Estado, Fecha_Inicio, Fecha_Fin)
-			VALUES(@Id_Reserva, @Fecha_Reserva, @Cant_Noches, @Id_Regimen, @Tipo_Documento, @Nro_Documento, 'Reserva con ingreso', @Fecha_Reserva, @Fecha_Fin)
+			INSERT INTO [LA_QUERY_DE_PAPEL].Reserva_Conflicto_Migracion (Id_Reserva, Fecha_Reserva, Cant_Noches, Id_Regimen, Tipo_Documento, Nro_Documento, Estado, Fecha_Inicio, Fecha_Fin, Id_Persona_Conflicto)
+			VALUES(@Id_Reserva, @Fecha_Reserva, @Cant_Noches, @Id_Regimen, @Tipo_Documento, @Nro_Documento, 'Reserva con ingreso', @Fecha_Reserva, @Fecha_Fin,
+				(SELECT id_persona_conflicto FROM LA_QUERY_DE_PAPEL.Persona_conflicto_migracion WHERE @Nro_Documento = Nro_Documento AND @Apellido_cliente = Apellido AND @Nombre_cliente = Nombre)
+				)
 
 			INSERT INTO  [LA_QUERY_DE_PAPEL].[ReservaxHabitacion_Conflicto_Migracion]  (Id_Reserva, Id_Hotel, Nro_Habitacion)
 			VALUES(@Id_Reserva, @id_hotel, @Nro_habitacion)
@@ -1022,9 +1064,6 @@ GO
 
 
 --Migracion
---Esta en una transaccion para ir probando sin romper la base de datos
-
---BEGIN TRANSACTION
 
 --Cargo los hoteles
 
@@ -1113,22 +1152,32 @@ WHERE Consumible_Codigo IS NOT NULL
 
 
 
---ROLLBACK TRANSACTION
-
 
 INSERT INTO LA_QUERY_DE_PAPEL.UsuarioxHotel (Id_Hotel, Id_Usuario)
 VALUES (1, 1), (2, 1), (1, 2)
+
+
 
 --cargo consumible_estadia 
 
 INSERT INTO LA_QUERY_DE_PAPEL.Consumible_estadia (Id_Reserva,Id_Consumible,cantidad)
 SELECT DISTINCT e.Id_Reserva, c.Id_Consumible, COUNT(m.Consumible_Descripcion)
 FROM gd_esquema.Maestra m JOIN LA_QUERY_DE_PAPEL.consumible c on m.Consumible_Codigo= c.Id_Consumible
-						  JOIN LA_QUERY_DE_PAPEL.estadia e on m.Reserva_Codigo=e.Id_Reserva
-							
+						  JOIN LA_QUERY_DE_PAPEL.estadia e on m.Reserva_Codigo=e.Id_Reserva		
 GROUP BY e.Id_Reserva,c.Id_Consumible
 
---SELECT*FROM LA_QUERY_DE_PAPEL.Consumible_estadia
+
+
+-- Cargo los consumibles para las estadias en conflicto
+
+INSERT INTO LA_QUERY_DE_PAPEL.[Consumible_estadia_Conflicto_Migracion] (Id_Reserva,Id_Consumible,cantidad)
+SELECT DISTINCT E.Id_Reserva, C.Id_Consumible, COUNT(M.Consumible_Descripcion)
+FROM gd_esquema.Maestra M JOIN LA_QUERY_DE_PAPEL.consumible C ON M.Consumible_Codigo = C.Id_Consumible
+						  JOIN LA_QUERY_DE_PAPEL.Estadia_conflicto_migracion E ON M.Reserva_Codigo = E.Id_Reserva	
+GROUP BY e.Id_Reserva,c.Id_Consumible
+
+--SELECT * FROM LA_QUERY_DE_PAPEL.[Consumible_estadia_Conflicto_Migracion]
+
 
 
 INSERT INTO LA_QUERY_DE_PAPEL.Factura (Nro_Factura, Id_Reserva, Tipo_Documento_cliente, Nro_Documento_cliente, Fecha_Emision, Forma_Pago)
@@ -1139,7 +1188,24 @@ where m.Factura_Fecha is not null
 
 --SELECT*FROM LA_QUERY_DE_PAPEL.Factura
 
+
+
+--Cargo las facturas con conflicto
+
+INSERT INTO LA_QUERY_DE_PAPEL.Factura_Conflicto_Migracion (Nro_Factura, Id_Reserva, Tipo_Documento_cliente, Nro_Documento_cliente, Fecha_Emision, Forma_Pago, Id_Persona)
+SELECT DISTINCT M.Factura_Nro, E.Id_Reserva, R.Tipo_Documento, R.Nro_Documento, CAST(M.Factura_Fecha AS DATE),
+				(SELECT Desc_medio_pago FROM LA_QUERY_DE_PAPEL.MedioPago WHERE Id_medio_pago = 1),
+				R.Id_Persona_Conflicto
+FROM gd_esquema.Maestra M 
+	JOIN LA_QUERY_DE_PAPEL.Estadia_conflicto_migracion E ON M.Reserva_Codigo = E.Id_Reserva 
+	JOIN LA_QUERY_DE_PAPEL.Reserva_Conflicto_Migracion R ON E.Id_Reserva = R.Id_Reserva
+where M.Factura_Fecha IS NOT NULL
+
+
+--SELECT*FROM LA_QUERY_DE_PAPEL.Factura_Conflicto_Migracion
+
 --Inserto todos los items de consumibles 
+
 INSERT INTO LA_QUERY_DE_PAPEL.Item (Nro_Factura, Id_Reserva, Descripcion, Precio, Cantidad)
 SELECT Nro_Factura , f.Id_Reserva, consumible.descripcion, consumible.precio,consumible_estadia.cantidad
 FROM LA_QUERY_DE_PAPEL.Factura f
@@ -1151,7 +1217,20 @@ JOIN LA_QUERY_DE_PAPEL.consumible ON (consumible.Id_Consumible = consumible_esta
 
 
 
+-- Cargo los items de consumibles con conflictos
+
+INSERT INTO LA_QUERY_DE_PAPEL.Item_Conflicto_Migracion (Nro_Factura, Id_Reserva, Descripcion, Precio, Cantidad)
+SELECT Nro_Factura , F.Id_Reserva, C.descripcion, C.precio, CE.cantidad
+FROM LA_QUERY_DE_PAPEL.Factura_Conflicto_Migracion F
+	JOIN LA_QUERY_DE_PAPEL.Consumible_estadia_Conflicto_Migracion CE ON (CE.Id_Reserva = F.Id_Reserva)
+	JOIN LA_QUERY_DE_PAPEL.consumible C ON (C.Id_Consumible = CE.Id_Consumible)
+
+--SELECT * FROM LA_QUERY_DE_PAPEL.Item_Conflicto_Migracion ORDER BY Id_Reserva
+
+
+
 --Inserto los descuentos por all inclusive
+
 INSERT INTO LA_QUERY_DE_PAPEL.item (Nro_Factura, Id_Reserva, Cantidad, descripcion, precio)
 SELECT f.Nro_Factura, e.Id_Reserva,  1, 'Descuento por régimen All Inclusive', 0- SUM(consumible.precio * consumible_estadia.cantidad)
 FROM LA_QUERY_DE_PAPEL.Factura f
@@ -1162,7 +1241,26 @@ JOIN LA_QUERY_DE_PAPEL.Reserva ON (reserva.Id_Reserva = e.Id_Reserva)
 where reserva.Id_Regimen = 4
 GROUP BY f.Nro_Factura, e.Id_Reserva
 
+
+
+--Inserto los descuentos por all inclusive con conflictos
+
+INSERT INTO LA_QUERY_DE_PAPEL.Item_Conflicto_Migracion (Nro_Factura, Id_Reserva, Cantidad, descripcion, precio)
+SELECT F.Nro_Factura, E.Id_Reserva,  1, 'Descuento por régimen All Inclusive', 0- SUM(C.precio * CE.cantidad)
+FROM LA_QUERY_DE_PAPEL.Factura_Conflicto_Migracion F
+	JOIN LA_QUERY_DE_PAPEL.Estadia_conflicto_migracion E ON (F.Id_Reserva = E.Id_Reserva)
+	JOIN LA_QUERY_DE_PAPEL.Consumible_estadia_Conflicto_Migracion CE ON (CE.Id_Reserva = E.Id_Reserva)
+	JOIN LA_QUERY_DE_PAPEL.Consumible C ON (C.Id_Consumible = CE.Id_Consumible)
+	JOIN LA_QUERY_DE_PAPEL.Reserva_Conflicto_Migracion R ON (R.Id_Reserva = E.Id_Reserva)
+where R.Id_Regimen = 4
+GROUP BY F.Nro_Factura, E.Id_Reserva
+
+--SELECT * FROM LA_QUERY_DE_PAPEL.Item_Conflicto_Migracion
+
+
+
 --Cargo las estadias en tabla items
+
 INSERT INTO LA_QUERY_DE_PAPEL.Item (Nro_Factura, Id_Reserva, Descripcion, Precio, Cantidad)
 SELECT f.Nro_Factura, e.Id_Reserva, 'Estadia',  m.Item_Factura_Cantidad,m.Item_Factura_Monto
 	FROM gd_esquema.Maestra m
@@ -1172,8 +1270,28 @@ SELECT f.Nro_Factura, e.Id_Reserva, 'Estadia',  m.Item_Factura_Cantidad,m.Item_F
 	WHERE m.Consumible_Codigo IS NULL
 		AND m.Item_Factura_Monto IS NOT NULL
 
+
+
+--Cargo las estadias en tabla items con conflictos
+
+INSERT INTO LA_QUERY_DE_PAPEL.Item_Conflicto_Migracion (Nro_Factura, Id_Reserva, Descripcion, Precio, Cantidad)
+SELECT f.Nro_Factura, e.Id_Reserva, 'Estadia',  m.Item_Factura_Cantidad,m.Item_Factura_Monto
+FROM gd_esquema.Maestra m
+	JOIN LA_QUERY_DE_PAPEL.Estadia_conflicto_migracion e
+		ON m.Reserva_Codigo = e.Id_Reserva
+	JOIN LA_QUERY_DE_PAPEL.Factura_Conflicto_Migracion f ON (e.Id_Reserva = f.Id_Reserva)
+WHERE m.Consumible_Codigo IS NULL
+	AND m.Item_Factura_Monto IS NOT NULL
+
+
+
 --Cargo el total de las facturas 
 UPDATE LA_QUERY_DE_PAPEL.Factura SET Total_Factura =(SELECT SUM(cantidad*precio) FROM LA_QUERY_DE_PAPEL.Item WHERE item.Nro_Factura = factura.Nro_Factura)
+
+
+--Cargo el total de las facturas con conflicto
+UPDATE LA_QUERY_DE_PAPEL.Factura_Conflicto_Migracion SET Total_Factura =(SELECT SUM(cantidad*precio) FROM LA_QUERY_DE_PAPEL.Item_Conflicto_Migracion I WHERE I.Nro_Factura = Nro_Factura)
+
 
 GO
 
