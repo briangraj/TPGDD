@@ -10,11 +10,11 @@ using System.Data;
 
 namespace FrbaHotel.GenerarModificacionReserva.FormaNueva
 {
-    class DatosReservaM : DatosReserv
+    class DatosReservaModif : DatosReserva
     {
         private Reserva reserva;
 
-        public DatosReservaM(Reserva reserva, Usuario usuario)
+        public DatosReservaModif(Reserva reserva, Usuario usuario)
             : base(usuario)
         {
             this.reserva = reserva;

@@ -34,7 +34,7 @@ namespace FrbaHotel.GenerarModificacionReserva
                 Reserva reserva = new Reserva(Convert.ToInt32(textBoxNroReserva.Text));
                 reserva.cargar();
 
-                FormaNueva.DatosReservaM datosReserva = new FormaNueva.DatosReservaM(reserva, usuario);
+                FormaNueva.DatosReservaModif datosReserva = new FormaNueva.DatosReservaModif(reserva, usuario);
                 Hide();
                 datosReserva.Show();
             }
