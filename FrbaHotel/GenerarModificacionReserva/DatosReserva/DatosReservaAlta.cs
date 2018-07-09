@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 using FrbaHotel.Entidades;
 using FrbaHotel.Utilidades;
 
-namespace FrbaHotel.GenerarModificacionReserva.FormaNueva
+namespace FrbaHotel.GenerarModificacionReserva.DatosReserva
 {
-    class DatosReservaAl : DatosReserv
+    class DatosReservaAlta : DatosReserva
     {
-        public DatosReservaAl(Usuario usuario) : base(usuario) { }
+        public DatosReservaAlta(Usuario usuario) : base(usuario) { }
 
         protected override System.Data.DataTable tablaDeHabitaciones(int idRegimen, string tipoHab)
         {

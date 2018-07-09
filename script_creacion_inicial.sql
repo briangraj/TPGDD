@@ -344,10 +344,10 @@ INSERT INTO LA_QUERY_DE_PAPEL.Rol (Nombre)
 VALUES ('Administrador General'), ('Guest')
 
 INSERT INTO LA_QUERY_DE_PAPEL.Funcionalidad (Descripcion)
-VALUES ('ABM de rol'), ('ABM de usuario'), ('ABM de hotel'), ('ABM de cliente'), ('ABM de habitacion'), ('Generar o modificar reserva')
+VALUES ('ABM de rol'), ('ABM de usuario'), ('ABM de hotel'), ('ABM de cliente'), ('ABM de habitacion'), ('Generar o modificar reserva'), ('Cancelar reserva'), ('Listado estadistico')
 
 INSERT INTO LA_QUERY_DE_PAPEL.FuncionalidadxRol(Id_Rol, Id_Funcion)
-VALUES (1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (2,6)
+VALUES (1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (1, 7), (1,8), (2,6), (2, 7)
 
 INSERT INTO LA_QUERY_DE_PAPEL.Persona (Tipo_Documento, Nro_Documento, Apellido, Nombre,	Direccion, Fecha_Nacimiento, Telefono, Habilitado)
 VALUES ('DNI', 1, '', '', '', GETDATE(), '', 1)
@@ -625,7 +625,45 @@ BEGIN
 END
 GO
 
---todo agregar verificacion
+CREATE PROCEDURE LA_QUERY_DE_PAPEL.validar_reserva_activa
+	@nroReserva int
+AS
+BEGIN
+	IF(NOT EXISTS(SELECT 1 FROM LA_QUERY_DE_PAPEL.Reserva WHERE Id_Reserva = @nroReserva))
+	BEGIN
+		RAISERROR('El numero de reserva no existe', 16, 1)
+		RETURN
+	END
+	
+	IF(EXISTS(SELECT 1 FROM LA_QUERY_DE_PAPEL.Reserva WHERE Id_Reserva = @nroReserva AND UPPER(Estado) LIKE '%CANCELADA%'))
+	BEGIN
+		RAISERROR('La reserva fue cancelada', 16, 1)
+		RETURN
+	END
+
+	IF(EXISTS(SELECT 1 FROM LA_QUERY_DE_PAPEL.Reserva WHERE Id_Reserva = @nroReserva AND UPPER(Estado) LIKE '%INGRESO%'))
+	BEGIN
+		RAISERROR('La reserva fue efectivizada', 16, 1)
+		RETURN
+	END
+END
+GO
+
+CREATE PROCEDURE LA_QUERY_DE_PAPEL.validar_reserva_modificable
+	@nroReserva int,
+	@fechaActual datetime
+AS
+BEGIN
+	EXEC LA_QUERY_DE_PAPEL.validar_reserva_activa @nroReserva
+
+	IF(EXISTS(SELECT 1 FROM LA_QUERY_DE_PAPEL.Reserva WHERE Id_Reserva = @nroReserva AND Fecha_Inicio >= @fechaActual))
+	BEGIN
+		RAISERROR('La reserva no se puede modificar', 16, 1)
+		RETURN
+	END
+END
+GO
+
 CREATE PROCEDURE LA_QUERY_DE_PAPEL.actualizar_reserva
 	@nroReserva int,
 	@idRegimen int,
@@ -642,30 +680,6 @@ BEGIN
 
 	INSERT INTO LA_QUERY_DE_PAPEL.Historial_Reserva (Id_Reserva, Id_Usuario, Tipo, Fecha)
 	VALUES (@nroReserva, @idUsuario, 'Modificacion', @fechaDeModificacion)
-END
-GO
-
-CREATE PROCEDURE LA_QUERY_DE_PAPEL.validar_reserva_cancelable
-	@nroReserva int
-AS
-BEGIN
-	IF(NOT EXISTS(SELECT 1 FROM LA_QUERY_DE_PAPEL.Reserva WHERE Id_Reserva = @nroReserva))
-	BEGIN
-		RAISERROR('El numero de reserva no existe', 16, 1)
-		RETURN
-	END
-	
-	IF(EXISTS(SELECT 1 FROM LA_QUERY_DE_PAPEL.Reserva WHERE Id_Reserva = @nroReserva AND UPPER(Estado) LIKE '%CANCELADA%'))
-	BEGIN
-		RAISERROR('La reserva ya fue cancelada', 16, 1)
-		RETURN
-	END
-
-	IF(EXISTS(SELECT 1 FROM LA_QUERY_DE_PAPEL.Reserva WHERE Id_Reserva = @nroReserva AND UPPER(Estado) LIKE '%INGRESO%'))
-	BEGIN
-		RAISERROR('La reserva ya fue efectivizada', 16, 1)
-		RETURN
-	END
 END
 GO
 

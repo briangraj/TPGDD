@@ -29,7 +29,7 @@ namespace FrbaHotel.GenerarModificacionReserva
             Hide();
             datosReserva.Show();
              * */
-            FormaNueva.DatosReservaAl datosReserva = new FormaNueva.DatosReservaAl(usuario);
+            DatosReserva.DatosReservaAlta datosReserva = new DatosReserva.DatosReservaAlta(usuario);
             Hide();
             datosReserva.Show();
         }

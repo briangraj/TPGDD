@@ -12,15 +12,15 @@ using FrbaHotel.Entidades;
 using FrbaHotel.Utilidades;
 using System.Data.SqlClient;
 
-namespace FrbaHotel.GenerarModificacionReserva.FormaNueva
+namespace FrbaHotel.GenerarModificacionReserva.DatosReserva
 {
-    public abstract partial class DatosReserv : Form
+    public abstract partial class DatosReserva : Form
     {
         protected Usuario usuario;
         protected DataTable tablaHabSeleccionadas = new DataTable();
         private bool primeraVez = true;
 
-        public DatosReserv(Usuario usuario)
+        public DatosReserva(Usuario usuario)
         {
             InitializeComponent();
             this.usuario = usuario;

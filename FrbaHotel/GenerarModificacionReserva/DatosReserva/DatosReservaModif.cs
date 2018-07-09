@@ -8,13 +8,13 @@ using FrbaHotel.Entidades;
 using FrbaHotel.Utilidades;
 using System.Data;
 
-namespace FrbaHotel.GenerarModificacionReserva.FormaNueva
+namespace FrbaHotel.GenerarModificacionReserva.DatosReserva
 {
-    class DatosReservaM : DatosReserv
+    class DatosReservaModif : DatosReserva
     {
         private Reserva reserva;
 
-        public DatosReservaM(Reserva reserva, Usuario usuario)
+        public DatosReservaModif(Reserva reserva, Usuario usuario)
             : base(usuario)
         {
             this.reserva = reserva;

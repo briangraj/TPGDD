@@ -66,6 +66,12 @@ namespace FrbaHotel.Login
                     case "Generar o modificar reserva":
                         form = new GenerarModificacionReserva.GenerarModificarReserva(usuario);
                         break;
+                    case "Cancelar reserva":
+                        form = new CancelarReserva.CancelarReserva(usuario);
+                        break;
+                    case "Listado estadistico":
+                        form = new ListadoEstadistico.ListadoEstadistico();
+                        break;
                     default:
                         return;
                 }
