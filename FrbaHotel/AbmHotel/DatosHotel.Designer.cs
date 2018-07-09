@@ -136,7 +136,7 @@
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(145, 18);
             this.label5.TabIndex = 4;
-            this.label5.Text = "Cantidad de estrallas";
+            this.label5.Text = "Cantidad de estrellas";
             // 
             // label1
             // 

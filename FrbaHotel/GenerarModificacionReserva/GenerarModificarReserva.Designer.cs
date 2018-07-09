@@ -34,23 +34,23 @@
             // 
             // buttonModificar
             // 
-            this.buttonModificar.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonModificar.Location = new System.Drawing.Point(82, 136);
+            this.buttonModificar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonModificar.Location = new System.Drawing.Point(23, 92);
             this.buttonModificar.Name = "buttonModificar";
-            this.buttonModificar.Size = new System.Drawing.Size(118, 35);
+            this.buttonModificar.Size = new System.Drawing.Size(235, 35);
             this.buttonModificar.TabIndex = 3;
-            this.buttonModificar.Text = "Modificar";
+            this.buttonModificar.Text = "Modificar reserva existente";
             this.buttonModificar.UseVisualStyleBackColor = true;
             this.buttonModificar.Click += new System.EventHandler(this.buttonModificar_Click);
             // 
             // buttonGenerar
             // 
-            this.buttonGenerar.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonGenerar.Location = new System.Drawing.Point(82, 65);
+            this.buttonGenerar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonGenerar.Location = new System.Drawing.Point(47, 31);
             this.buttonGenerar.Name = "buttonGenerar";
-            this.buttonGenerar.Size = new System.Drawing.Size(118, 35);
+            this.buttonGenerar.Size = new System.Drawing.Size(190, 35);
             this.buttonGenerar.TabIndex = 2;
-            this.buttonGenerar.Text = "Generar";
+            this.buttonGenerar.Text = "Generar nueva reserva";
             this.buttonGenerar.UseVisualStyleBackColor = true;
             this.buttonGenerar.Click += new System.EventHandler(this.buttonGenerar_Click);
             // 
@@ -58,7 +58,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.ClientSize = new System.Drawing.Size(284, 154);
             this.Controls.Add(this.buttonModificar);
             this.Controls.Add(this.buttonGenerar);
             this.Name = "GenerarModificarReserva";

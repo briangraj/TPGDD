@@ -36,37 +36,37 @@
             // labelMensaje
             // 
             this.labelMensaje.AutoSize = true;
-            this.labelMensaje.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelMensaje.Location = new System.Drawing.Point(95, 60);
+            this.labelMensaje.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelMensaje.Location = new System.Drawing.Point(46, 35);
             this.labelMensaje.Name = "labelMensaje";
-            this.labelMensaje.Size = new System.Drawing.Size(267, 20);
+            this.labelMensaje.Size = new System.Drawing.Size(373, 25);
             this.labelMensaje.TabIndex = 0;
-            this.labelMensaje.Text = "Su reserva se genero correctamente";
+            this.labelMensaje.Text = "¡Su reserva se genero correctamente!";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(95, 100);
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(46, 90);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(186, 20);
+            this.label2.Size = new System.Drawing.Size(259, 25);
             this.label2.TabIndex = 1;
-            this.label2.Text = "Su numero de reserva es";
+            this.label2.Text = "Su numero de reserva es:";
             // 
             // textBoxNroReserva
             // 
-            this.textBoxNroReserva.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxNroReserva.Location = new System.Drawing.Point(287, 100);
+            this.textBoxNroReserva.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxNroReserva.Location = new System.Drawing.Point(318, 90);
             this.textBoxNroReserva.Name = "textBoxNroReserva";
             this.textBoxNroReserva.ReadOnly = true;
-            this.textBoxNroReserva.Size = new System.Drawing.Size(75, 24);
+            this.textBoxNroReserva.Size = new System.Drawing.Size(75, 29);
             this.textBoxNroReserva.TabIndex = 2;
             // 
             // InfoReserva
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(468, 261);
+            this.ClientSize = new System.Drawing.Size(468, 167);
             this.Controls.Add(this.textBoxNroReserva);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.labelMensaje);

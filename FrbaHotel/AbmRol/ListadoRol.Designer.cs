@@ -38,25 +38,28 @@
             // 
             // textBoxNombreRol
             // 
+            this.textBoxNombreRol.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxNombreRol.Location = new System.Drawing.Point(50, 48);
             this.textBoxNombreRol.Name = "textBoxNombreRol";
-            this.textBoxNombreRol.Size = new System.Drawing.Size(304, 20);
+            this.textBoxNombreRol.Size = new System.Drawing.Size(304, 26);
             this.textBoxNombreRol.TabIndex = 0;
             // 
             // labelNombreRol
             // 
             this.labelNombreRol.AutoSize = true;
-            this.labelNombreRol.Location = new System.Drawing.Point(47, 32);
+            this.labelNombreRol.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelNombreRol.Location = new System.Drawing.Point(24, 21);
             this.labelNombreRol.Name = "labelNombreRol";
-            this.labelNombreRol.Size = new System.Drawing.Size(58, 13);
+            this.labelNombreRol.Size = new System.Drawing.Size(105, 24);
             this.labelNombreRol.TabIndex = 1;
             this.labelNombreRol.Text = "Nombre rol";
             // 
             // buttonLimpiar
             // 
+            this.buttonLimpiar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonLimpiar.Location = new System.Drawing.Point(50, 103);
             this.buttonLimpiar.Name = "buttonLimpiar";
-            this.buttonLimpiar.Size = new System.Drawing.Size(75, 23);
+            this.buttonLimpiar.Size = new System.Drawing.Size(90, 31);
             this.buttonLimpiar.TabIndex = 2;
             this.buttonLimpiar.Text = "Limpiar";
             this.buttonLimpiar.UseVisualStyleBackColor = true;
@@ -64,9 +67,10 @@
             // 
             // buttonBuscar
             // 
-            this.buttonBuscar.Location = new System.Drawing.Point(260, 103);
+            this.buttonBuscar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonBuscar.Location = new System.Drawing.Point(255, 103);
             this.buttonBuscar.Name = "buttonBuscar";
-            this.buttonBuscar.Size = new System.Drawing.Size(75, 23);
+            this.buttonBuscar.Size = new System.Drawing.Size(80, 31);
             this.buttonBuscar.TabIndex = 3;
             this.buttonBuscar.Text = "Buscar";
             this.buttonBuscar.UseVisualStyleBackColor = true;

@@ -42,8 +42,9 @@
             // 
             // checkedListBoxFuncionalidades
             // 
+            this.checkedListBoxFuncionalidades.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkedListBoxFuncionalidades.FormattingEnabled = true;
-            this.checkedListBoxFuncionalidades.Location = new System.Drawing.Point(45, 143);
+            this.checkedListBoxFuncionalidades.Location = new System.Drawing.Point(45, 133);
             this.checkedListBoxFuncionalidades.Name = "checkedListBoxFuncionalidades";
             this.checkedListBoxFuncionalidades.Size = new System.Drawing.Size(213, 244);
             this.checkedListBoxFuncionalidades.TabIndex = 0;
@@ -51,43 +52,48 @@
             // labelNombreRol
             // 
             this.labelNombreRol.AutoSize = true;
-            this.labelNombreRol.Location = new System.Drawing.Point(42, 46);
+            this.labelNombreRol.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelNombreRol.Location = new System.Drawing.Point(41, 20);
             this.labelNombreRol.Name = "labelNombreRol";
-            this.labelNombreRol.Size = new System.Drawing.Size(66, 13);
+            this.labelNombreRol.Size = new System.Drawing.Size(117, 24);
             this.labelNombreRol.TabIndex = 2;
             this.labelNombreRol.Text = "Nombre Rol ";
             // 
             // labelFuncionalidades
             // 
             this.labelFuncionalidades.AutoSize = true;
-            this.labelFuncionalidades.Location = new System.Drawing.Point(42, 127);
+            this.labelFuncionalidades.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelFuncionalidades.Location = new System.Drawing.Point(41, 106);
             this.labelFuncionalidades.Name = "labelFuncionalidades";
-            this.labelFuncionalidades.Size = new System.Drawing.Size(84, 13);
+            this.labelFuncionalidades.Size = new System.Drawing.Size(150, 24);
             this.labelFuncionalidades.TabIndex = 3;
             this.labelFuncionalidades.Text = "Funcionalidades";
             // 
             // textBoxNombreRol
             // 
-            this.textBoxNombreRol.Location = new System.Drawing.Point(45, 62);
+            this.textBoxNombreRol.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxNombreRol.Location = new System.Drawing.Point(45, 47);
             this.textBoxNombreRol.Name = "textBoxNombreRol";
-            this.textBoxNombreRol.Size = new System.Drawing.Size(213, 20);
+            this.textBoxNombreRol.Size = new System.Drawing.Size(213, 26);
             this.textBoxNombreRol.TabIndex = 4;
             // 
             // checkBoxHabilitado
             // 
             this.checkBoxHabilitado.AutoSize = true;
-            this.checkBoxHabilitado.Location = new System.Drawing.Point(45, 423);
+            this.checkBoxHabilitado.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxHabilitado.Location = new System.Drawing.Point(45, 413);
             this.checkBoxHabilitado.Name = "checkBoxHabilitado";
-            this.checkBoxHabilitado.Size = new System.Drawing.Size(73, 17);
+            this.checkBoxHabilitado.Size = new System.Drawing.Size(99, 24);
             this.checkBoxHabilitado.TabIndex = 5;
             this.checkBoxHabilitado.Text = "Habilitado";
             this.checkBoxHabilitado.UseVisualStyleBackColor = true;
             // 
             // buttonLimpiar
             // 
-            this.buttonLimpiar.Location = new System.Drawing.Point(45, 481);
+            this.buttonLimpiar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonLimpiar.Location = new System.Drawing.Point(45, 469);
             this.buttonLimpiar.Name = "buttonLimpiar";
-            this.buttonLimpiar.Size = new System.Drawing.Size(75, 23);
+            this.buttonLimpiar.Size = new System.Drawing.Size(83, 37);
             this.buttonLimpiar.TabIndex = 6;
             this.buttonLimpiar.Text = "Limpiar";
             this.buttonLimpiar.UseVisualStyleBackColor = true;
@@ -95,9 +101,10 @@
             // 
             // buttonAceptar
             // 
-            this.buttonAceptar.Location = new System.Drawing.Point(183, 481);
+            this.buttonAceptar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonAceptar.Location = new System.Drawing.Point(185, 469);
             this.buttonAceptar.Name = "buttonAceptar";
-            this.buttonAceptar.Size = new System.Drawing.Size(75, 23);
+            this.buttonAceptar.Size = new System.Drawing.Size(84, 37);
             this.buttonAceptar.TabIndex = 7;
             this.buttonAceptar.Text = "Aceptar";
             this.buttonAceptar.UseVisualStyleBackColor = true;

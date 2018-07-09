@@ -57,10 +57,10 @@
             this.dataGridViewHabReservadas.AllowUserToAddRows = false;
             this.dataGridViewHabReservadas.AllowUserToDeleteRows = false;
             this.dataGridViewHabReservadas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewHabReservadas.Location = new System.Drawing.Point(21, 627);
+            this.dataGridViewHabReservadas.Location = new System.Drawing.Point(468, 203);
             this.dataGridViewHabReservadas.Name = "dataGridViewHabReservadas";
             this.dataGridViewHabReservadas.ReadOnly = true;
-            this.dataGridViewHabReservadas.Size = new System.Drawing.Size(836, 233);
+            this.dataGridViewHabReservadas.Size = new System.Drawing.Size(389, 263);
             this.dataGridViewHabReservadas.TabIndex = 20;
             this.dataGridViewHabReservadas.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewHabReservadas_CellClick);
             // 
@@ -68,10 +68,10 @@
             // 
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(18, 608);
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(464, 167);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(180, 16);
+            this.label5.Size = new System.Drawing.Size(245, 24);
             this.label5.TabIndex = 19;
             this.label5.Text = "Habitaciones seleccionadas";
             // 
@@ -90,18 +90,19 @@
             this.dataGridViewHabitaciones.AllowUserToAddRows = false;
             this.dataGridViewHabitaciones.AllowUserToDeleteRows = false;
             this.dataGridViewHabitaciones.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewHabitaciones.Location = new System.Drawing.Point(21, 175);
+            this.dataGridViewHabitaciones.Location = new System.Drawing.Point(21, 203);
             this.dataGridViewHabitaciones.Name = "dataGridViewHabitaciones";
             this.dataGridViewHabitaciones.ReadOnly = true;
-            this.dataGridViewHabitaciones.Size = new System.Drawing.Size(836, 372);
+            this.dataGridViewHabitaciones.Size = new System.Drawing.Size(396, 263);
             this.dataGridViewHabitaciones.TabIndex = 17;
             this.dataGridViewHabitaciones.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewHabitaciones_CellClick);
             // 
             // buttonBuscar
             // 
-            this.buttonBuscar.Location = new System.Drawing.Point(594, 104);
+            this.buttonBuscar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonBuscar.Location = new System.Drawing.Point(682, 104);
             this.buttonBuscar.Name = "buttonBuscar";
-            this.buttonBuscar.Size = new System.Drawing.Size(75, 23);
+            this.buttonBuscar.Size = new System.Drawing.Size(79, 29);
             this.buttonBuscar.TabIndex = 16;
             this.buttonBuscar.Text = "Buscar";
             this.buttonBuscar.UseVisualStyleBackColor = true;
@@ -109,9 +110,10 @@
             // 
             // buttonLimpiar
             // 
-            this.buttonLimpiar.Location = new System.Drawing.Point(146, 104);
+            this.buttonLimpiar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonLimpiar.Location = new System.Drawing.Point(785, 104);
             this.buttonLimpiar.Name = "buttonLimpiar";
-            this.buttonLimpiar.Size = new System.Drawing.Size(75, 23);
+            this.buttonLimpiar.Size = new System.Drawing.Size(72, 29);
             this.buttonLimpiar.TabIndex = 15;
             this.buttonLimpiar.Text = "Limpiar";
             this.buttonLimpiar.UseVisualStyleBackColor = true;
@@ -125,13 +127,13 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20.41312F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 15.79587F));
             this.tableLayoutPanel1.Controls.Add(this.label4, 3, 0);
-            this.tableLayoutPanel1.Controls.Add(this.label3, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.label1, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.label2, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.dateTimePickerDesde, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.dateTimePickerHasta, 1, 1);
-            this.tableLayoutPanel1.Controls.Add(this.comboBoxTipoHab, 2, 1);
             this.tableLayoutPanel1.Controls.Add(this.comboBoxTipoReg, 3, 1);
+            this.tableLayoutPanel1.Controls.Add(this.comboBoxTipoHab, 2, 1);
+            this.tableLayoutPanel1.Controls.Add(this.label3, 2, 0);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(21, 25);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
@@ -144,10 +146,10 @@
             // 
             this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(705, 7);
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(705, 3);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(107, 16);
+            this.label4.Size = new System.Drawing.Size(122, 20);
             this.label4.TabIndex = 11;
             this.label4.Text = "Tipo de regimen";
             // 
@@ -155,10 +157,10 @@
             // 
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(535, 7);
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(535, 3);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(120, 16);
+            this.label3.Size = new System.Drawing.Size(138, 20);
             this.label3.TabIndex = 10;
             this.label3.Text = "Tipo de habitacion";
             // 
@@ -166,10 +168,10 @@
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(267, 7);
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(267, 3);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(111, 16);
+            this.label1.Size = new System.Drawing.Size(129, 20);
             this.label1.TabIndex = 9;
             this.label1.Text = "Fecha de egreso";
             // 
@@ -177,45 +179,49 @@
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(3, 7);
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(3, 3);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(113, 16);
+            this.label2.Size = new System.Drawing.Size(132, 20);
             this.label2.TabIndex = 8;
             this.label2.Text = "Fecha de ingreso";
             // 
             // dateTimePickerDesde
             // 
+            this.dateTimePickerDesde.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dateTimePickerDesde.Location = new System.Drawing.Point(3, 26);
             this.dateTimePickerDesde.Name = "dateTimePickerDesde";
-            this.dateTimePickerDesde.Size = new System.Drawing.Size(197, 20);
+            this.dateTimePickerDesde.Size = new System.Drawing.Size(258, 22);
             this.dateTimePickerDesde.TabIndex = 0;
             this.dateTimePickerDesde.Value = new System.DateTime(2018, 6, 14, 0, 0, 0, 0);
             // 
             // dateTimePickerHasta
             // 
+            this.dateTimePickerHasta.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dateTimePickerHasta.Location = new System.Drawing.Point(267, 26);
             this.dateTimePickerHasta.Name = "dateTimePickerHasta";
-            this.dateTimePickerHasta.Size = new System.Drawing.Size(197, 20);
+            this.dateTimePickerHasta.Size = new System.Drawing.Size(262, 22);
             this.dateTimePickerHasta.TabIndex = 1;
             this.dateTimePickerHasta.Value = new System.DateTime(2018, 6, 17, 0, 0, 0, 0);
             // 
             // comboBoxTipoHab
             // 
             this.comboBoxTipoHab.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxTipoHab.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBoxTipoHab.FormattingEnabled = true;
             this.comboBoxTipoHab.Location = new System.Drawing.Point(535, 26);
             this.comboBoxTipoHab.Name = "comboBoxTipoHab";
-            this.comboBoxTipoHab.Size = new System.Drawing.Size(121, 21);
+            this.comboBoxTipoHab.Size = new System.Drawing.Size(121, 24);
             this.comboBoxTipoHab.TabIndex = 2;
             // 
             // comboBoxTipoReg
             // 
             this.comboBoxTipoReg.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxTipoReg.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBoxTipoReg.FormattingEnabled = true;
             this.comboBoxTipoReg.Location = new System.Drawing.Point(705, 26);
             this.comboBoxTipoReg.Name = "comboBoxTipoReg";
-            this.comboBoxTipoReg.Size = new System.Drawing.Size(121, 21);
+            this.comboBoxTipoReg.Size = new System.Drawing.Size(121, 24);
             this.comboBoxTipoReg.TabIndex = 3;
             // 
             // errorProviderReserva
@@ -226,18 +232,18 @@
             // 
             this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(21, 156);
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(24, 167);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(177, 16);
+            this.label6.Size = new System.Drawing.Size(331, 24);
             this.label6.TabIndex = 21;
-            this.label6.Text = "Seleccione las habitaciones";
+            this.label6.Text = "Seleccione las habitaciones deseadas";
             // 
             // DatosReserva
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(888, 895);
+            this.ClientSize = new System.Drawing.Size(878, 560);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.dataGridViewHabReservadas);
             this.Controls.Add(this.label5);
