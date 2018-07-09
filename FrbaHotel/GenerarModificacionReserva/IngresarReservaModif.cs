@@ -34,7 +34,7 @@ namespace FrbaHotel.GenerarModificacionReserva
                 Reserva reserva = new Reserva(Convert.ToInt32(textBoxNroReserva.Text));
                 reserva.cargar();
 
-                FormaNueva.DatosReservaModif datosReserva = new FormaNueva.DatosReservaModif(reserva, usuario);
+                DatosReserva.DatosReservaModif datosReserva = new DatosReserva.DatosReservaModif(reserva, usuario);
                 Hide();
                 datosReserva.Show();
             }
@@ -48,8 +48,8 @@ namespace FrbaHotel.GenerarModificacionReserva
                 MessageBox.Show("Debe escribir un numero de reserva");
                 return false;
             }
-            
-            //sp validar reserva
+
+            DB.ejecutarProcedimiento("LA_QUERY_DE_PAPEL.validar_reserva_modificable", "nroReserva", Convert.ToInt32(textBoxNroReserva.Text), "fechaActual", Program.fechaActual);
 
             return true;
         }

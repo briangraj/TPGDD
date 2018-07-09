@@ -12,7 +12,7 @@ using FrbaHotel.Entidades;
 using FrbaHotel.Utilidades;
 using System.Data.SqlClient;
 
-namespace FrbaHotel.GenerarModificacionReserva.FormaNueva
+namespace FrbaHotel.GenerarModificacionReserva.DatosReserva
 {
     public abstract partial class DatosReserva : Form
     {

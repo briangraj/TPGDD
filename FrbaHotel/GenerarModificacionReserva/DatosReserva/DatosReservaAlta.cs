@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using FrbaHotel.Entidades;
 using FrbaHotel.Utilidades;
 
-namespace FrbaHotel.GenerarModificacionReserva.FormaNueva
+namespace FrbaHotel.GenerarModificacionReserva.DatosReserva
 {
     class DatosReservaAlta : DatosReserva
     {

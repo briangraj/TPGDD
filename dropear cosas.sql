@@ -44,8 +44,9 @@ DROP PROCEDURE LA_QUERY_DE_PAPEL.procedure_update_cliente
 DROP PROCEDURE LA_QUERY_DE_PAPEL.procedure_alta_habitacion
 DROP PROCEDURE LA_QUERY_DE_PAPEL.validar_regimen
 DROP PROCEDURE LA_QUERY_DE_PAPEL.validar_baja_hotel
+DROP PROCEDURE LA_QUERY_DE_PAPEL.validar_reserva_activa
+DROP PROCEDURE LA_QUERY_DE_PAPEL.validar_reserva_modificable
 DROP PROCEDURE LA_QUERY_DE_PAPEL.actualizar_reserva
-DROP PROCEDURE LA_QUERY_DE_PAPEL.validar_reserva_cancelable
 DROP PROCEDURE LA_QUERY_DE_PAPEL.cancelar_reserva
 DROP PROCEDURE LA_QUERY_DE_PAPEL.validar_reserva_para_ingreso
 DROP PROCEDURE LA_QUERY_DE_PAPEL.registrar_ingreso

@@ -1,4 +1,4 @@
-﻿namespace FrbaHotel.GenerarModificacionReserva.FormaNueva
+﻿namespace FrbaHotel.GenerarModificacionReserva.DatosReserva
 {
     partial class DatosReserva
     {

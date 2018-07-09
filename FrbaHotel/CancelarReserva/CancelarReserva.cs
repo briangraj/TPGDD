@@ -54,7 +54,7 @@ namespace FrbaHotel.CancelarReserva
                 return false;
             }
 
-            DB.ejecutarProcedimiento("LA_QUERY_DE_PAPEL.validar_reserva_cancelable", "nroReserva", Convert.ToInt32(textBoxNroReserva.Text));
+            DB.ejecutarProcedimiento("LA_QUERY_DE_PAPEL.validar_reserva_activa", "nroReserva", Convert.ToInt32(textBoxNroReserva.Text));
 
             return true;
         }
