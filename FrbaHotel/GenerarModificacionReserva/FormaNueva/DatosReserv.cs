@@ -112,6 +112,13 @@ namespace FrbaHotel.GenerarModificacionReserva.FormaNueva
 
         protected abstract void accionBotonSiguiente();
 
+        protected void abrirConfirmacion(Reserva reserva)
+        {
+            ConfirmacionReserva confirmacion = new ConfirmacionReserva(reserva, tablaHabSeleccionadas, this);
+            confirmacion.Show();
+            Hide();
+        }
+
         protected void validarDatos()
         {
             Validaciones.validarControles(errorProviderReserva, Controls);
@@ -156,6 +163,11 @@ namespace FrbaHotel.GenerarModificacionReserva.FormaNueva
             string nroHabitacion = dataGridViewHabReservadas.CurrentRow.Cells["Nro_Habitacion"].Value.ToString();
 
             tablaHabSeleccionadas.Rows.Remove(tablaHabSeleccionadas.Select("Nro_Habitacion = " + nroHabitacion)[0]);
+        }
+
+        private void buttonLimpiar_Click(object sender, EventArgs e)
+        {
+            Limpiador.limpiarControles(Controls);
         }
     }
 }

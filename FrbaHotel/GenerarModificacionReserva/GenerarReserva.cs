@@ -30,26 +30,39 @@ namespace FrbaHotel.GenerarModificacionReserva
         {
             try
             {
-                int idReserva = insertarReserva();
-                
-                insertarReservaxHabitacion(idReserva);
-
-                //insertarHistorial(idReserva);
-
-                textBoxNroReserva.Text = idReserva.ToString();
+                if (reserva.esAlta)
+                    generarReserva();
+                else
+                    actualizarReserva();
             }
             catch (SqlException) { }
+        }
+
+        private int cantNoches()
+        {
+            return (reserva.fechaFin - reserva.fechaInicio).Days;
+        }
+
+        /////////////////////////////////////////////////// GENERAR RESERVA ////////////////////////////////////////////////////
+        private void generarReserva()
+        {
+            int idReserva = insertarReserva();
+
+            insertarReservaxHabitacion(idReserva);
+
+            //insertarHistorial(idReserva);
+
+            textBoxNroReserva.Text = idReserva.ToString();
         }
 
         private int insertarReserva()
         {
             int idRegimen = DB.buscarIdRegimen(reserva.descRegimen);
-            int cantNoches = (reserva.fechaFin - reserva.fechaInicio).Days;
 
             return (int)DB.ejecutarQueryEscalar(
                 "INSERT INTO LA_QUERY_DE_PAPEL.Reserva (Id_Regimen, Fecha_Reserva, Cant_Noches, Fecha_Inicio, Fecha_Fin, Estado, Tipo_Documento, Nro_Documento) output INSERTED.Id_Reserva " +
                 "VALUES (@idRegimen, @fechaDeReserva, @cantNoches, @fechaInicio, @fechaFin, 'Reserva correcta', @tipoDoc, @nroDoc)",
-                "idRegimen", idRegimen, "fechaDeReserva", Program.fechaActual, "cantNoches", cantNoches, "fechaInicio", reserva.fechaInicio, "fechaFin", reserva.fechaFin,
+                "idRegimen", idRegimen, "fechaDeReserva", Program.fechaActual, "cantNoches", cantNoches(), "fechaInicio", reserva.fechaInicio, "fechaFin", reserva.fechaFin,
                 "tipoDoc", cliente.tipoDocumento, "nroDoc", cliente.nroDocumento);
         }
 
@@ -62,6 +75,12 @@ namespace FrbaHotel.GenerarModificacionReserva
                     "VALUES (@idReserva, @nroHabitacion, @idHotel)",
                     "idReserva", idReserva, "nroHabitacion", habitacion.nroHabitacion, "idHotel", habitacion.idHotel);
             }
+        }
+
+        /////////////////////////////////////////////////// ACTUALIZAR RESERVA ////////////////////////////////////////////////////
+        private void actualizarReserva()
+        {
+
         }
 
         private void insertarHistorial(int idReserva)

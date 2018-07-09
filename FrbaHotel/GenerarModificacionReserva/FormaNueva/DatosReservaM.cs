@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using FrbaHotel.Entidades;
 using FrbaHotel.Utilidades;
+using System.Data;
 
 namespace FrbaHotel.GenerarModificacionReserva.FormaNueva
 {
@@ -41,12 +42,15 @@ namespace FrbaHotel.GenerarModificacionReserva.FormaNueva
         private void cargarHabitacionesReservadas()
         {
             tablaHabSeleccionadas = DB.ejecutarFuncionDeTabla("LA_QUERY_DE_PAPEL.habitaciones_de_reserva", "nroReserva", reserva.id);
+
             dataGridViewHabReservadas.DataSource = tablaHabSeleccionadas;
         }
 
         protected override void accionBotonSiguiente()
         {
-            throw new NotImplementedException();
+            reserva.usuario = usuario;
+
+            abrirConfirmacion(reserva);
         }
     }
 }

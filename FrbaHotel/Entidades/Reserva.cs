@@ -18,9 +18,10 @@ namespace FrbaHotel.Entidades
         public string tipoHabitacion;
         public Usuario usuario;
         public int id;
+        public bool esAlta;
 
         public List<Habitacion> habitaciones = new List<Habitacion>();
-
+        
         public Reserva(DateTime fechaInicio, DateTime fechaFin, string tipoHabitacion, string descRegimen, Usuario usuario)
         {
             this.fechaInicio = fechaInicio;
@@ -28,11 +29,13 @@ namespace FrbaHotel.Entidades
             this.tipoHabitacion = tipoHabitacion;
             this.descRegimen = descRegimen;
             this.usuario = usuario;
+            this.esAlta = true;
         }
 
         public Reserva(int id)
         {
             this.id = id;
+            this.esAlta = false;
         }
 
         public void cargar()
