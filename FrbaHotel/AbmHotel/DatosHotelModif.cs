@@ -14,7 +14,7 @@ namespace FrbaHotel.AbmHotel
     class DatosHotelModif : DatosHotel
     {
         private int idHotelAModif;
-        private List<Regimen> regimenesOriginales;
+        private List<Regimen> regimenesOriginales = new List<Regimen>();
 
         public DatosHotelModif(DataGridViewRow filaHotel)
             : base()

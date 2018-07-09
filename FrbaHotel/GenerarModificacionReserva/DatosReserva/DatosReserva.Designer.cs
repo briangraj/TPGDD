@@ -45,6 +45,7 @@
             this.comboBoxTipoHab = new System.Windows.Forms.ComboBox();
             this.comboBoxTipoReg = new System.Windows.Forms.ComboBox();
             this.errorProviderReserva = new System.Windows.Forms.ErrorProvider(this.components);
+            this.label6 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewHabReservadas)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewHabitaciones)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
@@ -56,10 +57,10 @@
             this.dataGridViewHabReservadas.AllowUserToAddRows = false;
             this.dataGridViewHabReservadas.AllowUserToDeleteRows = false;
             this.dataGridViewHabReservadas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewHabReservadas.Location = new System.Drawing.Point(21, 683);
+            this.dataGridViewHabReservadas.Location = new System.Drawing.Point(21, 627);
             this.dataGridViewHabReservadas.Name = "dataGridViewHabReservadas";
             this.dataGridViewHabReservadas.ReadOnly = true;
-            this.dataGridViewHabReservadas.Size = new System.Drawing.Size(836, 177);
+            this.dataGridViewHabReservadas.Size = new System.Drawing.Size(836, 233);
             this.dataGridViewHabReservadas.TabIndex = 20;
             this.dataGridViewHabReservadas.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewHabReservadas_CellClick);
             // 
@@ -68,11 +69,11 @@
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(18, 664);
+            this.label5.Location = new System.Drawing.Point(18, 608);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(160, 16);
+            this.label5.Size = new System.Drawing.Size(180, 16);
             this.label5.TabIndex = 19;
-            this.label5.Text = "Habitaciones reservadas";
+            this.label5.Text = "Habitaciones seleccionadas";
             // 
             // buttonSiguiente
             // 
@@ -89,10 +90,10 @@
             this.dataGridViewHabitaciones.AllowUserToAddRows = false;
             this.dataGridViewHabitaciones.AllowUserToDeleteRows = false;
             this.dataGridViewHabitaciones.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewHabitaciones.Location = new System.Drawing.Point(21, 154);
+            this.dataGridViewHabitaciones.Location = new System.Drawing.Point(21, 175);
             this.dataGridViewHabitaciones.Name = "dataGridViewHabitaciones";
             this.dataGridViewHabitaciones.ReadOnly = true;
-            this.dataGridViewHabitaciones.Size = new System.Drawing.Size(836, 458);
+            this.dataGridViewHabitaciones.Size = new System.Drawing.Size(836, 372);
             this.dataGridViewHabitaciones.TabIndex = 17;
             this.dataGridViewHabitaciones.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewHabitaciones_CellClick);
             // 
@@ -221,11 +222,23 @@
             // 
             this.errorProviderReserva.ContainerControl = this;
             // 
-            // DatosReserv
+            // label6
+            // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(21, 156);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(177, 16);
+            this.label6.TabIndex = 21;
+            this.label6.Text = "Seleccione las habitaciones";
+            // 
+            // DatosReserva
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(888, 895);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.dataGridViewHabReservadas);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.buttonSiguiente);
@@ -233,7 +246,7 @@
             this.Controls.Add(this.buttonBuscar);
             this.Controls.Add(this.buttonLimpiar);
             this.Controls.Add(this.tableLayoutPanel1);
-            this.Name = "DatosReserv";
+            this.Name = "DatosReserva";
             this.Text = "DatosReserv";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewHabReservadas)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewHabitaciones)).EndInit();
@@ -263,6 +276,7 @@
         protected System.Windows.Forms.ComboBox comboBoxTipoHab;
         protected System.Windows.Forms.ComboBox comboBoxTipoReg;
         private System.Windows.Forms.ErrorProvider errorProviderReserva;
+        private System.Windows.Forms.Label label6;
 
     }
 }

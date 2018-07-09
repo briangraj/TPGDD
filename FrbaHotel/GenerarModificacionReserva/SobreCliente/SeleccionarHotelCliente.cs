@@ -11,8 +11,6 @@ namespace FrbaHotel.GenerarModificacionReserva.SobreCliente
 {
     public class SeleccionarHotelCliente : Login.SeleccionarHotel
     {
-        private Usuario usuario;
-
         public SeleccionarHotelCliente(Usuario usuario) : base(usuario) { }
 
         protected override void cargarHoteles()
