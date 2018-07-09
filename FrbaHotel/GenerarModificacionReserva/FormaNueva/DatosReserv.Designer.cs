@@ -61,6 +61,7 @@
             this.dataGridViewHabReservadas.ReadOnly = true;
             this.dataGridViewHabReservadas.Size = new System.Drawing.Size(836, 177);
             this.dataGridViewHabReservadas.TabIndex = 20;
+            this.dataGridViewHabReservadas.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewHabReservadas_CellClick);
             // 
             // label5
             // 

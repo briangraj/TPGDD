@@ -14,10 +14,10 @@ using System.Data.SqlClient;
 
 namespace FrbaHotel.GenerarModificacionReserva.FormaNueva
 {
-    public partial class DatosReserv : Form
+    public abstract partial class DatosReserv : Form
     {
         protected Usuario usuario;
-        private DataTable tablaHabSeleccionadas = new DataTable();
+        protected DataTable tablaHabSeleccionadas = new DataTable();
         private bool primeraVez = true;
 
         public DatosReserv(Usuario usuario)
@@ -74,9 +74,7 @@ namespace FrbaHotel.GenerarModificacionReserva.FormaNueva
                 }
                 comboBoxTipoReg.SelectedIndex = comboBoxTipoReg.Items.IndexOf(regimen.descripcionRegimen);
             }
-            /*
             
-            */
             cargarHabitaciones();
         }
 
@@ -120,7 +118,21 @@ namespace FrbaHotel.GenerarModificacionReserva.FormaNueva
 
         private void buttonSiguiente_Click(object sender, EventArgs e)
         {
+            errorProviderReserva.Clear();
+            validarDatos();
+            if (Validaciones.errorProviderConError(errorProviderReserva, Controls))
+                return;
 
+            accionBotonSiguiente();
+        }
+
+        protected abstract void accionBotonSiguiente();
+
+        protected void validarDatos()
+        {
+            Validaciones.validarControles(errorProviderReserva, Controls);
+            Validaciones.validarFechasAnteriores(errorProviderReserva, Controls);
+            //todo validar que elija habitaciones
         }
 
         private void dataGridViewHabitaciones_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -129,12 +141,37 @@ namespace FrbaHotel.GenerarModificacionReserva.FormaNueva
                 return;
 
             DataGridViewRow fila = dataGridViewHabitaciones.Rows[e.RowIndex];
+
+            if (yaEsta(fila))
+                return;
+            
             tablaHabSeleccionadas.Rows.Add(
                 fila.Cells["Nro_Habitacion"].Value,
                 fila.Cells["Piso"].Value,
                 fila.Cells["Ubicacion"].Value,
                 fila.Cells["Tipo_Habitacion"].Value,
                 fila.Cells["Descripcion"].Value);
+        }
+
+        private bool yaEsta(DataGridViewRow fila)
+        {
+            foreach (DataGridViewRow row in dataGridViewHabReservadas.Rows)
+            {
+                if(row.Cells["Nro_Habitacion"].Value.ToString() == fila.Cells["Nro_Habitacion"].Value.ToString())
+                    return true;
+            }
+
+            return false;
+        }
+
+        private void dataGridViewHabReservadas_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex == -1)
+                return;
+
+            string nroHabitacion = dataGridViewHabReservadas.CurrentRow.Cells["Nro_Habitacion"].Value.ToString();
+
+            tablaHabSeleccionadas.Rows.Remove(tablaHabSeleccionadas.Select("Nro_Habitacion = " + nroHabitacion)[0]);
         }
     }
 }
