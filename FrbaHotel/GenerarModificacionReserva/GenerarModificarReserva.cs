@@ -36,7 +36,7 @@ namespace FrbaHotel.GenerarModificacionReserva
 
         private void buttonModificar_Click(object sender, EventArgs e)
         {
-            ModificarReserva modificarReserva = new ModificarReserva(usuario);
+            IngresarReservaModif modificarReserva = new IngresarReservaModif(usuario);
             Hide();
             modificarReserva.Show();
         }

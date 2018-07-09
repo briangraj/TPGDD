@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using FrbaHotel.Entidades;
 using FrbaHotel.Utilidades;
+using System.Data;
 
 namespace FrbaHotel.GenerarModificacionReserva.FormaNueva
 {
@@ -19,6 +20,7 @@ namespace FrbaHotel.GenerarModificacionReserva.FormaNueva
             this.reserva = reserva;
             cargarReserva();
             cargarHabitaciones();
+            cargarHabitacionesReservadas();
         }
 
         private void cargarReserva()
@@ -32,28 +34,23 @@ namespace FrbaHotel.GenerarModificacionReserva.FormaNueva
         protected override System.Data.DataTable tablaDeHabitaciones(int idRegimen, string tipoHab)
         {
             //todo ver que el hotel no este en baja
-            return DB.ejecutarQueryDeTabla(
-                "SELECT  h.Nro_Habitacion, Piso, Ubicacion, th.Descripcion AS Tipo_Habitacion, h.Descripcion " +
-                "FROM LA_QUERY_DE_PAPEL.Habitacion h " +
-                //"LEFT JOIN LA_QUERY_DE_PAPEL.ReservaxHabitacion rha ON h.Id_Hotel = rha.Id_Hotel AND h.Nro_Habitacion = rha.Nro_Habitacion " +
-                //"LEFT JOIN LA_QUERY_DE_PAPEL.reservas_sin_cancelar r ON rha.Id_Reserva = r.Id_Reserva " +
-                    "JOIN LA_QUERY_DE_PAPEL.Tipo_Habitacion th ON h.Tipo_Hab = th.Id_tipo " +
-                    "JOIN LA_QUERY_DE_PAPEL.RegimenxHotel rho ON h.Id_Hotel = rho.Id_Hotel " +
-                        "WHERE rho.Id_Hotel = @idHotel " +
-                            "AND rho.Id_Regimen = @idRegimen " +
-                            "AND h.Habilitada = 1 " +
-                            "AND th.Descripcion LIKE @tipoHab " +
-                            "AND h.Nro_Habitacion NOT IN ( " +
-                                    "SELECT distinct Nro_Habitacion FROM LA_QUERY_DE_PAPEL.reservas_sin_cancelar r " +
-                                    "JOIN LA_QUERY_DE_PAPEL.ReservaxHabitacion rh ON r.Id_Reserva = rh.Id_Reserva " +
-                                        "WHERE Id_Hotel = @idHotel " +
-                                            "AND Fecha_Inicio < @fechaHasta  AND Fecha_Fin > @fechaDesde)",
-                "idHotel", usuario.idHotel, "idRegimen", idRegimen, "tipoHab", "%" + tipoHab + "%", "fechaDesde", dateTimePickerDesde.Value, "fechaHasta", dateTimePickerHasta.Value); ;
+            return DB.ejecutarFuncionDeTabla("LA_QUERY_DE_PAPEL.habitaciones_disponibles_para_reserva",
+                "idHotel", usuario.idHotel, "idRegimen", idRegimen, "tipoHab", "%" + tipoHab + "%", "fechaDesde", dateTimePickerDesde.Value, "fechaHasta", dateTimePickerHasta.Value,
+                "nroReserva", reserva.id);
+        }
+
+        private void cargarHabitacionesReservadas()
+        {
+            tablaHabSeleccionadas = DB.ejecutarFuncionDeTabla("LA_QUERY_DE_PAPEL.habitaciones_de_reserva", "nroReserva", reserva.id);
+
+            dataGridViewHabReservadas.DataSource = tablaHabSeleccionadas;
         }
 
         protected override void accionBotonSiguiente()
         {
-            throw new NotImplementedException();
+            reserva.usuario = usuario;
+
+            abrirConfirmacion(reserva);
         }
     }
 }

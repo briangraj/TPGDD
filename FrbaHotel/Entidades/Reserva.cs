@@ -18,9 +18,10 @@ namespace FrbaHotel.Entidades
         public string tipoHabitacion;
         public Usuario usuario;
         public int id;
+        public bool esAlta;
 
         public List<Habitacion> habitaciones = new List<Habitacion>();
-
+        
         public Reserva(DateTime fechaInicio, DateTime fechaFin, string tipoHabitacion, string descRegimen, Usuario usuario)
         {
             this.fechaInicio = fechaInicio;
@@ -28,16 +29,17 @@ namespace FrbaHotel.Entidades
             this.tipoHabitacion = tipoHabitacion;
             this.descRegimen = descRegimen;
             this.usuario = usuario;
+            this.esAlta = true;
         }
 
         public Reserva(int id)
         {
             this.id = id;
+            this.esAlta = false;
         }
 
         public void cargar()
         {
-            //todo esto habria que cambiarlo si ponemos tipo_hab en otra tabla
             DB.ejecutarReader(
                 "SELECT Fecha_Reserva, Fecha_Inicio, Fecha_Fin, rg.Descripcion, th.Descripcion " +
                 "FROM LA_QUERY_DE_PAPEL.Reserva rv " +
@@ -47,8 +49,6 @@ namespace FrbaHotel.Entidades
                     "JOIN LA_QUERY_DE_PAPEL.Tipo_Habitacion th ON h.Tipo_Hab = th.Id_tipo " +
                     "WHERE rv.Id_Reserva = @idReserva",
                     cargarReserva, "idReserva", this.id);
-            
-
         }
 
         public void cargarReserva(SqlDataReader reader)

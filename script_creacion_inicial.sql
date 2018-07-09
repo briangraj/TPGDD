@@ -185,7 +185,7 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[ReservaxHabitacion_Conflicto_Migracion] (
 CREATE TABLE [LA_QUERY_DE_PAPEL].[Historial_Reserva] (
 	Id_Reserva INT NOT NULL REFERENCES [LA_QUERY_DE_PAPEL].[Reserva] (Id_Reserva),
 	Tipo nvarchar(255) NOT NULL,
-	Fecha_Cancelacion datetime NOT NULL,
+	Fecha datetime NOT NULL,
 	Id_Usuario INT NOT NULL REFERENCES [LA_QUERY_DE_PAPEL].[Usuario] (Id_Usuario)
 );
 
@@ -625,6 +625,26 @@ BEGIN
 END
 GO
 
+--todo agregar verificacion
+CREATE PROCEDURE LA_QUERY_DE_PAPEL.actualizar_reserva
+	@nroReserva int,
+	@idRegimen int,
+	@fechaDeModificacion datetime,
+	@cantNoches int,
+	@fechaInicio datetime,
+	@fechaFin datetime,
+	@idUsuario int
+AS
+BEGIN
+	UPDATE LA_QUERY_DE_PAPEL.Reserva 
+	SET Id_Regimen = @idRegimen, Cant_Noches = @cantNoches, Fecha_Inicio = @fechaInicio, Fecha_Fin = @fechaFin, Estado = 'Reserva modificada'
+		WHERE Id_Reserva = @nroReserva
+
+	INSERT INTO LA_QUERY_DE_PAPEL.Historial_Reserva (Id_Reserva, Id_Usuario, Tipo, Fecha)
+	VALUES (@nroReserva, @idUsuario, 'Modificacion', @fechaDeModificacion)
+END
+GO
+
 CREATE PROCEDURE LA_QUERY_DE_PAPEL.validar_reserva_cancelable
 	@nroReserva int
 AS
@@ -656,7 +676,7 @@ CREATE PROCEDURE LA_QUERY_DE_PAPEL.cancelar_reserva
 	@idUsuario int
 AS
 BEGIN
-	INSERT INTO LA_QUERY_DE_PAPEL.Historial_Reserva (Id_Reserva, Tipo, Fecha_Cancelacion, Id_Usuario)
+	INSERT INTO LA_QUERY_DE_PAPEL.Historial_Reserva (Id_Reserva, Tipo, Fecha, Id_Usuario)
 	VALUES (@nroReserva, 'Cancelada: ' + @motivo, @fechaCancelacion, @idUsuario)
 
 	DECLARE @estado nvarchar(255) = 'Reserva cancelada por recepcion'
@@ -762,6 +782,28 @@ AS
 							JOIN LA_QUERY_DE_PAPEL.ReservaxHabitacion rh ON r.Id_Reserva = rh.Id_Reserva
 								WHERE Id_Hotel = @idHotel
 									AND Fecha_Inicio < @fechaHasta  AND Fecha_Fin > @fechaDesde)
+	)
+GO
+
+CREATE FUNCTION LA_QUERY_DE_PAPEL.habitaciones_de_reserva (@nroReserva int)
+RETURNS TABLE
+AS
+	RETURN (
+		SELECT h.Nro_Habitacion, Piso, Ubicacion, th.Descripcion AS Tipo_Habitacion, h.Descripcion
+		FROM LA_QUERY_DE_PAPEL.Habitacion h
+			JOIN LA_QUERY_DE_PAPEL.Tipo_Habitacion th ON h.Tipo_Hab = th.Id_tipo
+			JOIN LA_QUERY_DE_PAPEL.ReservaxHabitacion rh ON h.Id_Hotel = rh.Id_Hotel AND h.Nro_Habitacion = rh.Nro_Habitacion
+				WHERE rh.Id_Reserva = @nroReserva
+	)
+GO
+
+CREATE FUNCTION LA_QUERY_DE_PAPEL.habitaciones_disponibles_para_reserva (@idHotel int, @idRegimen int, @tipoHab nvarchar(255), @fechaDesde datetime, @fechaHasta datetime, @nroReserva int)
+RETURNS TABLE
+AS
+	RETURN (
+		SELECT * FROM LA_QUERY_DE_PAPEL.habitaciones_libres(@idHotel, @idRegimen, @tipoHab, @fechaDesde, @fechaHasta)
+		UNION
+		SELECT * FROM LA_QUERY_DE_PAPEL.habitaciones_de_reserva(@nroReserva)
 	)
 GO
 

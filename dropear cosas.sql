@@ -47,6 +47,7 @@ DROP PROCEDURE LA_QUERY_DE_PAPEL.procedure_update_cliente
 DROP PROCEDURE LA_QUERY_DE_PAPEL.procedure_alta_habitacion
 DROP PROCEDURE LA_QUERY_DE_PAPEL.validar_regimen
 DROP PROCEDURE LA_QUERY_DE_PAPEL.validar_baja_hotel
+DROP PROCEDURE LA_QUERY_DE_PAPEL.actualizar_reserva
 DROP PROCEDURE LA_QUERY_DE_PAPEL.validar_reserva_cancelable
 DROP PROCEDURE LA_QUERY_DE_PAPEL.cancelar_reserva
 DROP PROCEDURE LA_QUERY_DE_PAPEL.validar_reserva_para_ingreso
@@ -57,9 +58,11 @@ DROP PROCEDURE LA_QUERY_DE_PAPEL.Cargar_personas
 DROP PROCEDURE LA_QUERY_DE_PAPEL.Cargar_reservas
 DROP PROCEDURE LA_QUERY_DE_PAPEL.Cargar_Estadias
 
+DROP FUNCTION LA_QUERY_DE_PAPEL.habitaciones_disponibles_para_reserva
+DROP FUNCTION LA_QUERY_DE_PAPEL.habitaciones_libres
+DROP FUNCTION LA_QUERY_DE_PAPEL.habitaciones_de_reserva
 DROP FUNCTION LA_QUERY_DE_PAPEL.HotelesMayoresCancelaciones
 DROP FUNCTION LA_QUERY_DE_PAPEL.HotelesMayoresConsumibles 
 DROP FUNCTION LA_QUERY_DE_PAPEL.HotelesMasDiasFueraDeServicio
 DROP FUNCTION [LA_QUERY_DE_PAPEL].[habitacionesMasOcupadas]
 DROP FUNCTION LA_QUERY_DE_PAPEL.ClientesConMasPuntos
-DROP FUNCTION LA_QUERY_DE_PAPEL.habitaciones_libres
