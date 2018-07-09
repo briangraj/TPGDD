@@ -87,7 +87,7 @@ namespace FrbaHotel.GenerarModificacionReserva
             if (ComboBoxTipoHab().SelectedItem != null)
                 tipoHab = ComboBoxTipoHab().SelectedItem.ToString();
 
-            DataGridViewReserva().DataSource = DB.correrQueryTabla(
+            DataGridViewReserva().DataSource = DB.ejecutarQueryDeTabla(
                 "SELECT h.Nro_Habitacion, Piso, Ubicacion, Tipo_Hab, Descripcion " +
                 "FROM LA_QUERY_DE_PAPEL.Habitacion h " +
                     "JOIN LA_QUERY_DE_PAPEL.RegimenxHotel rho ON h.Id_Hotel = rho.Id_Hotel " +

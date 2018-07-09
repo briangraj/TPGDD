@@ -44,7 +44,7 @@ namespace FrbaHotel.AbmHotel
 
         private void insertarBajaHotel()
         {
-            DB.correrQuery(
+            DB.ejecutarQuery(
                 "INSERT INTO LA_QUERY_DE_PAPEL.Hotel_Baja (Id_Hotel, Fecha_inicio, Fecha_fin, Descripcion) " +
                 "VALUES (@idHotel, @fechaInicio, @fechaFin, @descripcion)",
                 "idHotel", idHotel, "fechaInicio", dateTimePickerFechaInicio.Value, "fechaFin", dateTimePickerFechaFin.Value, "descripcion", textBoxDescripcion.Text);

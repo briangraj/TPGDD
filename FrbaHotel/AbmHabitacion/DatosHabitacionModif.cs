@@ -34,7 +34,7 @@ namespace FrbaHotel.AbmHabitacion
 
         protected override void accionAceptar()
         {
-            DB.correrQuery(
+            DB.ejecutarQuery(
                 "UPDATE LA_QUERY_DE_PAPEL.Habitacion (Nro_Habitacion, Piso, Ubicacion, Descripcion, Habilitada) " +
                 "VALUES (@nroHabitacion, @piso, @ubicacion, @descripcion, @habilitada) " +
                     "WHERE Id_Hotel = @idHotel " +

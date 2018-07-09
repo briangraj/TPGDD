@@ -30,7 +30,7 @@ namespace FrbaHotel.AbmHotel
 
             insertarNuevosRegimenes();
 
-            DB.correrQuery(
+            DB.ejecutarQuery(
                 "UPDATE LA_QUERY_DE_PAPEL.Hotel " +
                 "SET Nombre = @nombre, Mail = @mail, Telefono = @telefono, Direccion = @direccion, Cant_Estrellas = @cantEstrellas, Recarga_Estrella = @recarga, Ciudad = @ciudad, " +
                 "Pais = @pais, Fecha_Creacion = @fechaCreacion " +
@@ -64,7 +64,7 @@ namespace FrbaHotel.AbmHotel
 
         private void borrarRegimen(Regimen regimen)
         {
-            DB.correrQuery(
+            DB.ejecutarQuery(
                 "DELETE FROM LA_QUERY_DE_PAPEL.RegimenxHotel " +
                 "WHERE Id_Hotel = @idHotel " +
                     "AND Id_Regimen = @idRegimen",

@@ -32,7 +32,7 @@ namespace FrbaHotel.AbmHabitacion
 
         protected void llenarTabla()
         {
-            dataGridViewHabitaciones.DataSource = DB.correrQueryTabla(queryTabla(),
+            dataGridViewHabitaciones.DataSource = DB.ejecutarQueryDeTabla(queryTabla(),
                 "nroHab", "%" + textBoxNroHab.Text + "%", "piso", "%" + textBoxPiso + "%", "idHotel", usuario.idHotel);
         }
 

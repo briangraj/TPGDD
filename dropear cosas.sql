@@ -57,3 +57,5 @@ DROP  PROCEDURE LA_QUERY_DE_PAPEL.HotelesMayoresCancelaciones
 DROP PROCEDURE LA_QUERY_DE_PAPEL.HotelesMayoresConsumibles 
 DROP PROCEDURE LA_QUERY_DE_PAPEL.HotelesMasDiasFueraDeServicio
 DROP PROCEDURE [LA_QUERY_DE_PAPEL].[habitacionesMasOcupadas]
+
+DROP FUNCTION LA_QUERY_DE_PAPEL.habitaciones_libres

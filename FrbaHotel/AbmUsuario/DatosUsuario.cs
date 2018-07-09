@@ -106,7 +106,7 @@ namespace FrbaHotel.AbmUsuario
         private void insertarUsuario()
         {
             int idRol = DB.buscarIdRol(comboBoxRoles.SelectedItem.ToString());
-            DB.correrQuery(
+            DB.ejecutarQuery(
                     "INSERT INTO LA_QUERY_DE_PAPEL.usuarios (Username, Password , Id_Rol, Nombre, Apellido, Tipo_Documento, Nro_Documento, Mail, Telefono, Direccion, Fecha_Nacimiento, Habilitado) " +
                     "VALUES (@username, @password, @idRol, @nombre, @apellido, @tipoDocumento, @nroDocumento, @mail, @telefono, @direccion, @fechaNacimiento, @habilitado)",
                     "username", textBoxUsername.Text, "password", Usuario.encriptar(textBoxPassword.Text), "idRol", idRol,
@@ -124,7 +124,7 @@ namespace FrbaHotel.AbmUsuario
             {
                 id = hoteles.Find(hotel => hotel.nombre == desc).id;
 
-                DB.correrQuery(
+                DB.ejecutarQuery(
                     "INSERT INTO LA_QUERY_DE_PAPEL.UsuarioxHotel (Id_Hotel, Id_Usuario) " +
                     "VALUES (@idHotel, @idUsuario)",
                     "idHotel", id, "idUsuario", idUsuario);
@@ -136,7 +136,7 @@ namespace FrbaHotel.AbmUsuario
         {
             int idRol = DB.buscarIdRol(comboBoxRoles.SelectedItem.ToString());
             
-            DB.correrQuery(
+            DB.ejecutarQuery(
                 "UPDATE LA_QUERY_DE_PAPEL.usuarios " +
                 querySet() + 
                 "WHERE Id_Usuario = @idUsuario",
@@ -145,7 +145,7 @@ namespace FrbaHotel.AbmUsuario
                 "mail", textBoxMail.Text, "telefono", textBoxTelefono.Text, "direccion", textBoxDireccion.Text, "fechaNac", dateTimePickerFechaNac.Value,
                 "habilitado", checkBoxHabilitado.Checked, "idUsuario", idUsuarioAModificar);
 
-            DB.correrQuery(
+            DB.ejecutarQuery(
                 "DELETE FROM LA_QUERY_DE_PAPEL.UsuarioxHotel " +
                 "WHERE Id_Usuario = @idUsuario",
                 "idUsuario", idUsuarioAModificar);
@@ -181,7 +181,7 @@ namespace FrbaHotel.AbmUsuario
             checkBoxHabilitado.Checked = (bool)filaSeleccionada.Cells["Habilitado"].Value;
             idUsuarioAModificar = (int)filaSeleccionada.Cells["Id_Usuario"].Value;
 
-            string nombreRol = DB.correrQueryEscalar(
+            string nombreRol = DB.ejecutarQueryEscalar(
                 "SELECT Nombre " +
                 "FROM LA_QUERY_DE_PAPEL.Rol " +
                 "WHERE Id_Rol = @idRol",

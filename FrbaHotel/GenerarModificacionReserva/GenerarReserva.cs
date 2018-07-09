@@ -46,7 +46,7 @@ namespace FrbaHotel.GenerarModificacionReserva
             int idRegimen = DB.buscarIdRegimen(reserva.descRegimen);
             int cantNoches = (reserva.fechaFin - reserva.fechaInicio).Days;
 
-            return (int)DB.correrQueryEscalar(
+            return (int)DB.ejecutarQueryEscalar(
                 "INSERT INTO LA_QUERY_DE_PAPEL.Reserva (Id_Regimen, Fecha_Reserva, Cant_Noches, Fecha_Inicio, Fecha_Fin, Estado, Tipo_Documento, Nro_Documento) output INSERTED.Id_Reserva " +
                 "VALUES (@idRegimen, @fechaDeReserva, @cantNoches, @fechaInicio, @fechaFin, 'Reserva correcta', @tipoDoc, @nroDoc)",
                 "idRegimen", idRegimen, "fechaDeReserva", Program.fechaActual, "cantNoches", cantNoches, "fechaInicio", reserva.fechaInicio, "fechaFin", reserva.fechaFin,
@@ -57,7 +57,7 @@ namespace FrbaHotel.GenerarModificacionReserva
         {
             foreach (Habitacion habitacion in reserva.habitaciones)
             {
-                DB.correrQuery(
+                DB.ejecutarQuery(
                     "INSERT INTO LA_QUERY_DE_PAPEL.ReservaxHabitacion (Id_Reserva, Nro_Habitacion, Id_Hotel) " +
                     "VALUES (@idReserva, @nroHabitacion, @idHotel)",
                     "idReserva", idReserva, "nroHabitacion", habitacion.nroHabitacion, "idHotel", habitacion.idHotel);
@@ -66,7 +66,7 @@ namespace FrbaHotel.GenerarModificacionReserva
 
         private void insertarHistorial(int idReserva)
         {
-            DB.correrQuery(
+            DB.ejecutarQuery(
                 "INSERT INTO LA_QUERY_DE_PAPEL.Historial_Reserva (Id_Reserva, Tipo, Id_Usuario, Fecha) " +
                 "VALUES (@idReserva, 'Generacion', @idUsuario, @fecha)",
                 "idReserva", idReserva, "idUsuario", reserva.usuario.id, "fecha", Program.fechaActual);

@@ -91,7 +91,7 @@ namespace FrbaHotel.AbmRol
 
         private int insertarRol()
         {
-            return DB.correrQuery(
+            return DB.ejecutarQuery(
                     "INSERT INTO LA_QUERY_DE_PAPEL.Rol (Nombre, Habilitado) " +
                     "VALUES (@nombre, @habilitado)",
                     "nombre", textBoxNombreRol.Text, "habilitado", checkBoxHabilitado.Checked);
@@ -106,7 +106,7 @@ namespace FrbaHotel.AbmRol
             {
                 id = funcionalidades.Find(funcionalidad => funcionalidad.descripcion == desc).id;
 
-                DB.correrQuery(
+                DB.ejecutarQuery(
                     "INSERT INTO LA_QUERY_DE_PAPEL.FuncionalidadxRol (Id_Rol, Id_Funcion) " +
                     "VALUES (@idRol, @idFuncion)",
                     "idRol", idRol, "idFuncion", Convert.ToInt32(id));
@@ -117,7 +117,7 @@ namespace FrbaHotel.AbmRol
         private void atenderModificacion()
         {
             //actualizo rol
-            DB.correrQuery(
+            DB.ejecutarQuery(
                 "UPDATE LA_QUERY_DE_PAPEL.Rol " +
                 "SET Nombre = @nombre, " +
                     "Habilitado = @habilitado " +
@@ -125,7 +125,7 @@ namespace FrbaHotel.AbmRol
                 "nombre", textBoxNombreRol.Text, "habilitado", checkBoxHabilitado.Checked, "idRol", idRolModif);
 
             //borro funcionalidades anteriores
-            DB.correrQuery(
+            DB.ejecutarQuery(
                 "DELETE FROM LA_QUERY_DE_PAPEL.FuncionalidadxRol " +
                 "WHERE Id_Rol = @idRol",
                 "idRol", idRolModif);
@@ -137,7 +137,7 @@ namespace FrbaHotel.AbmRol
 
         private void cargarRol()
         {
-            checkBoxHabilitado.Checked = (bool)DB.correrQueryEscalar(
+            checkBoxHabilitado.Checked = (bool)DB.ejecutarQueryEscalar(
                 "SELECT Habilitado " +
                 "FROM LA_QUERY_DE_PAPEL.Rol " +
                     "WHERE Nombre = @nombre",
