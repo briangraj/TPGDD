@@ -140,7 +140,7 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Reserva] (
 	Cant_Noches INT NOT NULL,
 	Fecha_Inicio datetime,
 	Fecha_Fin datetime,	
-	Estado VARCHAR(255) NOT NULL DEFAULT 'Reserva Correcta',
+	Estado VARCHAR(255) NOT NULL,
 	Tipo_Documento VARCHAR(20) NOT NULL,
 	Nro_Documento INT NOT NULL, 
 
@@ -155,6 +155,7 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Reserva_Conflicto_Migracion] (
 	Cant_Noches INT NOT NULL,
 	Fecha_Inicio datetime,
 	Fecha_Fin datetime,	
+	Estado VARCHAR(255) NOT NULL,
 	Tipo_Documento VARCHAR(20) NOT NULL,
 	Nro_Documento INT NOT NULL, 
 	);
@@ -829,7 +830,7 @@ AS
 BEGIN
 
 	DECLARE @Id_Reserva INT, @Fecha_Reserva DATETIME, @Cant_Noches INT, @Id_Regimen INT, @Regimen_Precio NUMERIC(18,2), @Regimen_Descripcion VARCHAR(255), @Tipo_Documento VARCHAR(20), @Nro_Documento INT,
-			@Apellido_cliente VARCHAR(255), @Nombre_cliente VARCHAR(255), @id_hotel INT, @Nro_habitacion INT, @Direccion_hotel VARCHAR(255), @Hotel_ciudad VARCHAR(255), @Hotel_Calle VARCHAR(255), @Hotel_Nro_Calle NUMERIC(18,0);
+			@Apellido_cliente VARCHAR(255), @Nombre_cliente VARCHAR(255), @id_hotel INT, @Nro_habitacion INT, @Direccion_hotel VARCHAR(255), @Hotel_ciudad VARCHAR(255), @Hotel_Calle VARCHAR(255), @Hotel_Nro_Calle NUMERIC(18,0), @Fecha_Fin DATETIME;
 
 	SET @Tipo_Documento = 'Pasaporte';
 
@@ -851,14 +852,15 @@ BEGIN
 		SET @Id_Regimen = (SELECT TOP 1 id_regimen FROM LA_QUERY_DE_PAPEL.Regimen WHERE Descripcion = @Regimen_Descripcion AND Precio = @Regimen_Precio);
 		SET @Direccion_hotel = @Hotel_Calle + ' ' + CAST(@Hotel_Nro_Calle AS VARCHAR);
 		SET @id_hotel = (SELECT TOP 1 Id_Hotel FROM [LA_QUERY_DE_PAPEL].[Hotel] WHERE Ciudad = @Hotel_Ciudad AND Direccion = @Direccion_hotel)
+		SET @Fecha_Fin = DATEADD (DAY, @Cant_Noches, @Fecha_Reserva);
 
 		IF EXISTS(SELECT Nro_Documento FROM [LA_QUERY_DE_PAPEL].Persona WHERE @Nro_Documento = Nro_Documento AND @Apellido_cliente = Apellido AND @Nombre_cliente = Nombre)
 		BEGIN
 
 			SET IDENTITY_INSERT [LA_QUERY_DE_PAPEL].Reserva ON
 
-			INSERT INTO [LA_QUERY_DE_PAPEL].Reserva (Id_Reserva, Fecha_Reserva, Cant_Noches, Id_Regimen, Tipo_Documento, Nro_Documento)
-			VALUES(@Id_Reserva, @Fecha_Reserva, @Cant_Noches, @Id_Regimen, @Tipo_Documento, @Nro_Documento)
+			INSERT INTO [LA_QUERY_DE_PAPEL].Reserva (Id_Reserva, Fecha_Reserva, Cant_Noches, Id_Regimen, Tipo_Documento, Nro_Documento, Estado, Fecha_Inicio, Fecha_Fin)
+			VALUES(@Id_Reserva, @Fecha_Reserva, @Cant_Noches, @Id_Regimen, @Tipo_Documento, @Nro_Documento, 'Reserva con ingreso', @Fecha_Reserva, @Fecha_Fin)
 
 			SET IDENTITY_INSERT [LA_QUERY_DE_PAPEL].Reserva OFF
 
@@ -871,8 +873,8 @@ BEGIN
 
 		ELSE
 		BEGIN
-			INSERT INTO [LA_QUERY_DE_PAPEL].Reserva_Conflicto_Migracion (Id_Reserva, Fecha_Reserva, Cant_Noches, Id_Regimen, Tipo_Documento, Nro_Documento)
-			VALUES(@Id_Reserva, @Fecha_Reserva, @Cant_Noches, @Id_Regimen, @Tipo_Documento, @Nro_Documento)
+			INSERT INTO [LA_QUERY_DE_PAPEL].Reserva_Conflicto_Migracion (Id_Reserva, Fecha_Reserva, Cant_Noches, Id_Regimen, Tipo_Documento, Nro_Documento, Estado, Fecha_Inicio, Fecha_Fin)
+			VALUES(@Id_Reserva, @Fecha_Reserva, @Cant_Noches, @Id_Regimen, @Tipo_Documento, @Nro_Documento, 'Reserva con ingreso', @Fecha_Reserva, @Fecha_Fin)
 
 			INSERT INTO  [LA_QUERY_DE_PAPEL].[ReservaxHabitacion_Conflicto_Migracion]  (Id_Reserva, Id_Hotel, Nro_Habitacion)
 			VALUES(@Id_Reserva, @id_hotel, @Nro_habitacion)
