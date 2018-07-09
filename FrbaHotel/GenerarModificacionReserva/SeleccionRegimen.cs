@@ -36,7 +36,7 @@ namespace FrbaHotel.GenerarModificacionReserva
 
         private void SeleccionRegimen_Load(object sender, EventArgs e)
         {
-            dataGridViewRegimenes.DataSource = DB.correrQueryTabla(
+            dataGridViewRegimenes.DataSource = DB.ejecutarQueryDeTabla(
                 "SELECT Descripcion, Precio " +
                 "FROM LA_QUERY_DE_PAPEL.RegimenxHotel rh " +
                     "JOIN LA_QUERY_DE_PAPEL.Regimen r " +

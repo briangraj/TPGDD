@@ -13,7 +13,7 @@ namespace FrbaHotel.AbmCliente
     {
         protected override void cargarTabla(string tipoDoc)
         {
-            dataGridViewPersonas.DataSource = DB.correrQueryTabla(
+            dataGridViewPersonas.DataSource = DB.ejecutarQueryDeTabla(
                 "SELECT Nombre, Apellido, Tipo_Documento, Nro_Documento, Mail, Telefono, Direccion, Localidad, Nacionalidad, Fecha_Nacimiento, Habilitado " +
                     "FROM LA_QUERY_DE_PAPEL.clientes c " +
                         "WHERE Nombre LIKE @nombre " +
@@ -33,7 +33,7 @@ namespace FrbaHotel.AbmCliente
 
         protected override void accionBoton(System.Windows.Forms.DataGridViewCellEventArgs e)
         {
-            DB.correrQuery(
+            DB.ejecutarQuery(
                 "DELETE FROM LA_QUERY_DE_PAPEL.clientes " +
                 "WHERE Tipo_Documento = @tipoDoc " +
                     "AND Nro_Documento = @nroDoc",

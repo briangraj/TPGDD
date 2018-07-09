@@ -79,7 +79,7 @@ namespace FrbaHotel.AbmHotel
 
         protected void insertarRegimen(int idHotel, int idRegimen)
         {
-            DB.correrQuery(
+            DB.ejecutarQuery(
                     "INSERT INTO LA_QUERY_DE_PAPEL.RegimenxHotel (Id_Hotel, Id_Regimen) " +
                     "VALUES (@idHotel, @idRegimen)",
                     "idHotel", idHotel, "idRegimen", idRegimen);

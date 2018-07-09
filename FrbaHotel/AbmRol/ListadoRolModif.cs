@@ -14,7 +14,7 @@ namespace FrbaHotel.AbmRol
     {
         protected override void llenarTabla()
         {
-            dataGridViewRoles.DataSource = DB.correrQueryTabla(
+            dataGridViewRoles.DataSource = DB.ejecutarQueryDeTabla(
                 "SELECT Nombre " +
                 "FROM LA_QUERY_DE_PAPEL.Rol " +
                     "WHERE Nombre like '%" + textBoxNombreRol.Text + "%'");

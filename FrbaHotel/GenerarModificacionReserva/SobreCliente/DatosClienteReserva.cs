@@ -23,7 +23,7 @@ namespace FrbaHotel.GenerarModificacionReserva
 
         protected override void accionAceptar()
         {
-            DB.correrQuery(
+            DB.ejecutarQuery(
                     "INSERT INTO LA_QUERY_DE_PAPEL.clientes (Nombre, Apellido, Tipo_Documento, Nro_Documento, Mail, Telefono, Direccion, Localidad, Nacionalidad, Fecha_Nacimiento, Habilitado) " +
                     "VALUES (@nombre, @apellido, @tipoDocumento, @nroDocumento, @mail, @telefono, @direccion, @localidad, @nacionalidad, @fechaNacimiento, 1)",
                     "nombre", textBoxNombre.Text, "apellido", textBoxApellido.Text, "tipoDocumento", comboBoxTipoDoc.SelectedItem, "nroDocumento", textBoxNroDoc.Text,

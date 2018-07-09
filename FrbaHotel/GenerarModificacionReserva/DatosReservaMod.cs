@@ -17,7 +17,7 @@ namespace FrbaHotel.GenerarModificacionReserva
     {
         private Reserva reserva;
 
-        public DatosReservaMod(Reserva reserva, Usuario usuario) : base(usuario)
+        private DatosReservaMod(Reserva reserva, Usuario usuario) : base(usuario)
         {
             this.reserva = reserva;
             cargarReserva();
@@ -38,7 +38,7 @@ namespace FrbaHotel.GenerarModificacionReserva
 
         private void DatosReservaMod_Load(object sender, EventArgs e)
         {
-            dataGridViewHabReservadas.DataSource = DB.correrQueryTabla(
+            dataGridViewHabReservadas.DataSource = DB.ejecutarQueryDeTabla(
                 "SELECT h.Nro_Habitacion, Piso, Ubicacion, Tipo_Hab, Descripcion " +
                 "FROM LA_QUERY_DE_PAPEL.Habitacion h " +
                     "JOIN LA_QUERY_DE_PAPEL.ReservaxHabitacion rh ON h.Id_Hotel = rh.Id_Hotel AND h.Nro_Habitacion = rh.Nro_Habitacion " +

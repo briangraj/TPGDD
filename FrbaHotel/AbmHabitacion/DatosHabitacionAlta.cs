@@ -16,7 +16,7 @@ namespace FrbaHotel.AbmHabitacion
 
         protected override void accionAceptar()
         {
-            int idTipoHab = (int)DB.correrQueryEscalar(
+            int idTipoHab = (int)DB.ejecutarQueryEscalar(
                 "SELECT Id_tipo " +
                 "FROM LA_QUERY_DE_PAPEL.Tipo_Habitacion " +
                     "WHERE Descripcion = @descripcion",

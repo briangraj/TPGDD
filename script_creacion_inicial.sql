@@ -703,6 +703,28 @@ BEGIN
 END
 GO
 
+CREATE FUNCTION LA_QUERY_DE_PAPEL.habitaciones_libres (@idHotel int, @idRegimen int, @tipoHab nvarchar(255), @fechaDesde datetime, @fechaHasta datetime)
+RETURNS TABLE
+AS
+	RETURN (
+		SELECT  h.Nro_Habitacion, Piso, Ubicacion, th.Descripcion AS Tipo_Habitacion, h.Descripcion
+		FROM LA_QUERY_DE_PAPEL.Habitacion h
+			--LEFT JOIN LA_QUERY_DE_PAPEL.ReservaxHabitacion rha ON h.Id_Hotel = rha.Id_Hotel AND h.Nro_Habitacion = rha.Nro_Habitacion
+            --LEFT JOIN LA_QUERY_DE_PAPEL.reservas_sin_cancelar r ON rha.Id_Reserva = r.Id_Reserva
+			JOIN LA_QUERY_DE_PAPEL.Tipo_Habitacion th ON h.Tipo_Hab = th.Id_tipo
+			JOIN LA_QUERY_DE_PAPEL.RegimenxHotel rho ON h.Id_Hotel = rho.Id_Hotel
+				WHERE rho.Id_Hotel = @idHotel
+					AND rho.Id_Regimen = @idRegimen
+					AND h.Habilitada = 1 
+					AND th.Descripcion LIKE @tipoHab
+					AND h.Nro_Habitacion NOT IN ( 
+						SELECT distinct Nro_Habitacion FROM LA_QUERY_DE_PAPEL.reservas_sin_cancelar r 
+							JOIN LA_QUERY_DE_PAPEL.ReservaxHabitacion rh ON r.Id_Reserva = rh.Id_Reserva
+								WHERE Id_Hotel = @idHotel
+									AND Fecha_Inicio < @fechaHasta  AND Fecha_Fin > @fechaDesde)
+	)
+GO
+
 CREATE PROCEDURE LA_QUERY_DE_PAPEL.procedure_login
 	@usuario nvarchar(20),
 	@contrasenia varbinary(255)

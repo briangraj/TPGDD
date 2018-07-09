@@ -32,7 +32,7 @@ namespace FrbaHotel.AbmHotel
             if (comboBoxCantEstrellas.SelectedItem != null)
                 cantEstrellas = comboBoxCantEstrellas.SelectedItem.ToString();
 
-            dataGridViewHoteles.DataSource = DB.correrQueryTabla(queryTabla(),
+            dataGridViewHoteles.DataSource = DB.ejecutarQueryDeTabla(queryTabla(),
                 "nombre", "%" + textBoxNombre.Text + "%", "cantEstrellas", "%" + cantEstrellas + "%", "ciudad", "%" + textBoxCiudad.Text + "%",
                 "pais", "%" + textBoxPais.Text + "%");
         }

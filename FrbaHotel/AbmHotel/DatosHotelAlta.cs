@@ -32,7 +32,7 @@ namespace FrbaHotel.AbmHotel
 
         private int insertarHotel()
         {
-            return (int)DB.correrQueryEscalar(
+            return (int)DB.ejecutarQueryEscalar(
                 "INSERT INTO LA_QUERY_DE_PAPEL.Hotel (Nombre, Mail,	Telefono, Direccion, Cant_Estrellas, Recarga_Estrella, Ciudad, Pais, Fecha_Creacion) output INSERTED.Id_Hotel " +
                 "VALUES (@nombre, @mail, @telefono, @direccion, @cantEstrellas, @recargaEstrellas, @ciudad, @pais, @fechaCreacion)",
                 "nombre", textBoxNombre.Text, "mail", textBoxMail.Text, "telefono", textBoxTelefono.Text, "direccion", textBoxDireccion.Text,
@@ -42,7 +42,7 @@ namespace FrbaHotel.AbmHotel
 
         private void insertarUsuarioxHotel(int idHotel)
         {
-            DB.correrQuery(
+            DB.ejecutarQuery(
                 "INSERT INTO LA_QUERY_DE_PAPEL.UsuarioxHotel (Id_Hotel, Id_Usuario) " +
                 "VALUES (@idHotel, @idUsuario)",
                 "idHotel", idHotel, "idUsuario", Convert.ToInt32(usuario.id));
