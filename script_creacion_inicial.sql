@@ -1142,6 +1142,26 @@ GO
 --EXEC LA_QUERY_DE_PAPEL.HotelesMayoresConsumibles'2017', '1'
 
 
+
+-- Hoteles con mayor cantidad de reservas canceladas
+
+CREATE PROCEDURE LA_QUERY_DE_PAPEL.HotelesMasDiasFueraDeServicio
+@año INT, @Trimestre INT
+AS
+SELECT TOP 5 Hotel.Id_Hotel, Hotel.nombre AS 'Hotel Nombre', COUNT( DATEDIFF(DAY, HB.Fecha_inicio, HB.Fecha_fin)) AS Cantidad FROM LA_QUERY_DE_PAPEL.Hotel_Baja HB
+	JOIN LA_QUERY_DE_PAPEL.Hotel Hotel ON Hotel.Id_Hotel = HB.Id_Hotel
+WHERE	Fecha_Inicio IS NOT NULL 
+		AND Fecha_Fin IS NOT NULL 
+		AND((floor(MONTH(HB.Fecha_Inicio)/4) + 1) = @trimestre
+		AND YEAR(HB.Fecha_Inicio) = @año)
+GROUP BY Hotel.Id_Hotel, Hotel.nombre
+ORDER BY cantidad DESC
+GO
+
+--EXEC LA_QUERY_DE_PAPEL.HotelesMasDiasFueraDeServicio '2017', '1'
+
+
+
 --SELECT Estadia.Id_Reserva, ReservaxHabitacion.Nro_Habitacion, Estadia.Fecha_ingreso, Estadia.Fecha_egreso, ReservaxHabitacion.Id_Hotel FROM LA_QUERY_DE_PAPEL.ReservaxHabitacion JOIN LA_QUERY_DE_PAPEL.Reserva ON (ReservaxHabitacion.Id_Reserva = Reserva.Id_Reserva) JOIN LA_QUERY_DE_PAPEL.Estadia ON (Estadia.Id_Reserva = Reserva.Id_Reserva)
 --where Fecha_ingreso BETWEEN '2017-01-01' AND '2017-03-31' AND Fecha_egreso BETWEEN  '2017-01-01' AND '2017-03-31' AND Id_Hotel = 2 AND Nro_Habitacion = 2
 
