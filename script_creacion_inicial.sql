@@ -290,6 +290,16 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Item] (
 
 GO
 
+--Indices
+
+CREATE INDEX Nro_Doc_index ON LA_QUERY_DE_PAPEL.Persona (Nro_Documento);
+CREATE INDEX Apellido_index ON LA_QUERY_DE_PAPEL.Persona (Apellido);
+CREATE INDEX Nombre_index ON LA_QUERY_DE_PAPEL.Persona (Nombre);
+CREATE INDEX Ciudad_Hotel_index ON LA_QUERY_DE_PAPEL.Hotel (Ciudad);
+CREATE INDEX Direccion_Hotel_index ON LA_QUERY_DE_PAPEL.Hotel (Direccion);
+
+
+
 INSERT INTO LA_QUERY_DE_PAPEL.Rol (Nombre)
 VALUES ('Administrador General'), ('Guest')
 
@@ -769,7 +779,7 @@ BEGIN
 
 	OPEN cursor_personas
 	FETCH NEXT FROM cursor_personas INTO @Email, @Nro_pasaporte, @Apellido, @Nombre, @Fecha_Nacimiento, @Calle, @Nro_Calle, @Piso, @Depto, @Nacionalidad;
-	CREATE INDEX Nro_Doc_index ON LA_QUERY_DE_PAPEL.Persona (Nro_Documento);
+	
 
 	WHILE (@@FETCH_STATUS = 0)
 	BEGIN	
@@ -818,7 +828,6 @@ BEGIN
 	CLOSE cursor_personas;
 	DEALLOCATE cursor_personas;
 
-	DROP INDEX Nro_Doc_index ON LA_QUERY_DE_PAPEL.Persona;
 
 END
 GO
@@ -840,11 +849,7 @@ BEGIN
 	OPEN cursor_reservas
 	FETCH NEXT FROM cursor_reservas INTO @Nro_Documento, @Apellido_cliente, @Nombre_cliente, @Id_Reserva, @Fecha_Reserva, @Cant_Noches, @Regimen_Precio, @Regimen_Descripcion, @Hotel_Ciudad, @Hotel_Calle, @Hotel_Nro_Calle, @Nro_habitacion;
 
-	CREATE INDEX Nro_Doc_index ON LA_QUERY_DE_PAPEL.Persona (Nro_Documento);
-	CREATE INDEX Apellido_index ON LA_QUERY_DE_PAPEL.Persona (Apellido);
-	CREATE INDEX Nombre_index ON LA_QUERY_DE_PAPEL.Persona (Nombre);
-	CREATE INDEX Ciudad_Hotel_index ON LA_QUERY_DE_PAPEL.Hotel (Ciudad);
-	CREATE INDEX Direccion_Hotel_index ON LA_QUERY_DE_PAPEL.Hotel (Direccion);
+
 
 	WHILE (@@FETCH_STATUS = 0)
 	BEGIN	
@@ -885,12 +890,6 @@ BEGIN
 	END 
 	CLOSE cursor_reservas;
 	DEALLOCATE cursor_reservas;
-
-	DROP INDEX Nro_Doc_index ON LA_QUERY_DE_PAPEL.Persona;
-	DROP INDEX Apellido_index ON LA_QUERY_DE_PAPEL.Persona;
-	DROP INDEX Nombre_index ON LA_QUERY_DE_PAPEL.Persona;
-	DROP INDEX Ciudad_Hotel_index ON LA_QUERY_DE_PAPEL.Hotel;
-	DROP INDEX Direccion_Hotel_index ON LA_QUERY_DE_PAPEL.Hotel;
 
 END
 GO
@@ -1099,6 +1098,31 @@ SELECT f.Nro_Factura, e.Id_Reserva, 'Estadia',  m.Item_Factura_Cantidad,m.Item_F
 UPDATE LA_QUERY_DE_PAPEL.Factura SET Total_Factura =(SELECT SUM(cantidad*precio) FROM LA_QUERY_DE_PAPEL.Item WHERE item.Nro_Factura = factura.Nro_Factura)
 
 GO
+
+
+
+-- Procedures para listados estadisticos
+
+-- Hoteles con mayor cantidad de reservas canceladas
+
+CREATE PROCEDURE LA_QUERY_DE_PAPEL.HotelesMayoresCancelaciones
+@año int, @Trimestre int
+AS
+SELECT TOP 5 Hotel.Id_Hotel, Hotel.nombre AS 'Hotel Nombre', COUNT(R.Id_Reserva) AS Cantidad FROM LA_QUERY_DE_PAPEL.Reserva R
+	JOIN LA_QUERY_DE_PAPEL.ReservaxHabitacion RxH ON RxH.Id_Reserva = R.Id_Reserva
+	JOIN LA_QUERY_DE_PAPEL.Hotel Hotel ON Hotel.Id_Hotel = RxH.Id_Hotel
+WHERE	UPPER(R.Estado) LIKE '%CANCELADA%'
+		AND Fecha_Inicio IS NOT NULL 
+		AND Fecha_Fin IS NOT NULL 
+		AND((floor(MONTH(R.Fecha_Inicio)/4) + 1) = @trimestre
+		AND YEAR(R.Fecha_Inicio) = @año)
+GROUP BY Hotel.Id_Hotel, Hotel.nombre
+ORDER BY cantidad DESC
+GO
+
+--EXEC LA_QUERY_DE_PAPEL.HotelesMayoresCancelaciones'2017', '1'
+
+
 -- Hoteles con mayor cantidad de consumibles facturados
 
 CREATE PROCEDURE LA_QUERY_DE_PAPEL.HotelesMayoresConsumibles 
@@ -1142,3 +1166,13 @@ END
 GO
 
 --EXEC LA_QUERY_DE_PAPEL.habitacionesMasOcupadas '2017', '1'
+
+
+
+--Dropeo indices
+
+DROP INDEX Nro_Doc_index ON LA_QUERY_DE_PAPEL.Persona;
+DROP INDEX Apellido_index ON LA_QUERY_DE_PAPEL.Persona;
+DROP INDEX Nombre_index ON LA_QUERY_DE_PAPEL.Persona;
+DROP INDEX Ciudad_Hotel_index ON LA_QUERY_DE_PAPEL.Hotel;
+DROP INDEX Direccion_Hotel_index ON LA_QUERY_DE_PAPEL.Hotel;
