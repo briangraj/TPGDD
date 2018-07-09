@@ -38,12 +38,12 @@
             this.comboBoxHoteles.FormattingEnabled = true;
             this.comboBoxHoteles.Location = new System.Drawing.Point(12, 56);
             this.comboBoxHoteles.Name = "comboBoxHoteles";
-            this.comboBoxHoteles.Size = new System.Drawing.Size(260, 21);
+            this.comboBoxHoteles.Size = new System.Drawing.Size(561, 21);
             this.comboBoxHoteles.TabIndex = 0;
             // 
             // buttonSeleccionar
             // 
-            this.buttonSeleccionar.Location = new System.Drawing.Point(99, 251);
+            this.buttonSeleccionar.Location = new System.Drawing.Point(256, 250);
             this.buttonSeleccionar.Name = "buttonSeleccionar";
             this.buttonSeleccionar.Size = new System.Drawing.Size(75, 23);
             this.buttonSeleccionar.TabIndex = 1;
@@ -55,7 +55,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 314);
+            this.ClientSize = new System.Drawing.Size(585, 314);
             this.Controls.Add(this.buttonSeleccionar);
             this.Controls.Add(this.comboBoxHoteles);
             this.Name = "SeleccionarHotel";
