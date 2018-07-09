@@ -1,0 +1,1 @@
+sqlcmd -S LOCALHOST\SQLSERVER2012 -U gdHotel2018 -P gd2018 -i script_creacion_inicial.sql -o resultado_output.txt

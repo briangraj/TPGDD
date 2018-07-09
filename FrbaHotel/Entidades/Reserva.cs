@@ -40,7 +40,6 @@ namespace FrbaHotel.Entidades
 
         public void cargar()
         {
-            //todo esto habria que cambiarlo si ponemos tipo_hab en otra tabla
             DB.ejecutarReader(
                 "SELECT Fecha_Reserva, Fecha_Inicio, Fecha_Fin, rg.Descripcion, th.Descripcion " +
                 "FROM LA_QUERY_DE_PAPEL.Reserva rv " +
@@ -50,8 +49,6 @@ namespace FrbaHotel.Entidades
                     "JOIN LA_QUERY_DE_PAPEL.Tipo_Habitacion th ON h.Tipo_Hab = th.Id_tipo " +
                     "WHERE rv.Id_Reserva = @idReserva",
                     cargarReserva, "idReserva", this.id);
-            
-
         }
 
         public void cargarReserva(SqlDataReader reader)

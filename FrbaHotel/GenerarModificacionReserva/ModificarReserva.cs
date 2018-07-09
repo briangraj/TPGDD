@@ -1,57 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
-using FrbaHotel.Utilidades;
 using FrbaHotel.Entidades;
-using System.Data.SqlClient;
+using FrbaHotel.Utilidades;
 
 namespace FrbaHotel.GenerarModificacionReserva
 {
-    public partial class ModificarReserva : Form
+    class ModificarReserva : InfoReserva
     {
-        private Usuario usuario;
+        public ModificarReserva(Reserva reserva) : base(reserva) { }
 
-        public ModificarReserva(Usuario usuario)
+        protected override void generarInfoReserva()
         {
-            InitializeComponent();
-            this.usuario = usuario;
-        }
+           DB.ejecutarProcedimiento("LA_QUERY_DE_PAPEL.actualizar_reserva",
+                "nroReserva", reserva.id, "idRegimen", idRegimen(), "fechaDeModificacion", Program.fechaActual, "cantNoches", cantNoches(), "fechaInicio", reserva.fechaInicio,
+                "fechaFin", reserva.fechaFin, "idUsuario", reserva.usuario.id);
 
-        private void buttonAceptar_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if(!reservaValida())
-                    return;
+            DB.ejecutarQuery(
+                "DELETE FROM LA_QUERY_DE_PAPEL.ReservaxHabitacion " +
+                "WHERE Id_Reserva = @idReserva",
+                "idReserva", reserva.id);
 
-                Reserva reserva = new Reserva(Convert.ToInt32(textBoxNroReserva.Text));
-                reserva.cargar();
+            insertarReservaxHabitacion(reserva.id);
 
-                FormaNueva.DatosReservaM datosReserva = new FormaNueva.DatosReservaM(reserva, usuario);
-                Hide();
-                datosReserva.Show();
-            }
-            catch (SqlException) { }
-        }
-
-        private bool reservaValida()
-        {
-            if (textBoxNroReserva.Text == "")
-            {
-                MessageBox.Show("Debe escribir un numero de reserva");
-                return false;
-            }
-            
-            //sp validar reserva
-
-            return true;
+            labelMensaje.Text = "Su reserva se modifico correctamente";
+            textBoxNroReserva.Text = reserva.id.ToString();
         }
     }
 }
