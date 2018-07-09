@@ -951,7 +951,7 @@ GO
 --Cargo los hoteles
 
 INSERT INTO [LA_QUERY_DE_PAPEL].[Hotel] (Nombre, Pais, Ciudad, Direccion, Cant_Estrellas, Recarga_Estrella) 
-SELECT DISTINCT 'Hotel ' + M.Hotel_Ciudad, 'Desconocido', M.Hotel_Ciudad, M.Hotel_Calle + ' ' + CAST(M.Hotel_Nro_Calle AS VARCHAR), M.Hotel_CantEstrella, M.Hotel_Recarga_Estrella
+SELECT DISTINCT 'Hotel ' + RTRIM(M.Hotel_Ciudad) + ' (Calle: ' + RTRIM(M.Hotel_Calle) + ')', 'Desconocido', M.Hotel_Ciudad, M.Hotel_Calle + ' ' + CAST(M.Hotel_Nro_Calle AS VARCHAR), M.Hotel_CantEstrella, M.Hotel_Recarga_Estrella
 FROM gd_esquema.Maestra M
 
 --SELECT * FROM LA_QUERY_DE_PAPEL.Hotel
@@ -1059,7 +1059,7 @@ select distinct m.Factura_Nro, e.Id_Reserva, c.Tipo_Documento, c.Nro_Documento,C
 from gd_esquema.Maestra m join LA_QUERY_DE_PAPEL.Estadia e on m.Reserva_Codigo=e.Id_Reserva JOIN LA_QUERY_DE_PAPEL.Cliente c ON m.Cliente_Pasaporte_Nro = c.Nro_Documento
 where m.Factura_Fecha is not null
 
---SELECT*FROM LA_QUERY_DE_PAPEL.Hotel
+--SELECT*FROM LA_QUERY_DE_PAPEL.Factura
 
 --Inserto todos los items de consumibles 
 INSERT INTO LA_QUERY_DE_PAPEL.Item (Nro_Factura, Id_Reserva, Descripcion, Precio, Cantidad)
@@ -1108,7 +1108,7 @@ GO
 CREATE PROCEDURE LA_QUERY_DE_PAPEL.HotelesMayoresCancelaciones
 @año int, @Trimestre int
 AS
-SELECT TOP 5 Hotel.Id_Hotel, Hotel.nombre AS 'Hotel Nombre', COUNT(R.Id_Reserva) AS Cantidad FROM LA_QUERY_DE_PAPEL.Reserva R
+SELECT TOP 5 Hotel.Id_Hotel, Hotel.nombre AS 'Hotel Nombre', COUNT(R.Id_Reserva) AS Cantidad_cancelaciones FROM LA_QUERY_DE_PAPEL.Reserva R
 	JOIN LA_QUERY_DE_PAPEL.ReservaxHabitacion RxH ON RxH.Id_Reserva = R.Id_Reserva
 	JOIN LA_QUERY_DE_PAPEL.Hotel Hotel ON Hotel.Id_Hotel = RxH.Id_Hotel
 WHERE	UPPER(R.Estado) LIKE '%CANCELADA%'
@@ -1117,7 +1117,7 @@ WHERE	UPPER(R.Estado) LIKE '%CANCELADA%'
 		AND((floor(MONTH(R.Fecha_Inicio)/4) + 1) = @trimestre
 		AND YEAR(R.Fecha_Inicio) = @año)
 GROUP BY Hotel.Id_Hotel, Hotel.nombre
-ORDER BY cantidad DESC
+ORDER BY Cantidad_cancelaciones DESC
 GO
 
 --EXEC LA_QUERY_DE_PAPEL.HotelesMayoresCancelaciones'2017', '1'
@@ -1143,19 +1143,20 @@ GO
 
 
 
--- Hoteles con mayor cantidad de reservas canceladas
+-- Hoteles con mayor cantidad de dias fuera de servicio
 
 CREATE PROCEDURE LA_QUERY_DE_PAPEL.HotelesMasDiasFueraDeServicio
 @año INT, @Trimestre INT
 AS
-SELECT TOP 5 Hotel.Id_Hotel, Hotel.nombre AS 'Hotel Nombre', COUNT( DATEDIFF(DAY, HB.Fecha_inicio, HB.Fecha_fin)) AS Cantidad FROM LA_QUERY_DE_PAPEL.Hotel_Baja HB
+SELECT TOP 5 Hotel.Id_Hotel, Hotel.nombre AS 'Hotel Nombre', COUNT( DATEDIFF(DAY, HB.Fecha_inicio, HB.Fecha_fin)) AS Cantidad_dias 
+	FROM LA_QUERY_DE_PAPEL.Hotel_Baja HB
 	JOIN LA_QUERY_DE_PAPEL.Hotel Hotel ON Hotel.Id_Hotel = HB.Id_Hotel
 WHERE	Fecha_Inicio IS NOT NULL 
 		AND Fecha_Fin IS NOT NULL 
 		AND((floor(MONTH(HB.Fecha_Inicio)/4) + 1) = @trimestre
 		AND YEAR(HB.Fecha_Inicio) = @año)
 GROUP BY Hotel.Id_Hotel, Hotel.nombre
-ORDER BY cantidad DESC
+ORDER BY Cantidad_dias DESC
 GO
 
 --EXEC LA_QUERY_DE_PAPEL.HotelesMasDiasFueraDeServicio '2017', '1'
@@ -1186,6 +1187,38 @@ END
 GO
 
 --EXEC LA_QUERY_DE_PAPEL.habitacionesMasOcupadas '2017', '1'
+
+
+
+-- Clientes con mas puntaje
+
+CREATE PROCEDURE LA_QUERY_DE_PAPEL.ClientesConMasPuntos
+@año int, @Trimestre int
+AS
+SELECT TOP 5 P.Apellido, P.Nombre, P.Tipo_Documento, P.Nro_Documento, 
+			SUM(F.Cant_Puntos_por_Factura)
+				AS Cantidad_puntos 
+			FROM LA_QUERY_DE_PAPEL.Persona P
+	JOIN (SELECT Fact.Tipo_Documento_Cliente, Fact.Nro_Documento_Cliente, Fact.Fecha_Emision, FLOOR((SELECT SUM(I.Precio) FROM LA_QUERY_DE_PAPEL.Item I 
+				WHERE I.Nro_Factura = Fact.Nro_Factura 
+					AND UPPER(I.Descripcion) LIKE '%ESTADIA%'
+			) / 20) 
+			+ FLOOR((SELECT SUM(I.Precio) FROM LA_QUERY_DE_PAPEL.Item I
+				WHERE I.Nro_Factura = Fact.Nro_Factura
+					AND UPPER(I.Descripcion) NOT LIKE '%ESTADIA%'
+					AND UPPER(I.Descripcion) NOT LIKE '%ALL INCLUSIVE%'
+			) / 10) AS Cant_Puntos_por_Factura 
+		FROM LA_QUERY_DE_PAPEL.Factura Fact) F 
+		ON F.Tipo_Documento_Cliente = P.Tipo_Documento AND F.Nro_Documento_Cliente = P.Nro_Documento
+WHERE	F.Fecha_Emision IS NOT NULL 
+		AND((floor(MONTH(F.Fecha_Emision)/4) + 1) = @trimestre
+		AND YEAR(F.Fecha_Emision) = @año)
+GROUP BY P.Nombre, P.Apellido, P.Tipo_Documento, P.Nro_Documento
+ORDER BY Cantidad_puntos DESC, P.Apellido, P.Nombre
+GO
+
+--EXEC LA_QUERY_DE_PAPEL.ClientesConMasPuntos '2017', '1'
+
 
 
 
