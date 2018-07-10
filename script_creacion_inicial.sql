@@ -831,15 +831,29 @@ CREATE PROCEDURE LA_QUERY_DE_PAPEL.procedure_login
 AS
 BEGIN
 
-	DECLARE @pass varbinary(255), @intentos INT, @habilitado BIT
+	DECLARE @pass varbinary(255), @intentos INT, @habilitado_login BIT, @habilitado_rol BIT, @habilitado BIT
 
-	SELECT @pass=Password, @intentos=Cant_fallos, @habilitado = login_habilitado
-	FROM LA_QUERY_DE_PAPEL.Usuario
+	SELECT @pass=Password, @intentos=Cant_fallos, @habilitado_login = login_habilitado, @habilitado_rol = r.Habilitado, @habilitado = p.Habilitado
+	FROM LA_QUERY_DE_PAPEL.Usuario u
+	JOIN LA_QUERY_DE_PAPEL.Rol r ON u.Id_Rol = r.Id_Rol
+	JOIN LA_QUERY_DE_PAPEL.Persona p ON u.Tipo_Documento = p.Tipo_Documento AND u.Nro_Documento = p.Nro_Documento
 	WHERE Username = @usuario
 
 	IF (@pass IS NULL) 
 	BEGIN
 		RAISERROR ('Usuario incorrecto', 16, 1)
+		RETURN
+	END
+
+	IF (@habilitado_login = 0) 
+	BEGIN
+		RAISERROR ('Usuario inhabilitado por logins fallidos', 16, 1)
+		RETURN
+	END
+
+	IF (@habilitado_rol = 0) 
+	BEGIN
+		RAISERROR ('Rol asignado inhabilitado', 16, 1)
 		RETURN
 	END
 
