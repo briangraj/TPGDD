@@ -38,6 +38,9 @@ namespace FrbaHotel.AbmHotel
                     return;
 
                 insertarBajaHotel();
+
+                MessageBox.Show("Se registro la baja de hotel");
+                Close();
             }
             catch (SqlException) { }
         }
@@ -54,6 +57,10 @@ namespace FrbaHotel.AbmHotel
         {
             Validaciones.validarControles(errorProviderBajaHotel, Controls);
             Validaciones.validarFechasAnteriores(errorProviderBajaHotel, Controls);
+            if (dateTimePickerFechaInicio.Value > dateTimePickerFechaFin.Value)
+            {
+                errorProviderBajaHotel.SetError(dateTimePickerFechaInicio, "No puedes ser posterior a la fecha de fin");
+            }
             DB.ejecutarProcedimiento("LA_QUERY_DE_PAPEL.validar_baja_hotel", "idHotel", idHotel, "fechaInicio", dateTimePickerFechaInicio.Value, "fechaFin", dateTimePickerFechaFin.Value);
         }
     }

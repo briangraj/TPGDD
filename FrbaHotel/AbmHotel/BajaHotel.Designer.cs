@@ -30,11 +30,11 @@
         {
             this.components = new System.ComponentModel.Container();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.dateTimePickerFechaFin = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePickerFechaInicio = new System.Windows.Forms.DateTimePicker();
+            this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.dateTimePickerFechaInicio = new System.Windows.Forms.DateTimePicker();
-            this.dateTimePickerFechaFin = new System.Windows.Forms.DateTimePicker();
             this.textBoxDescripcion = new System.Windows.Forms.TextBox();
             this.buttonAceptar = new System.Windows.Forms.Button();
             this.buttonLimpiar = new System.Windows.Forms.Button();
@@ -65,6 +65,33 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(483, 105);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
+            // dateTimePickerFechaFin
+            // 
+            this.dateTimePickerFechaFin.Location = new System.Drawing.Point(120, 29);
+            this.dateTimePickerFechaFin.Name = "dateTimePickerFechaFin";
+            this.dateTimePickerFechaFin.Size = new System.Drawing.Size(333, 20);
+            this.dateTimePickerFechaFin.TabIndex = 29;
+            this.dateTimePickerFechaFin.Value = new System.DateTime(2021, 2, 1, 0, 0, 0, 0);
+            // 
+            // dateTimePickerFechaInicio
+            // 
+            this.dateTimePickerFechaInicio.Location = new System.Drawing.Point(120, 3);
+            this.dateTimePickerFechaInicio.Name = "dateTimePickerFechaInicio";
+            this.dateTimePickerFechaInicio.Size = new System.Drawing.Size(333, 20);
+            this.dateTimePickerFechaInicio.TabIndex = 28;
+            this.dateTimePickerFechaInicio.Value = new System.DateTime(2021, 1, 13, 0, 0, 0, 0);
+            // 
+            // label3
+            // 
+            this.label3.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(27, 31);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(62, 16);
+            this.label3.TabIndex = 10;
+            this.label3.Text = "Fecha fin";
+            // 
             // label2
             // 
             this.label2.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -86,33 +113,6 @@
             this.label1.Size = new System.Drawing.Size(80, 16);
             this.label1.TabIndex = 9;
             this.label1.Text = "Descripcion";
-            // 
-            // label3
-            // 
-            this.label3.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(27, 31);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(62, 16);
-            this.label3.TabIndex = 10;
-            this.label3.Text = "Fecha fin";
-            // 
-            // dateTimePickerFechaInicio
-            // 
-            this.dateTimePickerFechaInicio.Location = new System.Drawing.Point(120, 3);
-            this.dateTimePickerFechaInicio.Name = "dateTimePickerFechaInicio";
-            this.dateTimePickerFechaInicio.Size = new System.Drawing.Size(333, 20);
-            this.dateTimePickerFechaInicio.TabIndex = 28;
-            this.dateTimePickerFechaInicio.Value = new System.DateTime(2018, 6, 14, 0, 0, 0, 0);
-            // 
-            // dateTimePickerFechaFin
-            // 
-            this.dateTimePickerFechaFin.Location = new System.Drawing.Point(120, 29);
-            this.dateTimePickerFechaFin.Name = "dateTimePickerFechaFin";
-            this.dateTimePickerFechaFin.Size = new System.Drawing.Size(333, 20);
-            this.dateTimePickerFechaFin.TabIndex = 29;
-            this.dateTimePickerFechaFin.Value = new System.DateTime(2018, 6, 14, 0, 0, 0, 0);
             // 
             // textBoxDescripcion
             // 

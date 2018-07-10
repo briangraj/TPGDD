@@ -607,7 +607,8 @@ BEGIN
 		SELECT 1 FROM LA_QUERY_DE_PAPEL.reservas_sin_cancelar r
 		JOIN LA_QUERY_DE_PAPEL.ReservaxHabitacion rh ON r.Id_Reserva = rh.Id_Reserva
 			WHERE rh.Id_Hotel = @idHotel 
-				AND(Fecha_Inicio BETWEEN @fechaInicio AND @fechaFin OR Fecha_Fin BETWEEN @fechaInicio AND @fechaFin OR Fecha_Inicio < @fechaInicio AND Fecha_Fin > @fechaFin)))
+				AND UPPER(Estado) NOT LIKE '%INGRESO%'
+				AND @fechaInicio <= Fecha_Fin AND @fechaFin >= Fecha_Inicio))
 	BEGIN
 		RAISERROR('Existen reservas en el periodo elegido', 16, 1)
 		RETURN
@@ -617,8 +618,9 @@ BEGIN
 		SELECT 1 FROM LA_QUERY_DE_PAPEL.Estadia e
 		JOIN LA_QUERY_DE_PAPEL.Reserva r ON e.Id_Reserva = r.Id_Reserva
 		JOIN LA_QUERY_DE_PAPEL.ReservaxHabitacion rh ON e.Id_Reserva = rh.Id_Reserva
-			WHERE rh.Id_Hotel = @idHotel 
-				AND e.Fecha_egreso IS NULL AND r.Fecha_Fin <= @fechaInicio))
+			WHERE rh.Id_Hotel = @idHotel
+				AND UPPER(Estado) LIKE '%INGRESO%' 
+				AND e.Fecha_egreso IS NULL AND r.Fecha_Fin >= @fechaInicio))
 	BEGIN
 		RAISERROR('Existen estadias en el periodo elegido', 16, 1)
 		RETURN
