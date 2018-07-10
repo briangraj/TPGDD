@@ -26,7 +26,7 @@ namespace FrbaHotel.Facturacion
 
         private void Facturacion_Load(object sender, EventArgs e)
         {
-            int nroFactura = Convert.ToInt32(DB.correrFuncion("LA_QUERY_DE_PAPEL.generar_factura", "nroReserva", reserva.id, "medioDePago", medioDePago, "fechaActual", Program.fechaActual));
+            int nroFactura = Convert.ToInt32(DB.ejecutarFuncion("LA_QUERY_DE_PAPEL.generar_factura", "nroReserva", reserva.id, "medioDePago", medioDePago, "fechaActual", Program.fechaActual));
         }
     }
 }

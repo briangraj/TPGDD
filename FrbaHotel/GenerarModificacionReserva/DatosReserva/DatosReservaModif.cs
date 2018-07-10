@@ -34,7 +34,6 @@ namespace FrbaHotel.GenerarModificacionReserva.DatosReserva
 
         protected override System.Data.DataTable tablaDeHabitaciones(int idRegimen, string tipoHab)
         {
-            //todo ver que el hotel no este en baja
             return DB.ejecutarFuncionDeTabla("LA_QUERY_DE_PAPEL.habitaciones_disponibles_para_reserva",
                 "idHotel", usuario.idHotel, "idRegimen", idRegimen, "tipoHab", "%" + tipoHab + "%", "fechaDesde", dateTimePickerDesde.Value, "fechaHasta", dateTimePickerHasta.Value,
                 "nroReserva", reserva.id);

@@ -797,6 +797,8 @@ AS
 							JOIN LA_QUERY_DE_PAPEL.ReservaxHabitacion rh ON r.Id_Reserva = rh.Id_Reserva
 								WHERE Id_Hotel = @idHotel
 									AND Fecha_Inicio < @fechaHasta  AND Fecha_Fin > @fechaDesde)
+					AND h.Id_Hotel NOT IN (
+						SELECT distinct Id_Hotel FROM LA_QUERY_DE_PAPEL.Hotel_Baja WHERE Fecha_inicio < @fechaHasta AND Fecha_fin > @fechaDesde)
 	)
 GO
 
