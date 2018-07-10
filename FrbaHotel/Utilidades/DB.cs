@@ -38,7 +38,7 @@ namespace FrbaHotel.Utilidades
             return query += ")";
         }
 
-        public static object correrFuncion(String nombre, params object[] args)                     // creo y ejecuto una funcion escalar
+        public static object correrFuncion(String nombre, params object[] args)
         {
             string query = queryFuncion("SELECT ", nombre, args);
 

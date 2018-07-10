@@ -123,7 +123,15 @@ namespace FrbaHotel.GenerarModificacionReserva.DatosReserva
         {
             Validaciones.validarControles(errorProviderReserva, Controls);
             Validaciones.validarFechasAnteriores(errorProviderReserva, Controls);
-            //todo validar que elija habitaciones
+            if (dataGridViewHabReservadas.Rows.Count == 0)
+            {
+                errorProviderReserva.SetError(dataGridViewHabReservadas, "Debe elegir al menos una habitacion");
+            }
+
+            if (dateTimePickerDesde.Value > dateTimePickerHasta.Value)
+            {
+                errorProviderReserva.SetError(dateTimePickerDesde, "No puedes ser posterior a la fecha de egreso");
+            }
         }
 
         private void dataGridViewHabitaciones_CellClick(object sender, DataGridViewCellEventArgs e)
