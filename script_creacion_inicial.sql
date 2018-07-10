@@ -1070,8 +1070,10 @@ GO
 
 --Cargo los hoteles
 
-INSERT INTO [LA_QUERY_DE_PAPEL].[Hotel] (Nombre, Pais, Ciudad, Direccion, Cant_Estrellas, Recarga_Estrella) 
-SELECT DISTINCT 'Hotel ' + RTRIM(M.Hotel_Ciudad) + ' (Calle: ' + RTRIM(M.Hotel_Calle) + ')', 'Desconocido', M.Hotel_Ciudad, M.Hotel_Calle + ' ' + CAST(M.Hotel_Nro_Calle AS VARCHAR), M.Hotel_CantEstrella, M.Hotel_Recarga_Estrella
+INSERT INTO [LA_QUERY_DE_PAPEL].[Hotel] (Nombre, Pais, Ciudad, Direccion, Cant_Estrellas, Recarga_Estrella, Fecha_Creacion) 
+SELECT DISTINCT 'Hotel ' + RTRIM(M.Hotel_Ciudad) + ' (Calle: ' + RTRIM(M.Hotel_Calle) + ')', 'Desconocido', 
+	M.Hotel_Ciudad, M.Hotel_Calle + ' ' + CAST(M.Hotel_Nro_Calle AS VARCHAR), M.Hotel_CantEstrella, M.Hotel_Recarga_Estrella,
+	DATETIMEFROMPARTS(2000, 1, 1, 0, 0, 0, 0)
 FROM gd_esquema.Maestra M
 
 --SELECT * FROM LA_QUERY_DE_PAPEL.Hotel
@@ -1321,7 +1323,7 @@ AS
 	)
 GO
 
---SELECT LA_QUERY_DE_PAPEL.HotelesMayoresCancelaciones ('2017', '1')
+--SELECT * FROM LA_QUERY_DE_PAPEL.HotelesMayoresCancelaciones ('2017', '1')
 
 
 -- Hoteles con mayor cantidad de consumibles facturados
@@ -1342,7 +1344,7 @@ AS
 	)
 GO
 
---SELECT LA_QUERY_DE_PAPEL.HotelesMayoresConsumibles ('2017', '1')
+--SELECT * FROM LA_QUERY_DE_PAPEL.HotelesMayoresConsumibles ('2017', '1')
 
 
 -- Hoteles con mayor cantidad de dias fuera de servicio
@@ -1363,7 +1365,7 @@ AS
 	)
 GO
 
---SELECT LA_QUERY_DE_PAPEL.HotelesMasDiasFueraDeServicio ('2017', '1')
+--SELECT * FROM LA_QUERY_DE_PAPEL.HotelesMasDiasFueraDeServicio ('2017', '1')
 
 
 --SELECT Estadia.Id_Reserva, ReservaxHabitacion.Nro_Habitacion, Estadia.Fecha_ingreso, Estadia.Fecha_egreso, ReservaxHabitacion.Id_Hotel FROM LA_QUERY_DE_PAPEL.ReservaxHabitacion JOIN LA_QUERY_DE_PAPEL.Reserva ON (ReservaxHabitacion.Id_Reserva = Reserva.Id_Reserva) JOIN LA_QUERY_DE_PAPEL.Estadia ON (Estadia.Id_Reserva = Reserva.Id_Reserva)
@@ -1386,7 +1388,7 @@ AS
 	)
 GO
 
---SELECT LA_QUERY_DE_PAPEL.[habitacionesMasOcupadas] ('2017', '1')
+--SELECT * FROM LA_QUERY_DE_PAPEL.[habitacionesMasOcupadas] ('2017', '1')
 
 
 -- Clientes con mas puntaje
@@ -1418,7 +1420,7 @@ AS
 	)
 GO
 
---SELECT LA_QUERY_DE_PAPEL.ClientesConMasPuntos ('2017', '1')
+--SELECT * FROM LA_QUERY_DE_PAPEL.ClientesConMasPuntos ('2017', '1')
 
 
 
