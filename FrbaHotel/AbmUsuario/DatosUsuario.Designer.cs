@@ -30,6 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.tableLayoutPanelDatosUsuario = new System.Windows.Forms.TableLayoutPanel();
+            this.comboBoxTipoDoc = new System.Windows.Forms.ComboBox();
             this.pictureBoxWarning = new System.Windows.Forms.PictureBox();
             this.label13 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
@@ -60,7 +61,6 @@
             this.errorProviderDatosUsuario = new System.Windows.Forms.ErrorProvider(this.components);
             this.checkedListBoxHoteles = new System.Windows.Forms.CheckedListBox();
             this.toolTipDatosUsuario = new System.Windows.Forms.ToolTip(this.components);
-            this.comboBoxTipoDoc = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanelDatosUsuario.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxWarning)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProviderDatosUsuario)).BeginInit();
@@ -115,6 +115,15 @@
             this.tableLayoutPanelDatosUsuario.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 18F));
             this.tableLayoutPanelDatosUsuario.Size = new System.Drawing.Size(546, 320);
             this.tableLayoutPanelDatosUsuario.TabIndex = 30;
+            // 
+            // comboBoxTipoDoc
+            // 
+            this.comboBoxTipoDoc.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxTipoDoc.FormattingEnabled = true;
+            this.comboBoxTipoDoc.Location = new System.Drawing.Point(187, 134);
+            this.comboBoxTipoDoc.Name = "comboBoxTipoDoc";
+            this.comboBoxTipoDoc.Size = new System.Drawing.Size(333, 21);
+            this.comboBoxTipoDoc.TabIndex = 35;
             // 
             // pictureBoxWarning
             // 
@@ -307,7 +316,7 @@
             this.dateTimePickerFechaNac.Name = "dateTimePickerFechaNac";
             this.dateTimePickerFechaNac.Size = new System.Drawing.Size(335, 20);
             this.dateTimePickerFechaNac.TabIndex = 42;
-            this.dateTimePickerFechaNac.Value = new System.DateTime(2018, 6, 14, 0, 0, 0, 0);
+            this.dateTimePickerFechaNac.Value = new System.DateTime(2021, 1, 13, 0, 0, 0, 0);
             // 
             // checkBoxHabilitado
             // 
@@ -387,15 +396,6 @@
             // 
             this.toolTipDatosUsuario.ShowAlways = true;
             this.toolTipDatosUsuario.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
-            // 
-            // comboBoxTipoDoc
-            // 
-            this.comboBoxTipoDoc.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxTipoDoc.FormattingEnabled = true;
-            this.comboBoxTipoDoc.Location = new System.Drawing.Point(187, 134);
-            this.comboBoxTipoDoc.Name = "comboBoxTipoDoc";
-            this.comboBoxTipoDoc.Size = new System.Drawing.Size(333, 21);
-            this.comboBoxTipoDoc.TabIndex = 35;
             // 
             // DatosUsuario
             // 

@@ -46,7 +46,7 @@
             this.checkedListBoxFuncionalidades.FormattingEnabled = true;
             this.checkedListBoxFuncionalidades.Location = new System.Drawing.Point(45, 133);
             this.checkedListBoxFuncionalidades.Name = "checkedListBoxFuncionalidades";
-            this.checkedListBoxFuncionalidades.Size = new System.Drawing.Size(213, 244);
+            this.checkedListBoxFuncionalidades.Size = new System.Drawing.Size(313, 235);
             this.checkedListBoxFuncionalidades.TabIndex = 0;
             // 
             // labelNombreRol
@@ -74,7 +74,7 @@
             this.textBoxNombreRol.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxNombreRol.Location = new System.Drawing.Point(45, 47);
             this.textBoxNombreRol.Name = "textBoxNombreRol";
-            this.textBoxNombreRol.Size = new System.Drawing.Size(213, 26);
+            this.textBoxNombreRol.Size = new System.Drawing.Size(313, 26);
             this.textBoxNombreRol.TabIndex = 4;
             // 
             // checkBoxHabilitado
@@ -102,7 +102,7 @@
             // buttonAceptar
             // 
             this.buttonAceptar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonAceptar.Location = new System.Drawing.Point(185, 469);
+            this.buttonAceptar.Location = new System.Drawing.Point(274, 469);
             this.buttonAceptar.Name = "buttonAceptar";
             this.buttonAceptar.Size = new System.Drawing.Size(84, 37);
             this.buttonAceptar.TabIndex = 7;
@@ -118,7 +118,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(312, 530);
+            this.ClientSize = new System.Drawing.Size(414, 530);
             this.Controls.Add(this.buttonAceptar);
             this.Controls.Add(this.buttonLimpiar);
             this.Controls.Add(this.checkBoxHabilitado);

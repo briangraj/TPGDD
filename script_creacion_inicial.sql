@@ -656,7 +656,7 @@ AS
 BEGIN
 	EXEC LA_QUERY_DE_PAPEL.validar_reserva_activa @nroReserva
 
-	IF(EXISTS(SELECT 1 FROM LA_QUERY_DE_PAPEL.Reserva WHERE Id_Reserva = @nroReserva AND Fecha_Inicio >= @fechaActual))
+	IF(EXISTS(SELECT 1 FROM LA_QUERY_DE_PAPEL.Reserva WHERE Id_Reserva = @nroReserva AND Fecha_Inicio <= @fechaActual))
 	BEGIN
 		RAISERROR('La reserva no se puede modificar', 16, 1)
 		RETURN
@@ -781,7 +781,8 @@ CREATE FUNCTION LA_QUERY_DE_PAPEL.habitaciones_libres (@idHotel int, @idRegimen 
 RETURNS TABLE
 AS
 	RETURN (
-		SELECT  h.Nro_Habitacion, Piso, Ubicacion, th.Descripcion AS Tipo_Habitacion, h.Descripcion
+		SELECT  h.Nro_Habitacion, Piso, Ubicacion, th.Descripcion AS Tipo_Habitacion, h.Descripcion,
+			(SELECT Precio * th.Porcentual + Recarga_Estrella FROM LA_QUERY_DE_PAPEL.Regimen, LA_QUERY_DE_PAPEL.Hotel WHERE Id_Regimen = @idRegimen AND Id_Hotel = @idHotel) AS Precio
 		FROM LA_QUERY_DE_PAPEL.Habitacion h
 			--LEFT JOIN LA_QUERY_DE_PAPEL.ReservaxHabitacion rha ON h.Id_Hotel = rha.Id_Hotel AND h.Nro_Habitacion = rha.Nro_Habitacion
             --LEFT JOIN LA_QUERY_DE_PAPEL.reservas_sin_cancelar r ON rha.Id_Reserva = r.Id_Reserva
@@ -803,10 +804,12 @@ CREATE FUNCTION LA_QUERY_DE_PAPEL.habitaciones_de_reserva (@nroReserva int)
 RETURNS TABLE
 AS
 	RETURN (
-		SELECT h.Nro_Habitacion, Piso, Ubicacion, th.Descripcion AS Tipo_Habitacion, h.Descripcion
+		SELECT h.Nro_Habitacion, Piso, Ubicacion, th.Descripcion AS Tipo_Habitacion, h.Descripcion,
+			(SELECT Precio * th.Porcentual + Recarga_Estrella FROM LA_QUERY_DE_PAPEL.Regimen, LA_QUERY_DE_PAPEL.Hotel WHERE Id_Regimen = r.Id_Regimen AND Id_Hotel = h.Id_Hotel) AS Precio
 		FROM LA_QUERY_DE_PAPEL.Habitacion h
 			JOIN LA_QUERY_DE_PAPEL.Tipo_Habitacion th ON h.Tipo_Hab = th.Id_tipo
 			JOIN LA_QUERY_DE_PAPEL.ReservaxHabitacion rh ON h.Id_Hotel = rh.Id_Hotel AND h.Nro_Habitacion = rh.Nro_Habitacion
+			JOIN LA_QUERY_DE_PAPEL.Reserva r ON rh.Id_Reserva = r.Id_Reserva
 				WHERE rh.Id_Reserva = @nroReserva
 	)
 GO

@@ -217,7 +217,7 @@
             this.dateTimePickerFechaCreacion.Name = "dateTimePickerFechaCreacion";
             this.dateTimePickerFechaCreacion.Size = new System.Drawing.Size(307, 20);
             this.dateTimePickerFechaCreacion.TabIndex = 8;
-            this.dateTimePickerFechaCreacion.Value = new System.DateTime(2018, 6, 14, 0, 0, 0, 0);
+            this.dateTimePickerFechaCreacion.Value = new System.DateTime(2021, 1, 13, 0, 0, 0, 0);
             // 
             // textBoxPais
             // 

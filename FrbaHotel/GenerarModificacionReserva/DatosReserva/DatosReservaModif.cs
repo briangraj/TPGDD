@@ -21,6 +21,7 @@ namespace FrbaHotel.GenerarModificacionReserva.DatosReserva
             cargarReserva();
             cargarHabitaciones();
             cargarHabitacionesReservadas();
+            comboBoxTipoReg.Enabled = false;
         }
 
         private void cargarReserva()
