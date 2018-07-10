@@ -233,15 +233,12 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[MedioPago] (
 	);	
 
 CREATE TABLE [LA_QUERY_DE_PAPEL].[Factura] ( 
-	Nro_Factura numeric(18) NOT NULL PRIMARY KEY,
+	Nro_Factura numeric(18) NOT NULL PRIMARY KEY IDENTITY(1,1),
 	Id_Reserva INT NOT NULL,
-	Tipo_Documento_Cliente varchar(20) NOT NULL,
-	Nro_Documento_Cliente INT NOT NULL,
 	Fecha_Emision datetime NOT NULL,
 	Total_Factura numeric(18,2),
 	Forma_Pago nvarchar(50) NOT NULL,
 	
-	FOREIGN KEY (Tipo_Documento_Cliente, Nro_Documento_Cliente) REFERENCES [LA_QUERY_DE_PAPEL].[Persona] (Tipo_Documento, Nro_Documento),
 	FOREIGN KEY (Id_Reserva) REFERENCES [LA_QUERY_DE_PAPEL].[Estadia] (Id_Reserva),
 
 	);
@@ -250,16 +247,10 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Factura] (
 CREATE TABLE [LA_QUERY_DE_PAPEL].[Factura_Conflicto_Migracion] ( 
 	Nro_Factura numeric(18) NOT NULL PRIMARY KEY,
 	Id_Reserva INT NOT NULL,
-	Tipo_Documento_Cliente varchar(20) NOT NULL,
-	Nro_Documento_Cliente INT NOT NULL,
 	Fecha_Emision datetime NOT NULL,
 	Total_Factura numeric(18,2),
 	Forma_Pago nvarchar(50) NOT NULL,
 	Id_Persona INT,
-	
-	FOREIGN KEY (Id_Persona) REFERENCES [LA_QUERY_DE_PAPEL].[Persona_Conflicto_Migracion] (Id_Persona_Conflicto),
-	FOREIGN KEY (Id_Reserva) REFERENCES [LA_QUERY_DE_PAPEL].[Estadia_Conflicto_Migracion] (Id_Reserva),
-
 	);
 
 
@@ -279,7 +270,7 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[FuncionalidadxRol] (
 	);
 	--Conviene crear otra entidad Forma de Pago con id y descripcion??
 	--
-
+/*
 CREATE TABLE [LA_QUERY_DE_PAPEL].[Consumible_estadia] (
 	Id_Reserva INT NOT NULL ,
 	Id_Consumible INT NOT NULL ,
@@ -301,31 +292,27 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Consumible_estadia_Conflicto_Migracion] (
 	FOREIGN KEY (Id_Reserva) REFERENCES [LA_QUERY_DE_PAPEL].Estadia_Conflicto_Migracion (Id_Reserva),
 	FOREIGN KEY (Id_Consumible) REFERENCES [LA_QUERY_DE_PAPEL].[Consumible] (Id_Consumible)
 	);
+*/
+
 
 CREATE TABLE [LA_QUERY_DE_PAPEL].[Item] ( 
 	Nro_Factura numeric(18) NOT NULL,
-	Id_Reserva INT NOT NULL,
 	Descripcion VARCHAR(50) NOT NULL,
 	Precio NUMERIC (18,2) NOT NULL DEFAULT 0.0,
 	Cantidad INT NOT NULL,
 	
 	
-	FOREIGN KEY (Nro_Factura) REFERENCES [LA_QUERY_DE_PAPEL].[Factura] (Nro_Factura),
-	FOREIGN KEY (Id_Reserva) REFERENCES [LA_QUERY_DE_PAPEL].[Estadia] (Id_Reserva)
-
+	FOREIGN KEY (Nro_Factura) REFERENCES [LA_QUERY_DE_PAPEL].[Factura] (Nro_Factura)
 	);
 
 CREATE TABLE [LA_QUERY_DE_PAPEL].[Item_Conflicto_Migracion] ( 
 	Nro_Factura numeric(18) NOT NULL,
-	Id_Reserva INT NOT NULL,
 	Descripcion VARCHAR(50) NOT NULL,
 	Precio NUMERIC (18,2) NOT NULL DEFAULT 0.0,
 	Cantidad INT NOT NULL,
 	
 	
-	FOREIGN KEY (Nro_Factura) REFERENCES [LA_QUERY_DE_PAPEL].[Factura_Conflicto_Migracion] (Nro_Factura),
-	FOREIGN KEY (Id_Reserva) REFERENCES [LA_QUERY_DE_PAPEL].[Estadia_Conflicto_Migracion] (Id_Reserva)
-
+	FOREIGN KEY (Nro_Factura) REFERENCES [LA_QUERY_DE_PAPEL].[Factura_Conflicto_Migracion] (Nro_Factura)
 	);
 
 GO
@@ -1164,7 +1151,7 @@ INSERT INTO LA_QUERY_DE_PAPEL.UsuarioxHotel (Id_Hotel, Id_Usuario)
 VALUES (1, 1), (2, 1), (1, 2)
 
 
-
+/*
 --cargo consumible_estadia 
 
 INSERT INTO LA_QUERY_DE_PAPEL.Consumible_estadia (Id_Reserva,Id_Consumible,cantidad)
@@ -1185,13 +1172,18 @@ GROUP BY e.Id_Reserva,c.Id_Consumible
 
 --SELECT * FROM LA_QUERY_DE_PAPEL.[Consumible_estadia_Conflicto_Migracion]
 
+*/
 
+SET IDENTITY_INSERT [LA_QUERY_DE_PAPEL].Factura ON
 
-INSERT INTO LA_QUERY_DE_PAPEL.Factura (Nro_Factura, Id_Reserva, Tipo_Documento_cliente, Nro_Documento_cliente, Fecha_Emision, Forma_Pago)
+INSERT INTO LA_QUERY_DE_PAPEL.Factura (Nro_Factura, Id_Reserva, Fecha_Emision, Forma_Pago)
 
-select distinct m.Factura_Nro, e.Id_Reserva, c.Tipo_Documento, c.Nro_Documento,CAST(m.Factura_Fecha as DATE),(select Desc_medio_pago from LA_QUERY_DE_PAPEL.MedioPago where Id_medio_pago = 1)
-from gd_esquema.Maestra m join LA_QUERY_DE_PAPEL.Estadia e on m.Reserva_Codigo=e.Id_Reserva JOIN LA_QUERY_DE_PAPEL.Cliente c ON m.Cliente_Pasaporte_Nro = c.Nro_Documento
+select distinct m.Factura_Nro, e.Id_Reserva, CAST(m.Factura_Fecha as DATE),(select Desc_medio_pago from LA_QUERY_DE_PAPEL.MedioPago where Id_medio_pago = 1)
+from gd_esquema.Maestra m join LA_QUERY_DE_PAPEL.Estadia e on m.Reserva_Codigo=e.Id_Reserva
 where m.Factura_Fecha is not null
+
+
+SET IDENTITY_INSERT [LA_QUERY_DE_PAPEL].Factura OFF
 
 --SELECT*FROM LA_QUERY_DE_PAPEL.Factura
 
@@ -1199,8 +1191,8 @@ where m.Factura_Fecha is not null
 
 --Cargo las facturas con conflicto
 
-INSERT INTO LA_QUERY_DE_PAPEL.Factura_Conflicto_Migracion (Nro_Factura, Id_Reserva, Tipo_Documento_cliente, Nro_Documento_cliente, Fecha_Emision, Forma_Pago, Id_Persona)
-SELECT DISTINCT M.Factura_Nro, E.Id_Reserva, R.Tipo_Documento, R.Nro_Documento, CAST(M.Factura_Fecha AS DATE),
+INSERT INTO LA_QUERY_DE_PAPEL.Factura_Conflicto_Migracion (Nro_Factura, Id_Reserva, Fecha_Emision, Forma_Pago, Id_Persona)
+SELECT DISTINCT M.Factura_Nro, E.Id_Reserva, CAST(M.Factura_Fecha AS DATE),
 				(SELECT Desc_medio_pago FROM LA_QUERY_DE_PAPEL.MedioPago WHERE Id_medio_pago = 1),
 				R.Id_Persona_Conflicto
 FROM gd_esquema.Maestra M 
@@ -1213,11 +1205,14 @@ where M.Factura_Fecha IS NOT NULL
 
 --Inserto todos los items de consumibles 
 
-INSERT INTO LA_QUERY_DE_PAPEL.Item (Nro_Factura, Id_Reserva, Descripcion, Precio, Cantidad)
-SELECT Nro_Factura , f.Id_Reserva, consumible.descripcion, consumible.precio,consumible_estadia.cantidad
+INSERT INTO LA_QUERY_DE_PAPEL.Item (Nro_Factura, Descripcion, Precio, Cantidad)
+SELECT Nro_Factura , CxE.descripcion, CxE.precio, CxE.cantidad
 FROM LA_QUERY_DE_PAPEL.Factura f
-JOIN LA_QUERY_DE_PAPEL.consumible_estadia ON (consumible_estadia.Id_Reserva = f.Id_Reserva)
-JOIN LA_QUERY_DE_PAPEL.consumible ON (consumible.Id_Consumible = consumible_estadia.Id_Consumible)
+JOIN (SELECT DISTINCT e.Id_Reserva, C.Descripcion, C.Precio, COUNT(m.Consumible_Descripcion) AS cantidad
+		FROM gd_esquema.Maestra m 
+			JOIN LA_QUERY_DE_PAPEL.consumible c on m.Consumible_Codigo= c.Id_Consumible
+			 JOIN LA_QUERY_DE_PAPEL.estadia e on m.Reserva_Codigo=e.Id_Reserva		
+		GROUP BY e.Id_Reserva,c.Id_Consumible, C.Descripcion, C.Precio) CxE ON CxE.Id_Reserva = F.Id_Reserva
 
 
 --SELECT*FROM LA_QUERY_DE_PAPEL.Item ORDER BY Id_Reserva
@@ -1226,11 +1221,14 @@ JOIN LA_QUERY_DE_PAPEL.consumible ON (consumible.Id_Consumible = consumible_esta
 
 -- Cargo los items de consumibles con conflictos
 
-INSERT INTO LA_QUERY_DE_PAPEL.Item_Conflicto_Migracion (Nro_Factura, Id_Reserva, Descripcion, Precio, Cantidad)
-SELECT Nro_Factura , F.Id_Reserva, C.descripcion, C.precio, CE.cantidad
+INSERT INTO LA_QUERY_DE_PAPEL.Item_Conflicto_Migracion (Nro_Factura, Descripcion, Precio, Cantidad)
+SELECT Nro_Factura, CxE.descripcion, CxE.precio, CxE.cantidad
 FROM LA_QUERY_DE_PAPEL.Factura_Conflicto_Migracion F
-	JOIN LA_QUERY_DE_PAPEL.Consumible_estadia_Conflicto_Migracion CE ON (CE.Id_Reserva = F.Id_Reserva)
-	JOIN LA_QUERY_DE_PAPEL.consumible C ON (C.Id_Consumible = CE.Id_Consumible)
+	JOIN (SELECT DISTINCT e.Id_Reserva, C.Descripcion, C.Precio, COUNT(m.Consumible_Descripcion) AS cantidad
+		FROM gd_esquema.Maestra m 
+			JOIN LA_QUERY_DE_PAPEL.consumible c on m.Consumible_Codigo= c.Id_Consumible
+			 JOIN LA_QUERY_DE_PAPEL.estadia e on m.Reserva_Codigo=e.Id_Reserva		
+		GROUP BY e.Id_Reserva,c.Id_Consumible, C.Descripcion, C.Precio) CxE ON CxE.Id_Reserva = F.Id_Reserva
 
 --SELECT * FROM LA_QUERY_DE_PAPEL.Item_Conflicto_Migracion ORDER BY Id_Reserva
 
@@ -1238,12 +1236,11 @@ FROM LA_QUERY_DE_PAPEL.Factura_Conflicto_Migracion F
 
 --Inserto los descuentos por all inclusive
 
-INSERT INTO LA_QUERY_DE_PAPEL.item (Nro_Factura, Id_Reserva, Cantidad, descripcion, precio)
-SELECT f.Nro_Factura, e.Id_Reserva,  1, 'Descuento por régimen All Inclusive', 0- SUM(consumible.precio * consumible_estadia.cantidad)
+INSERT INTO LA_QUERY_DE_PAPEL.item (Nro_Factura, Cantidad, descripcion, precio)
+SELECT f.Nro_Factura,  1, 'Descuento por régimen All Inclusive', 0- SUM(I.precio * I.cantidad)
 FROM LA_QUERY_DE_PAPEL.Factura f
 JOIN LA_QUERY_DE_PAPEL.Estadia e ON (f.Id_Reserva = e.Id_Reserva)
-JOIN LA_QUERY_DE_PAPEL.Consumible_estadia ON (consumible_estadia.Id_Reserva = e.Id_Reserva)
-JOIN LA_QUERY_DE_PAPEL.Consumible ON (consumible.Id_Consumible = consumible_estadia.Id_Consumible)
+JOIN (SELECT Nro_Factura, Precio, Cantidad FROM LA_QUERY_DE_PAPEL.Item WHERE UPPER(Descripcion) NOT LIKE '%ALL%') I ON I.Nro_Factura = F.Nro_Factura
 JOIN LA_QUERY_DE_PAPEL.Reserva ON (reserva.Id_Reserva = e.Id_Reserva)
 where reserva.Id_Regimen = 4
 GROUP BY f.Nro_Factura, e.Id_Reserva
@@ -1252,12 +1249,11 @@ GROUP BY f.Nro_Factura, e.Id_Reserva
 
 --Inserto los descuentos por all inclusive con conflictos
 
-INSERT INTO LA_QUERY_DE_PAPEL.Item_Conflicto_Migracion (Nro_Factura, Id_Reserva, Cantidad, descripcion, precio)
-SELECT F.Nro_Factura, E.Id_Reserva,  1, 'Descuento por régimen All Inclusive', 0- SUM(C.precio * CE.cantidad)
+INSERT INTO LA_QUERY_DE_PAPEL.Item_Conflicto_Migracion (Nro_Factura, Cantidad, descripcion, precio)
+SELECT F.Nro_Factura,  1, 'Descuento por régimen All Inclusive', 0- SUM(I.precio * I.cantidad)
 FROM LA_QUERY_DE_PAPEL.Factura_Conflicto_Migracion F
 	JOIN LA_QUERY_DE_PAPEL.Estadia_conflicto_migracion E ON (F.Id_Reserva = E.Id_Reserva)
-	JOIN LA_QUERY_DE_PAPEL.Consumible_estadia_Conflicto_Migracion CE ON (CE.Id_Reserva = E.Id_Reserva)
-	JOIN LA_QUERY_DE_PAPEL.Consumible C ON (C.Id_Consumible = CE.Id_Consumible)
+	JOIN (SELECT Nro_Factura, Precio, Cantidad FROM LA_QUERY_DE_PAPEL.Item_Conflicto_Migracion WHERE UPPER(Descripcion) NOT LIKE '%ALL%') I ON I.Nro_Factura = F.Nro_Factura
 	JOIN LA_QUERY_DE_PAPEL.Reserva_Conflicto_Migracion R ON (R.Id_Reserva = E.Id_Reserva)
 where R.Id_Regimen = 4
 GROUP BY F.Nro_Factura, E.Id_Reserva
@@ -1268,8 +1264,8 @@ GROUP BY F.Nro_Factura, E.Id_Reserva
 
 --Cargo las estadias en tabla items
 
-INSERT INTO LA_QUERY_DE_PAPEL.Item (Nro_Factura, Id_Reserva, Descripcion, Precio, Cantidad)
-SELECT f.Nro_Factura, e.Id_Reserva, 'Estadia',  m.Item_Factura_Cantidad,m.Item_Factura_Monto
+INSERT INTO LA_QUERY_DE_PAPEL.Item (Nro_Factura, Descripcion, Precio, Cantidad)
+SELECT f.Nro_Factura, 'Estadia',  m.Item_Factura_Cantidad,m.Item_Factura_Monto
 	FROM gd_esquema.Maestra m
 	 JOIN LA_QUERY_DE_PAPEL.Estadia e
 		ON m.Reserva_Codigo = e.Id_Reserva
@@ -1281,8 +1277,8 @@ SELECT f.Nro_Factura, e.Id_Reserva, 'Estadia',  m.Item_Factura_Cantidad,m.Item_F
 
 --Cargo las estadias en tabla items con conflictos
 
-INSERT INTO LA_QUERY_DE_PAPEL.Item_Conflicto_Migracion (Nro_Factura, Id_Reserva, Descripcion, Precio, Cantidad)
-SELECT f.Nro_Factura, e.Id_Reserva, 'Estadia',  m.Item_Factura_Cantidad,m.Item_Factura_Monto
+INSERT INTO LA_QUERY_DE_PAPEL.Item_Conflicto_Migracion (Nro_Factura, Descripcion, Precio, Cantidad)
+SELECT f.Nro_Factura, 'Estadia',  m.Item_Factura_Cantidad,m.Item_Factura_Monto
 FROM gd_esquema.Maestra m
 	JOIN LA_QUERY_DE_PAPEL.Estadia_conflicto_migracion e
 		ON m.Reserva_Codigo = e.Id_Reserva
@@ -1334,13 +1330,14 @@ CREATE FUNCTION LA_QUERY_DE_PAPEL.HotelesMayoresConsumibles (@anio int, @Trimest
 RETURNS TABLE
 AS
 	RETURN (
-		SELECT TOP 5 Hotel.Id_Hotel, nombre AS 'Hotel Nombre', COUNT(Id_Consumible) AS Cantidad FROM LA_QUERY_DE_PAPEL.consumible_estadia
-			JOIN LA_QUERY_DE_PAPEL.estadia ON (consumible_estadia.Id_Reserva = estadia.Id_Reserva)
-			JOIN LA_QUERY_DE_PAPEL.reserva ON (estadia.Id_Reserva = reserva.Id_Reserva)
+		SELECT TOP 5 Hotel.Id_Hotel, nombre AS 'Hotel Nombre', SUM(Item.Cantidad) AS Cantidad 
+		FROM (SELECT Nro_Factura, Cantidad FROM LA_QUERY_DE_PAPEL.item WHERE UPPER(Descripcion) NOT LIKE '%ALL%' AND UPPER(Descripcion) NOT LIKE '%ESTADIA%') Item
+			JOIN LA_QUERY_DE_PAPEL.Factura ON item.Nro_Factura = Factura.Nro_Factura
+			JOIN LA_QUERY_DE_PAPEL.reserva ON (Factura.Id_Reserva = reserva.Id_Reserva)
 			JOIN LA_QUERY_DE_PAPEL.ReservaxHabitacion ON (ReservaxHabitacion.Id_Reserva = reserva.Id_Reserva)
 			JOIN LA_QUERY_DE_PAPEL.hotel ON (hotel.Id_Hotel = ReservaxHabitacion.Id_Hotel)
-		WHERE Fecha_ingreso IS NOT NULL AND Fecha_egreso IS NOT NULL AND((floor(MONTH(Estadia.Fecha_ingreso)/4) + 1) = @trimestre
-				and YEAR(Estadia.Fecha_ingreso) = @anio)
+		WHERE Fecha_Inicio IS NOT NULL AND Fecha_Fin IS NOT NULL AND((floor(MONTH(Fecha_Inicio)/4) + 1) = @trimestre
+				and YEAR(Fecha_Inicio) = @anio)
 		GROUP BY Hotel.Id_Hotel, nombre
 		ORDER BY cantidad DESC
 	)
@@ -1402,8 +1399,8 @@ AS
 		SELECT TOP 5 P.Apellido, P.Nombre, P.Tipo_Documento, P.Nro_Documento, 
 					SUM(F.Cant_Puntos_por_Factura)
 						AS Cantidad_puntos 
-					FROM LA_QUERY_DE_PAPEL.Persona P
-			JOIN (SELECT Fact.Tipo_Documento_Cliente, Fact.Nro_Documento_Cliente, Fact.Fecha_Emision, FLOOR((SELECT SUM(I.Precio) FROM LA_QUERY_DE_PAPEL.Item I 
+			FROM (SELECT Fact.Id_Reserva, Fact.Fecha_Emision, 
+					FLOOR((SELECT SUM(I.Precio) FROM LA_QUERY_DE_PAPEL.Item I 
 						WHERE I.Nro_Factura = Fact.Nro_Factura 
 							AND UPPER(I.Descripcion) LIKE '%ESTADIA%'
 					) / 20) 
@@ -1413,7 +1410,8 @@ AS
 							AND UPPER(I.Descripcion) NOT LIKE '%ALL INCLUSIVE%'
 					) / 10) AS Cant_Puntos_por_Factura 
 				FROM LA_QUERY_DE_PAPEL.Factura Fact) F 
-				ON F.Tipo_Documento_Cliente = P.Tipo_Documento AND F.Nro_Documento_Cliente = P.Nro_Documento
+				JOIN LA_QUERY_DE_PAPEL.Reserva R ON F.Id_Reserva = R.Id_Reserva
+				JOIN LA_QUERY_DE_PAPEL.Persona P ON R.Tipo_Documento = P.Tipo_Documento AND R.Nro_Documento = P.Nro_Documento
 		WHERE	F.Fecha_Emision IS NOT NULL 
 				AND((floor(MONTH(F.Fecha_Emision)/4) + 1) = @trimestre
 				AND YEAR(F.Fecha_Emision) = @anio)
@@ -1423,6 +1421,28 @@ AS
 GO
 
 --SELECT * FROM LA_QUERY_DE_PAPEL.ClientesConMasPuntos ('2017', '1')
+
+
+CREATE PROCEDURE LA_QUERY_DE_PAPEL.generar_factura 
+	@nroReserva INT, 
+	@medioDePago VARCHAR(50), 
+	@fechaActual DATETIME, 
+	@Total_a_pagar NUMERIC(18,2), 
+	
+	@Nro_Factura INT OUTPUT
+AS
+BEGIN
+	
+	DECLARE @Forma_De_Pago INT
+	SET @Forma_De_Pago = (SELECT Id_medio_pago FROM LA_QUERY_DE_PAPEL.MedioPago WHERE Desc_medio_pago = @medioDePago)
+
+	INSERT INTO LA_QUERY_DE_PAPEL.Factura (Id_Reserva, Fecha_Emision, Total_Factura, Forma_Pago)
+	VALUES (@nroReserva, @fechaActual, @Total_a_pagar, @Forma_De_Pago)
+	
+	SET @Nro_Factura = (SELECT Nro_Factura FROM LA_QUERY_DE_PAPEL.Factura WHERE Id_Reserva = @nroReserva)
+
+END
+GO
 
 
 

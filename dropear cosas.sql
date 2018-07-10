@@ -9,8 +9,6 @@ DROP TRIGGER LA_QUERY_DE_PAPEL.deleteClientes
 
 DROP TABLE [LA_QUERY_DE_PAPEL].[FuncionalidadxRol]
 DROP TABLE [LA_QUERY_DE_PAPEL].[Funcionalidad]
-DROP TABLE [LA_QUERY_DE_PAPEL].[Consumible_estadia]
-DROP TABLE [LA_QUERY_DE_PAPEL].[Consumible_estadia_Conflicto_Migracion]
 DROP TABLE [LA_QUERY_DE_PAPEL].[Item]
 DROP TABLE [LA_QUERY_DE_PAPEL].[Item_Conflicto_Migracion]
 DROP TABLE [LA_QUERY_DE_PAPEL].[MedioPago]
@@ -58,6 +56,7 @@ DROP PROCEDURE LA_QUERY_DE_PAPEL.procedure_login
 DROP PROCEDURE LA_QUERY_DE_PAPEL.Cargar_personas
 DROP PROCEDURE LA_QUERY_DE_PAPEL.Cargar_reservas
 DROP PROCEDURE LA_QUERY_DE_PAPEL.Cargar_Estadias
+DROP PROCEDURE LA_QUERY_DE_PAPEL.generar_factura 
 
 DROP FUNCTION LA_QUERY_DE_PAPEL.habitaciones_disponibles_para_reserva
 DROP FUNCTION LA_QUERY_DE_PAPEL.habitaciones_libres
