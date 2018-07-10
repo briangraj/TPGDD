@@ -26,9 +26,9 @@ namespace FrbaHotel.Login
             DB.ejecutarReader(
                 "SELECT F.Descripcion " +
                 "FROM LA_QUERY_DE_PAPEL.Funcionalidad F " +
-                    "JOIN LA_QUERY_DE_PAPEL.FuncionalidadxRol FR " +
-                    "ON F.Id_Funcion = FR.Id_Funcion " +
-                        "AND FR.Id_Rol = " + usuario.id.ToString(),
+                    "JOIN LA_QUERY_DE_PAPEL.FuncionalidadxRol FR ON F.Id_Funcion = FR.Id_Funcion " +
+                    "JOIN LA_QUERY_DE_PAPEL.Usuario u ON FR.Id_Rol = u.Id_Rol " +
+                        "WHERE Id_Usuario = " + usuario.id.ToString(),
             cargarComboBox);
         }
 

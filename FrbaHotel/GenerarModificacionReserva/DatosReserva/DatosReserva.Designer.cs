@@ -37,13 +37,13 @@
             this.buttonLimpiar = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label4 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.dateTimePickerDesde = new System.Windows.Forms.DateTimePicker();
             this.dateTimePickerHasta = new System.Windows.Forms.DateTimePicker();
-            this.comboBoxTipoHab = new System.Windows.Forms.ComboBox();
             this.comboBoxTipoReg = new System.Windows.Forms.ComboBox();
+            this.comboBoxTipoHab = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.errorProviderReserva = new System.Windows.Forms.ErrorProvider(this.components);
             this.label6 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewHabReservadas)).BeginInit();
@@ -69,7 +69,7 @@
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(464, 167);
+            this.label5.Location = new System.Drawing.Point(464, 159);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(245, 24);
             this.label5.TabIndex = 19;
@@ -77,7 +77,7 @@
             // 
             // buttonSiguiente
             // 
-            this.buttonSiguiente.Location = new System.Drawing.Point(782, 866);
+            this.buttonSiguiente.Location = new System.Drawing.Point(772, 507);
             this.buttonSiguiente.Name = "buttonSiguiente";
             this.buttonSiguiente.Size = new System.Drawing.Size(75, 23);
             this.buttonSiguiente.TabIndex = 18;
@@ -153,17 +153,6 @@
             this.label4.TabIndex = 11;
             this.label4.Text = "Tipo de regimen";
             // 
-            // label3
-            // 
-            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(535, 3);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(138, 20);
-            this.label3.TabIndex = 10;
-            this.label3.Text = "Tipo de habitacion";
-            // 
             // label1
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -204,16 +193,6 @@
             this.dateTimePickerHasta.TabIndex = 1;
             this.dateTimePickerHasta.Value = new System.DateTime(2018, 6, 17, 0, 0, 0, 0);
             // 
-            // comboBoxTipoHab
-            // 
-            this.comboBoxTipoHab.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxTipoHab.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.comboBoxTipoHab.FormattingEnabled = true;
-            this.comboBoxTipoHab.Location = new System.Drawing.Point(535, 26);
-            this.comboBoxTipoHab.Name = "comboBoxTipoHab";
-            this.comboBoxTipoHab.Size = new System.Drawing.Size(121, 24);
-            this.comboBoxTipoHab.TabIndex = 2;
-            // 
             // comboBoxTipoReg
             // 
             this.comboBoxTipoReg.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -224,6 +203,27 @@
             this.comboBoxTipoReg.Size = new System.Drawing.Size(121, 24);
             this.comboBoxTipoReg.TabIndex = 3;
             // 
+            // comboBoxTipoHab
+            // 
+            this.comboBoxTipoHab.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxTipoHab.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboBoxTipoHab.FormattingEnabled = true;
+            this.comboBoxTipoHab.Location = new System.Drawing.Point(535, 26);
+            this.comboBoxTipoHab.Name = "comboBoxTipoHab";
+            this.comboBoxTipoHab.Size = new System.Drawing.Size(121, 24);
+            this.comboBoxTipoHab.TabIndex = 2;
+            // 
+            // label3
+            // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(535, 3);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(138, 20);
+            this.label3.TabIndex = 10;
+            this.label3.Text = "Tipo de habitacion";
+            // 
             // errorProviderReserva
             // 
             this.errorProviderReserva.ContainerControl = this;
@@ -233,7 +233,7 @@
             this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(24, 167);
+            this.label6.Location = new System.Drawing.Point(24, 159);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(331, 24);
             this.label6.TabIndex = 21;
@@ -243,7 +243,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(878, 560);
+            this.ClientSize = new System.Drawing.Size(905, 552);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.dataGridViewHabReservadas);
             this.Controls.Add(this.label5);

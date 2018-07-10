@@ -33,7 +33,6 @@ namespace FrbaHotel.AbmHabitacion
 
         protected override void accionBoton(DataGridViewCellEventArgs e)
         {
-            //todo falta trigger para hacer baja logica
             DB.ejecutarQuery(
                 "UPDATE LA_QUERY_DE_PAPEL.Habitacion (Habilitada)" +
                 "VALUES (0)" +
