@@ -53,6 +53,7 @@
             this.buttonBaja.TabIndex = 4;
             this.buttonBaja.Text = "Dar de baja un hotel";
             this.buttonBaja.UseVisualStyleBackColor = true;
+            this.buttonBaja.Click += new System.EventHandler(this.buttonBaja_Click);
             // 
             // buttonAlta
             // 

@@ -28,6 +28,12 @@ namespace FrbaHotel.AbmHotel
             datosHotel.Show();
         }
 
+        private void buttonBaja_Click(object sender, EventArgs e)
+        {
+            ListadoHotelBaja listadoBaja = new ListadoHotelBaja();
+            listadoBaja.Show();
+        }
+
         private void buttonModificacion_Click(object sender, EventArgs e)
         {
             ListadoHotelModif listadoModif = new ListadoHotelModif();
