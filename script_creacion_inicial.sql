@@ -783,10 +783,8 @@ RETURNS TABLE
 AS
 	RETURN (
 		SELECT  h.Nro_Habitacion, Piso, Ubicacion, th.Descripcion AS Tipo_Habitacion, h.Descripcion,
-			(SELECT Precio * th.Porcentual + Recarga_Estrella FROM LA_QUERY_DE_PAPEL.Regimen, LA_QUERY_DE_PAPEL.Hotel WHERE Id_Regimen = @idRegimen AND Id_Hotel = @idHotel) AS Precio
+			(SELECT Precio * th.Porcentual + Recarga_Estrella FROM LA_QUERY_DE_PAPEL.Regimen, LA_QUERY_DE_PAPEL.Hotel WHERE Id_Regimen = @idRegimen AND Id_Hotel = @idHotel) AS Precio_Por_Habitacion
 		FROM LA_QUERY_DE_PAPEL.Habitacion h
-			--LEFT JOIN LA_QUERY_DE_PAPEL.ReservaxHabitacion rha ON h.Id_Hotel = rha.Id_Hotel AND h.Nro_Habitacion = rha.Nro_Habitacion
-            --LEFT JOIN LA_QUERY_DE_PAPEL.reservas_sin_cancelar r ON rha.Id_Reserva = r.Id_Reserva
 			JOIN LA_QUERY_DE_PAPEL.Tipo_Habitacion th ON h.Tipo_Hab = th.Id_tipo
 			JOIN LA_QUERY_DE_PAPEL.RegimenxHotel rho ON h.Id_Hotel = rho.Id_Hotel
 				WHERE rho.Id_Hotel = @idHotel
@@ -808,7 +806,7 @@ RETURNS TABLE
 AS
 	RETURN (
 		SELECT h.Nro_Habitacion, Piso, Ubicacion, th.Descripcion AS Tipo_Habitacion, h.Descripcion,
-			(SELECT Precio * th.Porcentual + Recarga_Estrella FROM LA_QUERY_DE_PAPEL.Regimen, LA_QUERY_DE_PAPEL.Hotel WHERE Id_Regimen = r.Id_Regimen AND Id_Hotel = h.Id_Hotel) AS Precio
+			(SELECT Precio * th.Porcentual + Recarga_Estrella FROM LA_QUERY_DE_PAPEL.Regimen, LA_QUERY_DE_PAPEL.Hotel WHERE Id_Regimen = r.Id_Regimen AND Id_Hotel = h.Id_Hotel) AS Precio_Por_Habitacion
 		FROM LA_QUERY_DE_PAPEL.Habitacion h
 			JOIN LA_QUERY_DE_PAPEL.Tipo_Habitacion th ON h.Tipo_Hab = th.Id_tipo
 			JOIN LA_QUERY_DE_PAPEL.ReservaxHabitacion rh ON h.Id_Hotel = rh.Id_Hotel AND h.Nro_Habitacion = rh.Nro_Habitacion

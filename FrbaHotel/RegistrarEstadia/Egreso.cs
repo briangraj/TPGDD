@@ -65,12 +65,12 @@ namespace FrbaHotel.RegistrarEstadia
 
             while (reader.Read())
             {
-                Item item = new Item("Estadia habitacion: " + reader.GetInt32(0).ToString(), reader.GetDecimal(1) * cantNoches, 1);
+                Item item = new Item("Estadia habitacion: " + reader.GetInt32(0).ToString(), reader.GetDecimal(1), cantNoches);
                 items.Add(item);
 
                 if (nochesQueNoSeQuedo > 0)
                 {
-                    Item item2 = new Item("Dia reservado sin alojo, habitacion: " + reader.GetInt32(0).ToString(), reader.GetDecimal(1) * nochesQueNoSeQuedo, 1);
+                    Item item2 = new Item("Dia reservado sin alojo, habitacion: " + reader.GetInt32(0).ToString(), reader.GetDecimal(1), nochesQueNoSeQuedo);
                     items.Add(item2);
                 }
             }

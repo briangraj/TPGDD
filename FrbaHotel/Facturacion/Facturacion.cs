@@ -44,11 +44,12 @@ namespace FrbaHotel.Facturacion
 
             DB.ejecutarQuery(
                     "UPDATE LA_QUERY_DE_PAPEL.Estadia " +
-                    "SET Fecha_egreso = @fechaActual, Usuario_egreso_id = @idUsuario",
-                    "fechaActual", Program.fechaActual, "idUsuario", reserva.usuario.id);
+                    "SET Fecha_egreso = @fechaActual, Usuario_egreso_id = @idUsuario " +
+                        "WHERE Id_Reserva = @nroReserva",
+                    "fechaActual", Program.fechaActual, "idUsuario", reserva.usuario.id, "nroReserva", reserva.id);
 
             dataGridViewItems.DataSource = DB.ejecutarQueryDeTabla(
-                "SELECT Descripcion, Precio, Cantidad " +
+                "SELECT Descripcion, Precio AS Precio_Unitario, Cantidad " +
                 "FROM LA_QUERY_DE_PAPEL.Item " +
                     "WHERE Nro_Factura = @nroFactura",
                 "nroFactura", nroFactura);

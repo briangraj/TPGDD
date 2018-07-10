@@ -102,7 +102,7 @@
             this.Controls.Add(this.buttonSiguiente);
             this.Controls.Add(this.dataGridViewConsumibles);
             this.Name = "RegistrarConsumibles";
-            this.Text = "Form1";
+            this.Text = "Seleccion de consumibles";
             this.Load += new System.EventHandler(this.RegistrarConsumibles_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewConsumibles)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewConsumiblesSeleccionados)).EndInit();
