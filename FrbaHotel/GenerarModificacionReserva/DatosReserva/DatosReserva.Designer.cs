@@ -182,7 +182,7 @@
             this.dateTimePickerDesde.Name = "dateTimePickerDesde";
             this.dateTimePickerDesde.Size = new System.Drawing.Size(245, 22);
             this.dateTimePickerDesde.TabIndex = 0;
-            this.dateTimePickerDesde.Value = new System.DateTime(2018, 6, 14, 0, 0, 0, 0);
+            this.dateTimePickerDesde.Value = new System.DateTime(2021, 1, 13, 0, 0, 0, 0);
             // 
             // dateTimePickerHasta
             // 
@@ -191,7 +191,7 @@
             this.dateTimePickerHasta.Name = "dateTimePickerHasta";
             this.dateTimePickerHasta.Size = new System.Drawing.Size(248, 22);
             this.dateTimePickerHasta.TabIndex = 1;
-            this.dateTimePickerHasta.Value = new System.DateTime(2018, 6, 17, 0, 0, 0, 0);
+            this.dateTimePickerHasta.Value = new System.DateTime(2021, 1, 17, 0, 0, 0, 0);
             // 
             // comboBoxTipoReg
             // 
