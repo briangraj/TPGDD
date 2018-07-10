@@ -58,7 +58,10 @@ namespace FrbaHotel.AbmCliente
 
         public void cargarTipoDoc(SqlDataReader reader)
         {
-            comboBoxTipoDoc.Items.Add(reader.GetString(0));
+            while (reader.Read())
+            {
+                comboBoxTipoDoc.Items.Add(reader.GetString(0));
+            }
         }
     }
 }

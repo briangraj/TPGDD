@@ -51,8 +51,11 @@ namespace FrbaHotel.AbmUsuario
 
         public void cargarCheckBoxs(SqlDataReader reader)
         {
-            hoteles.Add(new Hotel(reader.GetString(0), reader.GetInt32(1).ToString()));
-            checkedListBoxHoteles.Items.Add(reader.GetString(0));
+            while (reader.Read())
+            {
+                hoteles.Add(new Hotel(reader.GetString(0), reader.GetInt32(1).ToString()));
+                checkedListBoxHoteles.Items.Add(reader.GetString(0));
+            }
         }
 
         private void cargarRoles()
@@ -65,7 +68,10 @@ namespace FrbaHotel.AbmUsuario
 
         public void cargarComboBox(SqlDataReader reader)
         {
-            comboBoxRoles.Items.Add(reader.GetString(0));
+            while (reader.Read())
+            {
+                comboBoxRoles.Items.Add(reader.GetString(0));
+            }
         }
 
         private void buttonAceptar_Click(object sender, EventArgs e)
@@ -203,11 +209,14 @@ namespace FrbaHotel.AbmUsuario
 
         public void cargarHotel(SqlDataReader reader)
         {
-            string nombre = hoteles.Find(hotel => hotel.id == reader.GetInt32(0).ToString()).nombre;
+            while (reader.Read())
+            {
+                string nombre = hoteles.Find(hotel => hotel.id == reader.GetInt32(0).ToString()).nombre;
 
-            int indice = checkedListBoxHoteles.Items.IndexOf(nombre);
+                int indice = checkedListBoxHoteles.Items.IndexOf(nombre);
 
-            checkedListBoxHoteles.SetItemChecked(indice, true);
+                checkedListBoxHoteles.SetItemChecked(indice, true);
+            }
         }
 
         private void buttonLimpiar_Click(object sender, EventArgs e)
@@ -225,7 +234,10 @@ namespace FrbaHotel.AbmUsuario
 
         public void cargarTipoDoc(SqlDataReader reader)
         {
-            comboBoxTipoDoc.Items.Add(reader.GetString(0));
+            while (reader.Read())
+            {
+                comboBoxTipoDoc.Items.Add(reader.GetString(0));
+            }
         }
     }
 }

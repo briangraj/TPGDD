@@ -30,15 +30,21 @@ namespace FrbaHotel.RegistrarEstadia
         {
             try
             {
+                validarDatos();
+
                 reserva = new Reserva(Convert.ToInt32(textBoxNroReserva.Text));
                 reserva.cargar();
 
                 DB.ejecutarReader(
-                    "SELECT Nro_Habitacion, " +
+                    "SELECT rh.Nro_Habitacion, " +
                         "(SELECT Precio * th.Porcentual + Recarga_Estrella FROM LA_QUERY_DE_PAPEL.Regimen, LA_QUERY_DE_PAPEL.Hotel WHERE Descripcion = @descripcion AND Id_Hotel = @idHotel) AS Precio " +
-                    "FROM LA_QUERY_DE_PAPEL.ReservaxHabitacion " +
-                        "WHERE Id_Reserva = @idReserva",
+                    "FROM LA_QUERY_DE_PAPEL.ReservaxHabitacion rh " +
+                    "JOIN LA_QUERY_DE_PAPEL.Habitacion h ON rh.Nro_Habitacion = h.Nro_Habitacion AND rh.Id_Hotel = h.Id_Hotel " +
+                    "JOIN LA_QUERY_DE_PAPEL.Tipo_Habitacion th ON h.Tipo_Hab = th.Id_tipo " +
+                        "WHERE rh.Id_Reserva = @idReserva ",
                     cargarHabitaciones, "idReserva", reserva.id, "descripcion", reserva.descRegimen, "idHotel", usuario.idHotel);
+
+                reserva.usuario = usuario;
 
                 RegistrarConsumible.RegistrarConsumibles registrarConsumible = new RegistrarConsumible.RegistrarConsumibles(reserva, items);
                 Hide();
@@ -59,12 +65,12 @@ namespace FrbaHotel.RegistrarEstadia
 
             while (reader.Read())
             {
-                Item item = new Item("Estadia habitacion: " + reader.GetString(0), reader.GetDecimal(1) * cantNoches, 1);
+                Item item = new Item("Estadia habitacion: " + reader.GetInt32(0).ToString(), reader.GetDecimal(1) * cantNoches, 1);
                 items.Add(item);
 
                 if (nochesQueNoSeQuedo > 0)
                 {
-                    Item item2 = new Item("Dia reservado sin alojo, habitacion: " + reader.GetString(0), reader.GetDecimal(1) * nochesQueNoSeQuedo, 1);
+                    Item item2 = new Item("Dia reservado sin alojo, habitacion: " + reader.GetInt32(0).ToString(), reader.GetDecimal(1) * nochesQueNoSeQuedo, 1);
                     items.Add(item2);
                 }
             }

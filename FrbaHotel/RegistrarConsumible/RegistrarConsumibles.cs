@@ -29,7 +29,7 @@ namespace FrbaHotel.RegistrarConsumible
         private void RegistrarConsumibles_Load(object sender, EventArgs e)
         {
             DataTable tabla = DB.ejecutarQueryDeTabla(
-                "SELECT Id_Consumible, Descipcion, Precio " +
+                "SELECT Id_Consumible, Descripcion, Precio " +
                 "FROM LA_QUERY_DE_PAPEL.Consumible");
 
             dataGridViewConsumibles.DataSource = tabla;

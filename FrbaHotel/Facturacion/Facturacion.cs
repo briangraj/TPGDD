@@ -22,11 +22,46 @@ namespace FrbaHotel.Facturacion
         public Facturacion(Reserva reserva, List<Item> items, string medioDePago)
         {
             InitializeComponent();
+            this.reserva = reserva;
+            this.items = items;
+            this.medioDePago = medioDePago;
         }
 
         private void Facturacion_Load(object sender, EventArgs e)
         {
-            int nroFactura = Convert.ToInt32(DB.ejecutarFuncion("LA_QUERY_DE_PAPEL.generar_factura", "nroReserva", reserva.id, "medioDePago", medioDePago, "fechaActual", Program.fechaActual));
+            decimal total = items.Sum(item => item.precio * item.cantidad);
+
+            int nroFactura = Convert.ToInt32(DB.ejecutarProcedimientoEscalar("LA_QUERY_DE_PAPEL.generar_factura", "Nro_Factura",
+                "nroReserva", reserva.id, "medioDePago", medioDePago, "fechaActual", Program.fechaActual, "Total_a_pagar", total));
+
+            foreach (Item item in items)
+            {
+                DB.ejecutarQuery(
+                    "INSERT INTO LA_QUERY_DE_PAPEL.Item (Nro_Factura, Descripcion, Precio, Cantidad) " +
+                    "VALUES (@nroFactura, @descripcion, @precio, @cantidad)",
+                    "nroFactura", nroFactura, "descripcion", item.descripcion, "precio", item.precio, "cantidad", item.cantidad);
+            }
+
+            DB.ejecutarQuery(
+                    "UPDATE LA_QUERY_DE_PAPEL.Estadia " +
+                    "SET Fecha_egreso = @fechaActual, Usuario_egreso_id = @idUsuario",
+                    "fechaActual", Program.fechaActual, "idUsuario", reserva.usuario.id);
+
+            dataGridViewItems.DataSource = DB.ejecutarQueryDeTabla(
+                "SELECT Descripcion, Precio, Cantidad " +
+                "FROM LA_QUERY_DE_PAPEL.Item " +
+                    "WHERE Nro_Factura = @nroFactura",
+                "nroFactura", nroFactura);
+
+            textBoxNroFactura.Text = nroFactura.ToString();
+            textBoxNroReserva.Text = reserva.id.ToString();
+            textBoxMontoTotal.Text = total.ToString();
+            textBoxMedioDePago.Text = medioDePago;
+        }
+
+        private void buttonAceptar_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }

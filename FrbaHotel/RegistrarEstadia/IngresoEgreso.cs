@@ -31,7 +31,9 @@ namespace FrbaHotel.RegistrarEstadia
 
         private void buttonEgreso_Click(object sender, EventArgs e)
         {
-
+            Egreso egreso = new Egreso(usuario);
+            Hide();
+            egreso.Show();
         }
     }
 }

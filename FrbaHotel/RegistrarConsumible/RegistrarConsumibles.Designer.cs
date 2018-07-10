@@ -45,13 +45,13 @@
             this.dataGridViewConsumibles.Location = new System.Drawing.Point(12, 32);
             this.dataGridViewConsumibles.Name = "dataGridViewConsumibles";
             this.dataGridViewConsumibles.ReadOnly = true;
-            this.dataGridViewConsumibles.Size = new System.Drawing.Size(1104, 138);
+            this.dataGridViewConsumibles.Size = new System.Drawing.Size(444, 138);
             this.dataGridViewConsumibles.TabIndex = 1;
             this.dataGridViewConsumibles.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewConsumibles_CellClick);
             // 
             // buttonSiguiente
             // 
-            this.buttonSiguiente.Location = new System.Drawing.Point(1031, 581);
+            this.buttonSiguiente.Location = new System.Drawing.Point(381, 581);
             this.buttonSiguiente.Name = "buttonSiguiente";
             this.buttonSiguiente.Size = new System.Drawing.Size(75, 23);
             this.buttonSiguiente.TabIndex = 3;
@@ -67,7 +67,7 @@
             this.dataGridViewConsumiblesSeleccionados.Location = new System.Drawing.Point(12, 227);
             this.dataGridViewConsumiblesSeleccionados.Name = "dataGridViewConsumiblesSeleccionados";
             this.dataGridViewConsumiblesSeleccionados.ReadOnly = true;
-            this.dataGridViewConsumiblesSeleccionados.Size = new System.Drawing.Size(1104, 348);
+            this.dataGridViewConsumiblesSeleccionados.Size = new System.Drawing.Size(444, 348);
             this.dataGridViewConsumiblesSeleccionados.TabIndex = 4;
             this.dataGridViewConsumiblesSeleccionados.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewConsumiblesSeleccionados_CellClick);
             // 
@@ -95,7 +95,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1128, 616);
+            this.ClientSize = new System.Drawing.Size(469, 616);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.dataGridViewConsumiblesSeleccionados);

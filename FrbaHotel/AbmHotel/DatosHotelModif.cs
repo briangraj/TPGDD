@@ -108,13 +108,16 @@ namespace FrbaHotel.AbmHotel
 
         public void cargarHotel(SqlDataReader reader)
         {
-            Regimen regimenOriginal = regimenes.Find(regimen => regimen.id == reader.GetInt32(0));
+            while (reader.Read())
+            {
+                Regimen regimenOriginal = regimenes.Find(regimen => regimen.id == reader.GetInt32(0));
 
-            regimenesOriginales.Add(regimenOriginal);
+                regimenesOriginales.Add(regimenOriginal);
 
-            int indice = checkedListBoxRegimenes.Items.IndexOf(regimenOriginal.descripcion);
+                int indice = checkedListBoxRegimenes.Items.IndexOf(regimenOriginal.descripcion);
 
-            checkedListBoxRegimenes.SetItemChecked(indice, true);
+                checkedListBoxRegimenes.SetItemChecked(indice, true);
+            }
         }
     }
 }

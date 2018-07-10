@@ -34,7 +34,10 @@ namespace FrbaHotel.Login
 
         public void cargarComboBox(SqlDataReader reader)
         {
-            comboBoxFuncionalidades.Items.Add(reader.GetString(0));
+            while (reader.Read())
+            {
+                comboBoxFuncionalidades.Items.Add(reader.GetString(0));
+            }
         }
 
         private void buttonSeleccionar_Click(object sender, EventArgs e)
@@ -68,6 +71,9 @@ namespace FrbaHotel.Login
                         break;
                     case "Cancelar reserva":
                         form = new CancelarReserva.CancelarReserva(usuario);
+                        break;
+                    case "Registrar estadia":
+                        form = new RegistrarEstadia.IngresoEgreso(usuario);
                         break;
                     case "Listado estadistico":
                         form = new ListadoEstadistico.ListadoEstadistico();

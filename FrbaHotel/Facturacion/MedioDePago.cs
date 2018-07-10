@@ -36,7 +36,10 @@ namespace FrbaHotel.Facturacion
 
         public void cargarMedioDePago(SqlDataReader reader)
         {
-            comboBoxMedioDePago.Items.Add(reader.GetString(0));
+            while (reader.Read())
+            {
+                comboBoxMedioDePago.Items.Add(reader.GetString(0));
+            }
         }
 
         private void buttonAceptar_Click(object sender, EventArgs e)

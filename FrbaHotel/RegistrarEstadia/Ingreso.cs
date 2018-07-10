@@ -34,14 +34,13 @@ namespace FrbaHotel.RegistrarEstadia
                 {
                     registrarIngreso();
                 }
-                else if (numericUpDownCantHuespedes.Value > 1)
+                else
                 {
                     ingresoDeHuespedes(Convert.ToInt32(numericUpDownCantHuespedes.Value));
                 }
-                else
-                {
-                    MessageBox.Show("Debe ingresar una cantidad de huespedes valida");
-                }
+
+                MessageBox.Show("Se registro el ingreso correctamente");
+                Close();
             }
             catch (SqlException) { }
 
@@ -78,6 +77,9 @@ namespace FrbaHotel.RegistrarEstadia
         {
             if (textBoxNroReserva.Text == "")
                 throw new Exception("Debe ingresar un numero de reserva");
+
+            if (numericUpDownCantHuespedes.Value < 0)
+                throw new Exception("Debe ingresar una cantidad de huespedes valida");
 
             DB.ejecutarProcedimiento("LA_QUERY_DE_PAPEL.validar_reserva_para_ingreso", "nroReserva", Convert.ToInt32(textBoxNroReserva.Text), "fechaActual", Program.fechaActual,
                 "idUsuario", usuario.id);

@@ -47,9 +47,12 @@ namespace FrbaHotel.AbmRol
         }
 
         public void cargarCheckBoxs(SqlDataReader reader)
-        {            
-            funcionalidades.Add(new Funcionalidad(reader.GetString(0), reader.GetInt32(1).ToString()));
-            checkedListBoxFuncionalidades.Items.Add(reader.GetString(0));
+        {
+            while (reader.Read())
+            {
+                funcionalidades.Add(new Funcionalidad(reader.GetString(0), reader.GetInt32(1).ToString()));
+                checkedListBoxFuncionalidades.Items.Add(reader.GetString(0));
+            }
         }
 
         private void buttonAceptar_Click(object sender, EventArgs e)
@@ -151,11 +154,14 @@ namespace FrbaHotel.AbmRol
 
         public void cargarFuncionalidad(SqlDataReader reader)
         {
-            string descripcion = funcionalidades.Find(funcionalidad => funcionalidad.id == reader.GetInt32(0).ToString()).descripcion;
+            while (reader.Read())
+            {
+                string descripcion = funcionalidades.Find(funcionalidad => funcionalidad.id == reader.GetInt32(0).ToString()).descripcion;
 
-            int indice = checkedListBoxFuncionalidades.Items.IndexOf(descripcion);
+                int indice = checkedListBoxFuncionalidades.Items.IndexOf(descripcion);
 
-            checkedListBoxFuncionalidades.SetItemChecked(indice, true);
+                checkedListBoxFuncionalidades.SetItemChecked(indice, true);
+            }
         }
     }
 }

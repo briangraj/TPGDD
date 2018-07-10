@@ -113,10 +113,9 @@ namespace FrbaHotel.Utilidades
 
             conexionDB.Open();
             SqlDataReader reader = comando.ExecuteReader();
-            while (reader.Read())
-            {
-                usarReader(reader);
-            }
+
+            usarReader(reader);
+
             conexionDB.Close();
         }
 

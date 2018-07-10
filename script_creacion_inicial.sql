@@ -297,7 +297,7 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Consumible_estadia_Conflicto_Migracion] (
 
 CREATE TABLE [LA_QUERY_DE_PAPEL].[Item] ( 
 	Nro_Factura numeric(18) NOT NULL,
-	Descripcion VARCHAR(50) NOT NULL,
+	Descripcion VARCHAR(255) NOT NULL,
 	Precio NUMERIC (18,2) NOT NULL DEFAULT 0.0,
 	Cantidad INT NOT NULL,
 	
@@ -331,10 +331,10 @@ INSERT INTO LA_QUERY_DE_PAPEL.Rol (Nombre)
 VALUES ('Administrador General'), ('Guest')
 
 INSERT INTO LA_QUERY_DE_PAPEL.Funcionalidad (Descripcion)
-VALUES ('ABM de rol'), ('ABM de usuario'), ('ABM de hotel'), ('ABM de cliente'), ('ABM de habitacion'), ('Generar o modificar reserva'), ('Cancelar reserva'), ('Listado estadistico')
+VALUES ('ABM de rol'), ('ABM de usuario'), ('ABM de hotel'), ('ABM de cliente'), ('ABM de habitacion'), ('Generar o modificar reserva'), ('Cancelar reserva'), ('Registrar estadia'), ('Listado estadistico')
 
 INSERT INTO LA_QUERY_DE_PAPEL.FuncionalidadxRol(Id_Rol, Id_Funcion)
-VALUES (1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (1, 7), (1,8), (2,6), (2, 7)
+VALUES (1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (1, 7), (1,8), (1,9), (2,6), (2, 7)
 
 INSERT INTO LA_QUERY_DE_PAPEL.Persona (Tipo_Documento, Nro_Documento, Apellido, Nombre,	Direccion, Fecha_Nacimiento, Telefono, Habilitado)
 VALUES ('DNI', 1, '', '', '', GETDATE(), '', 1)
@@ -432,24 +432,38 @@ FROM LA_QUERY_DE_PAPEL.Persona p
 		AND p.Nro_Documento = c.Nro_Documento
 GO
 
---triggers para poder hacer insert y delete en la view de clientes y validar el mail
-CREATE TRIGGER LA_QUERY_DE_PAPEL.insertClientes ON LA_QUERY_DE_PAPEL.clientes
-INSTEAD OF INSERT
+--triggers y procedure para poder hacer insert y delete en la view de clientes y validar el mail
+CREATE PROCEDURE LA_QUERY_DE_PAPEL.insertClientes
+	@Tipo_Documento varchar(20),
+	@Nro_Documento int,
+	@Apellido nvarchar(255),
+	@Nombre nvarchar(255),
+	@Direccion nvarchar(255),
+	@Fecha_Nacimiento datetime,
+	@Telefono nvarchar(50),
+	@Localidad nvarchar(255),
+	@Mail nvarchar(255),
+	@Nacionalidad nvarchar(255),
+	@Habilitado bit
 AS
 BEGIN
-BEGIN TRY
+	IF(EXISTS(SELECT 1 FROM LA_QUERY_DE_PAPEL.Persona WHERE Tipo_Documento = @Tipo_Documento AND Nro_Documento = @Nro_Documento))
+	BEGIN
+		RAISERROR('Ya existe un cliente con el mismo tipo y numero de documento', 16, 1)
+		RETURN
+	END
+
+	IF(EXISTS(SELECT 1 FROM LA_QUERY_DE_PAPEL.Cliente WHERE Mail = @Mail))
+	BEGIN
+		RAISERROR('Ya existe un cliente con el mismo mail', 16, 1)
+		RETURN
+	END
+
 	INSERT INTO LA_QUERY_DE_PAPEL.Persona (Tipo_Documento, Nro_Documento, Apellido, Nombre, Direccion, Fecha_Nacimiento, Telefono, Habilitado)
-		SELECT i.Tipo_Documento, i.Nro_Documento, i.Apellido, i.Nombre, i.Direccion, i.Fecha_Nacimiento, i.Telefono, i.Habilitado
-		FROM inserted i
+	VALUES (@Tipo_Documento, @Nro_Documento, @Apellido, @Nombre, @Direccion, @Fecha_Nacimiento, @Telefono, @Habilitado)
 
 	INSERT INTO LA_QUERY_DE_PAPEL.Cliente (Tipo_Documento, Nro_Documento, Localidad, Mail, Nacionalidad)
-		SELECT i.Tipo_Documento, i.Nro_Documento, i.Localidad, i.Mail, i.Nacionalidad
-		FROM inserted i
-END TRY
-
-BEGIN CATCH
-	RAISERROR('El mail ya esta en uso', 16, 1)
-END CATCH
+	VALUES (@Tipo_Documento, @Nro_Documento, @Localidad, @Mail, @Nacionalidad)
 END
 GO
 
@@ -1424,12 +1438,12 @@ GO
 
 
 CREATE PROCEDURE LA_QUERY_DE_PAPEL.generar_factura 
+	@Nro_Factura INT OUTPUT,
+
 	@nroReserva INT, 
 	@medioDePago VARCHAR(50), 
 	@fechaActual DATETIME, 
-	@Total_a_pagar NUMERIC(18,2), 
-	
-	@Nro_Factura INT OUTPUT
+	@Total_a_pagar NUMERIC(18,2)
 AS
 BEGIN
 	

@@ -56,10 +56,10 @@
             // textBoxNroReserva
             // 
             this.textBoxNroReserva.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxNroReserva.Location = new System.Drawing.Point(318, 90);
+            this.textBoxNroReserva.Location = new System.Drawing.Point(311, 90);
             this.textBoxNroReserva.Name = "textBoxNroReserva";
             this.textBoxNroReserva.ReadOnly = true;
-            this.textBoxNroReserva.Size = new System.Drawing.Size(75, 29);
+            this.textBoxNroReserva.Size = new System.Drawing.Size(108, 29);
             this.textBoxNroReserva.TabIndex = 2;
             // 
             // InfoReserva

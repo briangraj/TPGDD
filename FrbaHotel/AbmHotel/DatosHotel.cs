@@ -34,8 +34,11 @@ namespace FrbaHotel.AbmHotel
 
         public void cargarCheckBoxs(SqlDataReader reader)
         {
-            regimenes.Add(new Regimen(reader.GetString(0), reader.GetInt32(1)));
-            checkedListBoxRegimenes.Items.Add(reader.GetString(0));
+            while (reader.Read())
+            {
+                regimenes.Add(new Regimen(reader.GetString(0), reader.GetInt32(1)));
+                checkedListBoxRegimenes.Items.Add(reader.GetString(0));
+            }
         }
 
         private void buttonAceptar_Click(object sender, EventArgs e)
@@ -48,6 +51,8 @@ namespace FrbaHotel.AbmHotel
                     return;
 
                 accionAceptar();
+
+                Close();
             }
             catch (SqlException) { }
         }

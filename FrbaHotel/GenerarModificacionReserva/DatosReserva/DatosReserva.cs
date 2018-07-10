@@ -38,7 +38,10 @@ namespace FrbaHotel.GenerarModificacionReserva.DatosReserva
 
         public void cargarComboBoxTiposHab(SqlDataReader reader)
         {
-            comboBoxTipoHab.Items.Add(reader.GetString(0));
+            while (reader.Read())
+            {
+                comboBoxTipoHab.Items.Add(reader.GetString(0));
+            }
         }
 
         private void cargarRegimenes(int idHotel)
@@ -54,7 +57,10 @@ namespace FrbaHotel.GenerarModificacionReserva.DatosReserva
 
         public void cargarComboBoxRegimenes(SqlDataReader reader)
         {
-            comboBoxTipoReg.Items.Add(reader.GetString(0));
+            while (reader.Read())
+            {
+                comboBoxTipoReg.Items.Add(reader.GetString(0));
+            }
         }
 
         private void buttonBuscar_Click(object sender, EventArgs e)
