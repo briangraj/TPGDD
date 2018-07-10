@@ -33,10 +33,10 @@
             this.textBoxNacionalidad = new System.Windows.Forms.TextBox();
             this.textBoxLocalidad = new System.Windows.Forms.TextBox();
             this.textBoxDireccion = new System.Windows.Forms.TextBox();
+            this.comboBoxTipoDoc = new System.Windows.Forms.ComboBox();
             this.textBoxTelefono = new System.Windows.Forms.TextBox();
             this.textBoxMail = new System.Windows.Forms.TextBox();
             this.textBoxNroDoc = new System.Windows.Forms.TextBox();
-            this.textBoxApellido = new System.Windows.Forms.TextBox();
             this.labelHabilitado = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -51,10 +51,10 @@
             this.textBoxNombre = new System.Windows.Forms.TextBox();
             this.dateTimePickerFechaNac = new System.Windows.Forms.DateTimePicker();
             this.checkBoxHabilitado = new System.Windows.Forms.CheckBox();
+            this.textBoxApellido = new System.Windows.Forms.TextBox();
             this.buttonLimpiar = new System.Windows.Forms.Button();
             this.buttonAceptar = new System.Windows.Forms.Button();
             this.errorProviderCliente = new System.Windows.Forms.ErrorProvider(this.components);
-            this.comboBoxTipoDoc = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProviderCliente)).BeginInit();
             this.SuspendLayout();
@@ -127,6 +127,15 @@
             this.textBoxDireccion.Size = new System.Drawing.Size(333, 20);
             this.textBoxDireccion.TabIndex = 24;
             // 
+            // comboBoxTipoDoc
+            // 
+            this.comboBoxTipoDoc.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxTipoDoc.FormattingEnabled = true;
+            this.comboBoxTipoDoc.Location = new System.Drawing.Point(219, 55);
+            this.comboBoxTipoDoc.Name = "comboBoxTipoDoc";
+            this.comboBoxTipoDoc.Size = new System.Drawing.Size(333, 21);
+            this.comboBoxTipoDoc.TabIndex = 30;
+            // 
             // textBoxTelefono
             // 
             this.textBoxTelefono.Anchor = System.Windows.Forms.AnchorStyles.Left;
@@ -150,14 +159,6 @@
             this.textBoxNroDoc.Name = "textBoxNroDoc";
             this.textBoxNroDoc.Size = new System.Drawing.Size(333, 20);
             this.textBoxNroDoc.TabIndex = 21;
-            // 
-            // textBoxApellido
-            // 
-            this.textBoxApellido.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.textBoxApellido.Location = new System.Drawing.Point(219, 29);
-            this.textBoxApellido.Name = "textBoxApellido";
-            this.textBoxApellido.Size = new System.Drawing.Size(333, 20);
-            this.textBoxApellido.TabIndex = 19;
             // 
             // labelHabilitado
             // 
@@ -306,6 +307,14 @@
             this.checkBoxHabilitado.TabIndex = 28;
             this.checkBoxHabilitado.UseVisualStyleBackColor = true;
             // 
+            // textBoxApellido
+            // 
+            this.textBoxApellido.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.textBoxApellido.Location = new System.Drawing.Point(219, 29);
+            this.textBoxApellido.Name = "textBoxApellido";
+            this.textBoxApellido.Size = new System.Drawing.Size(333, 20);
+            this.textBoxApellido.TabIndex = 19;
+            // 
             // buttonLimpiar
             // 
             this.buttonLimpiar.Location = new System.Drawing.Point(37, 408);
@@ -329,15 +338,6 @@
             // errorProviderCliente
             // 
             this.errorProviderCliente.ContainerControl = this;
-            // 
-            // comboBoxTipoDoc
-            // 
-            this.comboBoxTipoDoc.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxTipoDoc.FormattingEnabled = true;
-            this.comboBoxTipoDoc.Location = new System.Drawing.Point(219, 55);
-            this.comboBoxTipoDoc.Name = "comboBoxTipoDoc";
-            this.comboBoxTipoDoc.Size = new System.Drawing.Size(333, 21);
-            this.comboBoxTipoDoc.TabIndex = 30;
             // 
             // DatosCliente
             // 

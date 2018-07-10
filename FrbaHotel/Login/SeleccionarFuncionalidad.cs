@@ -75,7 +75,7 @@ namespace FrbaHotel.Login
                     default:
                         return;
                 }
-                //form = new GenerarModificacionReserva.DatosReserva(usuario);
+                
                 form.Show();
             }
         }

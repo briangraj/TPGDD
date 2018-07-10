@@ -141,7 +141,8 @@ namespace FrbaHotel.GenerarModificacionReserva.DatosReserva
                 fila.Cells["Piso"].Value,
                 fila.Cells["Ubicacion"].Value,
                 fila.Cells["Tipo_Habitacion"].Value,
-                fila.Cells["Descripcion"].Value);
+                fila.Cells["Descripcion"].Value,
+                fila.Cells["Precio"].Value);
         }
 
         private bool yaEsta(DataGridViewRow fila)

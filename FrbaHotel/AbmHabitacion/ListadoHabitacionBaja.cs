@@ -18,7 +18,7 @@ namespace FrbaHotel.AbmHabitacion
         {
             return 
                 "SELECT Nro_Habitacion, Piso, Ubicacion, th.Descripcion AS Tipo_Habitacion, h.Descripcion, Habilitada " +
-                "FROM LA_QUERY_DE_PAPEL.Habitacion h" +
+                "FROM LA_QUERY_DE_PAPEL.Habitacion h " +
                 "JOIN LA_QUERY_DE_PAPEL.Tipo_Habitacion th ON h.Tipo_Hab = th.Id_tipo " +
                     "WHERE Nro_Habitacion LIKE @nroHab " +
                         "AND Piso LIKE @piso " +
