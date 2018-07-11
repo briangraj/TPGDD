@@ -1380,7 +1380,7 @@ CREATE FUNCTION LA_QUERY_DE_PAPEL.HotelesMasDiasFueraDeServicio (@anio int, @Tri
 RETURNS TABLE
 AS
 	RETURN (
-		SELECT TOP 5 Hotel.Id_Hotel, Hotel.nombre AS 'Hotel Nombre', COUNT( DATEDIFF(DAY, HB.Fecha_inicio, HB.Fecha_fin)) AS Cantidad_dias 
+		SELECT TOP 5 Hotel.Id_Hotel, Hotel.nombre AS 'Hotel Nombre', SUM( DATEDIFF(DAY, HB.Fecha_inicio, HB.Fecha_fin)) AS Cantidad_dias 
 			FROM LA_QUERY_DE_PAPEL.Hotel_Baja HB
 			JOIN LA_QUERY_DE_PAPEL.Hotel Hotel ON Hotel.Id_Hotel = HB.Id_Hotel
 		WHERE	Fecha_Inicio IS NOT NULL 
