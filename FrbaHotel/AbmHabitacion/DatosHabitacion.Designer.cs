@@ -179,11 +179,6 @@
             0,
             0,
             0});
-            this.numericUpDownNroHab.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
             this.numericUpDownNroHab.Name = "numericUpDownNroHab";
             this.numericUpDownNroHab.Size = new System.Drawing.Size(289, 20);
             this.numericUpDownNroHab.TabIndex = 8;

@@ -35,11 +35,11 @@ namespace FrbaHotel.AbmHabitacion
         protected override void accionAceptar()
         {
             DB.ejecutarQuery(
-                "UPDATE LA_QUERY_DE_PAPEL.Habitacion (Nro_Habitacion, Piso, Ubicacion, Descripcion, Habilitada) " +
-                "VALUES (@nroHabitacion, @piso, @ubicacion, @descripcion, @habilitada) " +
+                "UPDATE LA_QUERY_DE_PAPEL.Habitacion " +
+                "SET Nro_Habitacion = @nroHabitacion, Piso = @piso, Ubicacion = @ubicacion, Descripcion = @descripcion, Habilitada = @habilitada " +
                     "WHERE Id_Hotel = @idHotel " +
                         "AND Nro_Habitacion = @nroHabitacionOriginal",
-                "nroHabitacion", numericUpDownNroHab.Value, "piso", numericUpDownPiso.Value, "ubicacion", ubicacion(), "descdescripcion", textBoxDescripcion.Text,
+                "nroHabitacion", numericUpDownNroHab.Value, "piso", numericUpDownPiso.Value, "ubicacion", ubicacion(), "descripcion", textBoxDescripcion.Text,
                 "habilitada", checkBoxHabilitada.Checked, "idHotel", usuario.idHotel, "nroHabitacionOriginal", nroHabitacionAModif);
         }
     }

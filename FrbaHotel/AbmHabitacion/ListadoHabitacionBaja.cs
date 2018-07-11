@@ -34,8 +34,8 @@ namespace FrbaHotel.AbmHabitacion
         protected override void accionBoton(DataGridViewCellEventArgs e)
         {
             DB.ejecutarQuery(
-                "UPDATE LA_QUERY_DE_PAPEL.Habitacion (Habilitada)" +
-                "VALUES (0)" +
+                "UPDATE LA_QUERY_DE_PAPEL.Habitacion " +
+                "SET Habilitada = 0 " +
                     "WHERE Id_Hotel = @idHotel " +
                     "AND Nro_Habitacion = @nroHabitacion",
                 "idHotel", usuario.idHotel, "nroHabitacion", Convert.ToInt32(dataGridViewHabitaciones.CurrentRow.Cells["Nro_Habitacion"].Value));

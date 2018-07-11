@@ -145,7 +145,7 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[Reserva] (
 	Nro_Documento INT NOT NULL, 
 
 	FOREIGN KEY (Id_Regimen) REFERENCES [LA_QUERY_DE_PAPEL].[Regimen] (Id_Regimen),
-	FOREIGN KEY (Tipo_Documento, Nro_Documento) REFERENCES [LA_QUERY_DE_PAPEL].[Persona] (Tipo_Documento, Nro_Documento)
+	FOREIGN KEY (Tipo_Documento, Nro_Documento) REFERENCES [LA_QUERY_DE_PAPEL].[Persona] (Tipo_Documento, Nro_Documento) ON UPDATE CASCADE
 	);
 
 CREATE TABLE [LA_QUERY_DE_PAPEL].[Reserva_Conflicto_Migracion] ( 
@@ -168,7 +168,7 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[ReservaxHabitacion] (
 	
 	PRIMARY KEY (Id_Reserva, Nro_Habitacion, Id_Hotel),
 	FOREIGN KEY (Id_Reserva) REFERENCES [LA_QUERY_DE_PAPEL].[Reserva] (Id_Reserva),
-	FOREIGN KEY (Nro_Habitacion, Id_Hotel) REFERENCES [LA_QUERY_DE_PAPEL].[Habitacion] (Nro_Habitacion, Id_Hotel)
+	FOREIGN KEY (Nro_Habitacion, Id_Hotel) REFERENCES [LA_QUERY_DE_PAPEL].[Habitacion] (Nro_Habitacion, Id_Hotel) ON UPDATE CASCADE
 	);
 
 
@@ -179,7 +179,7 @@ CREATE TABLE [LA_QUERY_DE_PAPEL].[ReservaxHabitacion_Conflicto_Migracion] (
 	
 	PRIMARY KEY (Id_Reserva, Id_Hotel, Nro_Habitacion),
 	FOREIGN KEY (Id_Reserva) REFERENCES [LA_QUERY_DE_PAPEL].[Reserva_Conflicto_Migracion],
-	FOREIGN KEY (Nro_Habitacion, Id_Hotel) REFERENCES [LA_QUERY_DE_PAPEL].[Habitacion] (Nro_Habitacion, Id_Hotel)
+	FOREIGN KEY (Nro_Habitacion, Id_Hotel) REFERENCES [LA_QUERY_DE_PAPEL].[Habitacion] (Nro_Habitacion, Id_Hotel) ON UPDATE CASCADE
 	);
 
 CREATE TABLE [LA_QUERY_DE_PAPEL].[Historial_Reserva] (

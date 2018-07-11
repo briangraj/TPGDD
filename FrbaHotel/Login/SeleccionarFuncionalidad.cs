@@ -82,7 +82,7 @@ namespace FrbaHotel.Login
                         return;
                 }
                 
-                form.Show();
+                form.ShowDialog();
             }
         }
     }
