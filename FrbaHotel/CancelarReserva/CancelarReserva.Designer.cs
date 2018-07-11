@@ -114,7 +114,7 @@
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.buttonAceptar);
             this.Name = "CancelarReserva";
-            this.Text = "Form1";
+            this.Text = "Cancelar reserva";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);

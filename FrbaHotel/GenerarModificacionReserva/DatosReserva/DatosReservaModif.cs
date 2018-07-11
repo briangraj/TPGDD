@@ -28,7 +28,7 @@ namespace FrbaHotel.GenerarModificacionReserva.DatosReserva
         {
             dateTimePickerDesde.Value = reserva.fechaInicio;
             dateTimePickerHasta.Value = reserva.fechaFin;
-            comboBoxTipoHab.SelectedIndex = comboBoxTipoHab.Items.IndexOf(reserva.tipoHabitacion);
+            //comboBoxTipoHab.SelectedIndex = comboBoxTipoHab.Items.IndexOf(reserva.tipoHabitacion);
             comboBoxTipoReg.SelectedIndex = comboBoxTipoReg.Items.IndexOf(reserva.descRegimen);
         }
 

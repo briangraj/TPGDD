@@ -35,6 +35,9 @@ namespace FrbaHotel.CancelarReserva
                 if (dialogResult == DialogResult.Yes)
                 {
                     cancelarReserva();
+
+                    MessageBox.Show("Se cancelo la reserva correctamente");
+                    Close();
                 }
             }
             catch (SqlException) { }

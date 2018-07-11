@@ -15,7 +15,7 @@ namespace FrbaHotel.Entidades
         public DateTime fechaInicio;
         public DateTime fechaFin;
         public string descRegimen;
-        public string tipoHabitacion;
+        //public string tipoHabitacion;
         public Usuario usuario;
         public int id;
         public bool esAlta;
@@ -26,7 +26,7 @@ namespace FrbaHotel.Entidades
         {
             this.fechaInicio = fechaInicio;
             this.fechaFin = fechaFin;
-            this.tipoHabitacion = tipoHabitacion;
+            //this.tipoHabitacion = tipoHabitacion;
             this.descRegimen = descRegimen;
             this.usuario = usuario;
             this.esAlta = true;
@@ -60,7 +60,7 @@ namespace FrbaHotel.Entidades
             this.fechaInicio = reader.GetDateTime(1);
             this.fechaFin = reader.GetDateTime(2);
             this.descRegimen = reader.GetString(3);
-            this.tipoHabitacion = reader.GetString(4);
+            //this.tipoHabitacion = reader.GetString(4);
         }
     }
 }

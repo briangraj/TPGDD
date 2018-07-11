@@ -24,7 +24,7 @@ namespace FrbaHotel.GenerarModificacionReserva
             this.form = form;
             dateTimePickerDesde.Value = reserva.fechaInicio;
             dateTimePickerHasta.Value = reserva.fechaFin;
-            textBoxTipoHab.Text = reserva.tipoHabitacion;
+            //textBoxTipoHab.Text = reserva.tipoHabitacion;
             textBoxTipoReg.Text = reserva.descRegimen;
             dataGridViewReserva.DataSource = tabla;
         }

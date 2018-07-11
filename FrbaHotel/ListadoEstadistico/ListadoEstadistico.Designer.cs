@@ -167,7 +167,7 @@
             this.Controls.Add(this.buttonBuscar);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "ListadoEstadistico";
-            this.Text = "Form1";
+            this.Text = "Estadisticas";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProviderEstadisticas)).EndInit();

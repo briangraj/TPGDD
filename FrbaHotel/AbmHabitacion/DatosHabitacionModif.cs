@@ -41,6 +41,8 @@ namespace FrbaHotel.AbmHabitacion
                         "AND Nro_Habitacion = @nroHabitacionOriginal",
                 "nroHabitacion", numericUpDownNroHab.Value, "piso", numericUpDownPiso.Value, "ubicacion", ubicacion(), "descripcion", textBoxDescripcion.Text,
                 "habilitada", checkBoxHabilitada.Checked, "idHotel", usuario.idHotel, "nroHabitacionOriginal", nroHabitacionAModif);
+
+            MessageBox.Show("Se modifico correctamente la habitacion");
         }
     }
 }

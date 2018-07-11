@@ -41,6 +41,7 @@ namespace FrbaHotel.AbmHabitacion
                 "idHotel", usuario.idHotel, "nroHabitacion", Convert.ToInt32(dataGridViewHabitaciones.CurrentRow.Cells["Nro_Habitacion"].Value));
 
             llenarTabla();
+
             MessageBox.Show("Habitacion eliminada");
         }
     }

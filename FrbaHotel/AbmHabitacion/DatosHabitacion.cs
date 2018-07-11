@@ -51,6 +51,8 @@ namespace FrbaHotel.AbmHabitacion
                     return;
 
                 accionAceptar();
+
+                Close();
             }
             catch (SqlException) { }
         }

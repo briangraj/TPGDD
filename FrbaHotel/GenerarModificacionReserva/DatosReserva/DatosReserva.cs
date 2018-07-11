@@ -66,7 +66,7 @@ namespace FrbaHotel.GenerarModificacionReserva.DatosReserva
         private void buttonBuscar_Click(object sender, EventArgs e)
         {
             errorProviderReserva.Clear();
-            Validaciones.validarFechasAnteriores(errorProviderReserva, Controls);
+            validarDatos();
             if (Validaciones.errorProviderConError(errorProviderReserva, Controls))
                 return;
 
@@ -110,6 +110,12 @@ namespace FrbaHotel.GenerarModificacionReserva.DatosReserva
         {
             errorProviderReserva.Clear();
             validarDatos();
+
+            if (dataGridViewHabReservadas.Rows.Count == 0)
+            {
+                errorProviderReserva.SetError(dataGridViewHabReservadas, "Debe elegir al menos una habitacion");
+            }
+
             if (Validaciones.errorProviderConError(errorProviderReserva, Controls))
                 return;
 
@@ -127,13 +133,8 @@ namespace FrbaHotel.GenerarModificacionReserva.DatosReserva
 
         protected void validarDatos()
         {
-            Validaciones.validarControles(errorProviderReserva, Controls);
+            //Validaciones.validarControles(errorProviderReserva, Controls);
             Validaciones.validarFechasAnteriores(errorProviderReserva, Controls);
-            if (dataGridViewHabReservadas.Rows.Count == 0)
-            {
-                errorProviderReserva.SetError(dataGridViewHabReservadas, "Debe elegir al menos una habitacion");
-            }
-
             if (dateTimePickerDesde.Value > dateTimePickerHasta.Value)
             {
                 errorProviderReserva.SetError(dateTimePickerDesde, "No puedes ser posterior a la fecha de egreso");
