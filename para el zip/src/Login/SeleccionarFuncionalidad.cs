@@ -26,15 +26,18 @@ namespace FrbaHotel.Login
             DB.ejecutarReader(
                 "SELECT F.Descripcion " +
                 "FROM LA_QUERY_DE_PAPEL.Funcionalidad F " +
-                    "JOIN LA_QUERY_DE_PAPEL.FuncionalidadxRol FR " +
-                    "ON F.Id_Funcion = FR.Id_Funcion " +
-                        "AND FR.Id_Rol = " + usuario.id.ToString(),
+                    "JOIN LA_QUERY_DE_PAPEL.FuncionalidadxRol FR ON F.Id_Funcion = FR.Id_Funcion " +
+                    "JOIN LA_QUERY_DE_PAPEL.Usuario u ON FR.Id_Rol = u.Id_Rol " +
+                        "WHERE Id_Usuario = " + usuario.id.ToString(),
             cargarComboBox);
         }
 
         public void cargarComboBox(SqlDataReader reader)
         {
-            comboBoxFuncionalidades.Items.Add(reader.GetString(0));
+            while (reader.Read())
+            {
+                comboBoxFuncionalidades.Items.Add(reader.GetString(0));
+            }
         }
 
         private void buttonSeleccionar_Click(object sender, EventArgs e)
@@ -64,13 +67,22 @@ namespace FrbaHotel.Login
                         form = new AbmHabitacion.AbmHabitacion(usuario);
                         break;
                     case "Generar o modificar reserva":
-                        form = new GenerarModificacionReserva.DatosReserva(usuario);
+                        form = new GenerarModificacionReserva.GenerarModificarReserva(usuario);
+                        break;
+                    case "Cancelar reserva":
+                        form = new CancelarReserva.CancelarReserva(usuario);
+                        break;
+                    case "Registrar estadia":
+                        form = new RegistrarEstadia.IngresoEgreso(usuario);
+                        break;
+                    case "Listado estadistico":
+                        form = new ListadoEstadistico.ListadoEstadistico();
                         break;
                     default:
                         return;
                 }
-                //form = new GenerarModificacionReserva.DatosReserva(usuario);
-                form.Show();
+                
+                form.ShowDialog();
             }
         }
     }

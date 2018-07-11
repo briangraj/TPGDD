@@ -16,7 +16,7 @@ namespace FrbaHotel.AbmUsuario
 
         protected override void cargarTabla(string tipoDoc)
         {
-            dataGridViewPersonas.DataSource = DB.correrQueryTabla(
+            dataGridViewPersonas.DataSource = DB.ejecutarQueryDeTabla(
                 "SELECT u.Id_Usuario, Username, Password, Id_Rol, Nombre, Apellido, Tipo_Documento, Nro_Documento, Mail, Telefono, Direccion, Fecha_Nacimiento, Habilitado " +
                     "FROM LA_QUERY_DE_PAPEL.usuarios u " +
                     "JOIN LA_QUERY_DE_PAPEL.UsuarioxHotel uh " +
@@ -39,7 +39,7 @@ namespace FrbaHotel.AbmUsuario
 
         protected override void accionBoton(DataGridViewCellEventArgs e)
         {
-            DB.correrQuery(
+            DB.ejecutarQuery(
                 "DELETE FROM LA_QUERY_DE_PAPEL.usuarios " +
                 "WHERE Username = @username",
                 "username", dataGridViewPersonas.CurrentRow.Cells["Username"].Value.ToString());

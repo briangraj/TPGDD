@@ -78,7 +78,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(500, 310);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(500, 276);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // numericUpDownPiso
@@ -109,7 +109,7 @@
             this.label7.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(52, 286);
+            this.label7.Location = new System.Drawing.Point(52, 253);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(72, 18);
             this.label7.TabIndex = 7;
@@ -153,7 +153,7 @@
             this.label6.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(44, 181);
+            this.label6.Location = new System.Drawing.Point(44, 165);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(87, 18);
             this.label6.TabIndex = 6;
@@ -176,11 +176,6 @@
             this.numericUpDownNroHab.Location = new System.Drawing.Point(179, 3);
             this.numericUpDownNroHab.Maximum = new decimal(new int[] {
             10000,
-            0,
-            0,
-            0});
-            this.numericUpDownNroHab.Minimum = new decimal(new int[] {
-            1,
             0,
             0,
             0});
@@ -217,7 +212,7 @@
             // 
             this.checkBoxHabilitada.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.checkBoxHabilitada.AutoSize = true;
-            this.checkBoxHabilitada.Location = new System.Drawing.Point(179, 288);
+            this.checkBoxHabilitada.Location = new System.Drawing.Point(179, 255);
             this.checkBoxHabilitada.Name = "checkBoxHabilitada";
             this.checkBoxHabilitada.Size = new System.Drawing.Size(15, 14);
             this.checkBoxHabilitada.TabIndex = 13;
@@ -228,12 +223,12 @@
             this.textBoxDescripcion.Location = new System.Drawing.Point(179, 102);
             this.textBoxDescripcion.Multiline = true;
             this.textBoxDescripcion.Name = "textBoxDescripcion";
-            this.textBoxDescripcion.Size = new System.Drawing.Size(289, 176);
+            this.textBoxDescripcion.Size = new System.Drawing.Size(289, 144);
             this.textBoxDescripcion.TabIndex = 14;
             // 
             // buttonLimpiar
             // 
-            this.buttonLimpiar.Location = new System.Drawing.Point(38, 480);
+            this.buttonLimpiar.Location = new System.Drawing.Point(38, 404);
             this.buttonLimpiar.Name = "buttonLimpiar";
             this.buttonLimpiar.Size = new System.Drawing.Size(75, 23);
             this.buttonLimpiar.TabIndex = 1;
@@ -243,7 +238,7 @@
             // 
             // buttonAceptar
             // 
-            this.buttonAceptar.Location = new System.Drawing.Point(417, 480);
+            this.buttonAceptar.Location = new System.Drawing.Point(417, 404);
             this.buttonAceptar.Name = "buttonAceptar";
             this.buttonAceptar.Size = new System.Drawing.Size(75, 23);
             this.buttonAceptar.TabIndex = 2;
@@ -259,7 +254,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(556, 529);
+            this.ClientSize = new System.Drawing.Size(556, 442);
             this.Controls.Add(this.buttonAceptar);
             this.Controls.Add(this.buttonLimpiar);
             this.Controls.Add(this.tableLayoutPanel1);

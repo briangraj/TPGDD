@@ -10,16 +10,6 @@ namespace FrbaHotel.AbmHotel
 {
     class ListadoHotelModif : ListadoHotel
     {
-        protected override String queryTabla()
-        {
-            return "SELECT Id_Hotel, Nombre, Mail, Telefono, Direccion, Cant_Estrellas, Ciudad, Pais, Fecha_Creacion " +
-                    "FROM LA_QUERY_DE_PAPEL.Hotel " +
-                        "WHERE Nombre LIKE @nombre " +
-                            "AND Cant_Estrellas LIKE @cantEstrellas " +
-                            "AND Ciudad LIKE @ciudad " +
-                            "AND Pais LIKE @pais";
-        }
-
         protected override String textoBoton()
         {
             return "Modificar";
@@ -27,7 +17,7 @@ namespace FrbaHotel.AbmHotel
 
         protected override void accionBoton(DataGridViewCellEventArgs e)
         {
-            DatosHotel datosHotel = new DatosHotel(dataGridViewHoteles.CurrentRow);
+            DatosHotelModif datosHotel = new DatosHotelModif(dataGridViewHoteles.CurrentRow);
             Hide();
             datosHotel.Show();
         }

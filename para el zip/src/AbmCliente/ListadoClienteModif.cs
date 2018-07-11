@@ -12,7 +12,7 @@ namespace FrbaHotel.AbmCliente
     {
         protected override void cargarTabla(string tipoDoc)
         {
-            dataGridViewPersonas.DataSource = DB.correrQueryTabla(
+            dataGridViewPersonas.DataSource = DB.ejecutarQueryDeTabla(
                 "SELECT Nombre, Apellido, Tipo_Documento, Nro_Documento, Mail, Telefono, Direccion, Localidad, Nacionalidad, Fecha_Nacimiento, Habilitado " +
                     "FROM LA_QUERY_DE_PAPEL.clientes c " +
                         "WHERE Nombre LIKE @nombre " +
@@ -31,7 +31,7 @@ namespace FrbaHotel.AbmCliente
 
         protected override void accionBoton(System.Windows.Forms.DataGridViewCellEventArgs e)
         {
-            DatosCliente datos = new DatosCliente(dataGridViewPersonas.CurrentRow);
+            DatosClienteModif datos = new DatosClienteModif(dataGridViewPersonas.CurrentRow);
             this.Hide();
             datos.Show();
         }

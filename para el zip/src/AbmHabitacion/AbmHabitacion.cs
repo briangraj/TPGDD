@@ -28,9 +28,16 @@ namespace FrbaHotel.AbmHabitacion
             datos.Show();
         }
 
+        private void buttonBaja_Click(object sender, EventArgs e)
+        {
+            ListadoHabitacionBaja listadoBaja = new ListadoHabitacionBaja(usuario);
+            listadoBaja.Show();
+        }
+
         private void buttonModificacion_Click(object sender, EventArgs e)
         {
-
+            ListadoHabitacionModif listadoModif = new ListadoHabitacionModif(usuario);
+            listadoModif.Show();
         }
     }
 }

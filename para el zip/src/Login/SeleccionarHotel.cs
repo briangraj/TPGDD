@@ -26,7 +26,7 @@ namespace FrbaHotel.Login
             cargarHoteles();
         }
 
-        private void cargarHoteles()
+        protected virtual void cargarHoteles()
         {
             DB.ejecutarReader(
                 "SELECT H.Nombre, H.Id_Hotel " +
@@ -39,8 +39,11 @@ namespace FrbaHotel.Login
 
         public void cargarComboBox(SqlDataReader reader)
         {
-            hoteles.Add(new Hotel(reader.GetString(0), reader.GetInt32(1).ToString()));
-            comboBoxHoteles.Items.Add(reader.GetString(0));
+            while (reader.Read())
+            {
+                hoteles.Add(new Hotel(reader.GetString(0), reader.GetInt32(1).ToString()));
+                comboBoxHoteles.Items.Add(reader.GetString(0));
+            }
         }
 
         private void buttonSeleccionar_Click(object sender, EventArgs e)
@@ -56,6 +59,7 @@ namespace FrbaHotel.Login
             Hide();
             SeleccionarFuncionalidad form = new SeleccionarFuncionalidad(usuario);
             form.ShowDialog();
+            Close();
         }
     }
 }

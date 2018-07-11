@@ -10,6 +10,7 @@ using System.Windows.Forms;
 
 using FrbaHotel.Utilidades;
 using FrbaHotel.Entidades;
+using System.Data.SqlClient;
 
 namespace FrbaHotel.AbmUsuario
 {
@@ -78,6 +79,22 @@ namespace FrbaHotel.AbmUsuario
         private void buttonLimpiar_Click(object sender, EventArgs e)
         {
             Limpiador.limpiarControles(Controls);
+        }
+
+        private void ListadoPersona_Load(object sender, EventArgs e)
+        {
+            DB.ejecutarReader(
+                "SELECT distinct(Tipo_Documento) " +
+                "FROM LA_QUERY_DE_PAPEL.Persona",
+                cargarTipoDoc);
+        }
+
+        public void cargarTipoDoc(SqlDataReader reader)
+        {
+            while (reader.Read())
+            {
+                comboBoxTipoDoc.Items.Add(reader.GetString(0));
+            }
         }
     }
 }

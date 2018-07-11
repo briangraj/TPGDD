@@ -30,6 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.tableLayoutPanelDatosUsuario = new System.Windows.Forms.TableLayoutPanel();
+            this.comboBoxTipoDoc = new System.Windows.Forms.ComboBox();
             this.pictureBoxWarning = new System.Windows.Forms.PictureBox();
             this.label13 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
@@ -40,7 +41,6 @@
             this.label8 = new System.Windows.Forms.Label();
             this.textBoxNroDocumento = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.textBoxTipoDocumento = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.textBoxApellido = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -73,6 +73,7 @@
             this.tableLayoutPanelDatosUsuario.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30.40293F));
             this.tableLayoutPanelDatosUsuario.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 27F));
             this.tableLayoutPanelDatosUsuario.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 69.59707F));
+            this.tableLayoutPanelDatosUsuario.Controls.Add(this.comboBoxTipoDoc, 2, 5);
             this.tableLayoutPanelDatosUsuario.Controls.Add(this.pictureBoxWarning, 1, 1);
             this.tableLayoutPanelDatosUsuario.Controls.Add(this.label13, 0, 11);
             this.tableLayoutPanelDatosUsuario.Controls.Add(this.label11, 0, 10);
@@ -83,7 +84,6 @@
             this.tableLayoutPanelDatosUsuario.Controls.Add(this.label8, 0, 7);
             this.tableLayoutPanelDatosUsuario.Controls.Add(this.textBoxNroDocumento, 2, 6);
             this.tableLayoutPanelDatosUsuario.Controls.Add(this.label7, 0, 6);
-            this.tableLayoutPanelDatosUsuario.Controls.Add(this.textBoxTipoDocumento, 2, 5);
             this.tableLayoutPanelDatosUsuario.Controls.Add(this.label6, 0, 5);
             this.tableLayoutPanelDatosUsuario.Controls.Add(this.textBoxApellido, 2, 4);
             this.tableLayoutPanelDatosUsuario.Controls.Add(this.label3, 0, 4);
@@ -116,6 +116,15 @@
             this.tableLayoutPanelDatosUsuario.Size = new System.Drawing.Size(546, 320);
             this.tableLayoutPanelDatosUsuario.TabIndex = 30;
             // 
+            // comboBoxTipoDoc
+            // 
+            this.comboBoxTipoDoc.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxTipoDoc.FormattingEnabled = true;
+            this.comboBoxTipoDoc.Location = new System.Drawing.Point(187, 134);
+            this.comboBoxTipoDoc.Name = "comboBoxTipoDoc";
+            this.comboBoxTipoDoc.Size = new System.Drawing.Size(333, 21);
+            this.comboBoxTipoDoc.TabIndex = 35;
+            // 
             // pictureBoxWarning
             // 
             this.pictureBoxWarning.Location = new System.Drawing.Point(160, 29);
@@ -130,7 +139,7 @@
             this.label13.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label13.AutoSize = true;
             this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label13.Location = new System.Drawing.Point(43, 296);
+            this.label13.Location = new System.Drawing.Point(43, 297);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(70, 16);
             this.label13.TabIndex = 43;
@@ -141,7 +150,7 @@
             this.label11.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(12, 267);
+            this.label11.Location = new System.Drawing.Point(12, 268);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(133, 16);
             this.label11.TabIndex = 41;
@@ -149,7 +158,7 @@
             // 
             // textBoxDireccion
             // 
-            this.textBoxDireccion.Location = new System.Drawing.Point(187, 238);
+            this.textBoxDireccion.Location = new System.Drawing.Point(187, 239);
             this.textBoxDireccion.Name = "textBoxDireccion";
             this.textBoxDireccion.Size = new System.Drawing.Size(335, 20);
             this.textBoxDireccion.TabIndex = 31;
@@ -159,7 +168,7 @@
             this.label10.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(46, 240);
+            this.label10.Location = new System.Drawing.Point(46, 241);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(65, 16);
             this.label10.TabIndex = 40;
@@ -167,14 +176,14 @@
             // 
             // textBoxTelefono
             // 
-            this.textBoxTelefono.Location = new System.Drawing.Point(187, 212);
+            this.textBoxTelefono.Location = new System.Drawing.Point(187, 213);
             this.textBoxTelefono.Name = "textBoxTelefono";
             this.textBoxTelefono.Size = new System.Drawing.Size(335, 20);
             this.textBoxTelefono.TabIndex = 32;
             // 
             // textBoxMail
             // 
-            this.textBoxMail.Location = new System.Drawing.Point(187, 186);
+            this.textBoxMail.Location = new System.Drawing.Point(187, 187);
             this.textBoxMail.Name = "textBoxMail";
             this.textBoxMail.Size = new System.Drawing.Size(335, 20);
             this.textBoxMail.TabIndex = 32;
@@ -184,7 +193,7 @@
             this.label8.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(62, 188);
+            this.label8.Location = new System.Drawing.Point(62, 189);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(33, 16);
             this.label8.TabIndex = 38;
@@ -192,7 +201,7 @@
             // 
             // textBoxNroDocumento
             // 
-            this.textBoxNroDocumento.Location = new System.Drawing.Point(187, 160);
+            this.textBoxNroDocumento.Location = new System.Drawing.Point(187, 161);
             this.textBoxNroDocumento.Name = "textBoxNroDocumento";
             this.textBoxNroDocumento.Size = new System.Drawing.Size(335, 20);
             this.textBoxNroDocumento.TabIndex = 33;
@@ -202,18 +211,11 @@
             this.label7.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(6, 162);
+            this.label7.Location = new System.Drawing.Point(6, 163);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(145, 16);
             this.label7.TabIndex = 37;
             this.label7.Text = "Numero de documento";
-            // 
-            // textBoxTipoDocumento
-            // 
-            this.textBoxTipoDocumento.Location = new System.Drawing.Point(187, 134);
-            this.textBoxTipoDocumento.Name = "textBoxTipoDocumento";
-            this.textBoxTipoDocumento.Size = new System.Drawing.Size(334, 20);
-            this.textBoxTipoDocumento.TabIndex = 34;
             // 
             // label6
             // 
@@ -302,7 +304,7 @@
             this.label9.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(47, 214);
+            this.label9.Location = new System.Drawing.Point(47, 215);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(62, 16);
             this.label9.TabIndex = 39;
@@ -310,16 +312,17 @@
             // 
             // dateTimePickerFechaNac
             // 
-            this.dateTimePickerFechaNac.Location = new System.Drawing.Point(187, 264);
+            this.dateTimePickerFechaNac.Location = new System.Drawing.Point(187, 265);
             this.dateTimePickerFechaNac.Name = "dateTimePickerFechaNac";
             this.dateTimePickerFechaNac.Size = new System.Drawing.Size(335, 20);
             this.dateTimePickerFechaNac.TabIndex = 42;
+            this.dateTimePickerFechaNac.Value = new System.DateTime(2021, 1, 13, 0, 0, 0, 0);
             // 
             // checkBoxHabilitado
             // 
             this.checkBoxHabilitado.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.checkBoxHabilitado.AutoSize = true;
-            this.checkBoxHabilitado.Location = new System.Drawing.Point(187, 297);
+            this.checkBoxHabilitado.Location = new System.Drawing.Point(187, 298);
             this.checkBoxHabilitado.Name = "checkBoxHabilitado";
             this.checkBoxHabilitado.Size = new System.Drawing.Size(15, 14);
             this.checkBoxHabilitado.TabIndex = 44;
@@ -426,7 +429,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox comboBoxRoles;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox textBoxTipoDocumento;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox textBoxApellido;
         private System.Windows.Forms.Label label3;
@@ -449,6 +451,7 @@
         private System.Windows.Forms.CheckBox checkBoxHabilitado;
         private System.Windows.Forms.ToolTip toolTipDatosUsuario;
         private System.Windows.Forms.PictureBox pictureBoxWarning;
+        protected System.Windows.Forms.ComboBox comboBoxTipoDoc;
 
     }
 }

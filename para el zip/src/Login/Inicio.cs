@@ -18,8 +18,6 @@ namespace FrbaHotel.Login
         public Inicio()
         {
             InitializeComponent();
-            textBoxUser.Text = "admin";
-            textBoxPass.Text = "w23e";
         }
 
         private void buttonLogin_Click(object sender, EventArgs e)
@@ -35,8 +33,9 @@ namespace FrbaHotel.Login
                 usuario.cargar();
 
                 SeleccionarHotel form = new SeleccionarHotel(usuario);
-                form.Show();
                 Hide();
+                form.ShowDialog();
+                Close();
             }
             catch (SqlException){ }
         }
@@ -48,9 +47,10 @@ namespace FrbaHotel.Login
                 Usuario usuario = new Usuario("guest");
                 usuario.cargar();
 
-                SeleccionarHotel form = new SeleccionarHotel(usuario);
-                form.Show();
+                GenerarModificacionReserva.SobreCliente.SeleccionarHotelCliente form = new GenerarModificacionReserva.SobreCliente.SeleccionarHotelCliente(usuario);
                 Hide();
+                form.ShowDialog();
+                Close();
             }
             catch (SqlException) { }
         }

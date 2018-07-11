@@ -35,34 +35,34 @@
             // 
             // buttonAlta
             // 
-            this.buttonAlta.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonAlta.Location = new System.Drawing.Point(44, 44);
+            this.buttonAlta.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonAlta.Location = new System.Drawing.Point(44, 36);
             this.buttonAlta.Name = "buttonAlta";
-            this.buttonAlta.Size = new System.Drawing.Size(118, 35);
+            this.buttonAlta.Size = new System.Drawing.Size(159, 35);
             this.buttonAlta.TabIndex = 0;
-            this.buttonAlta.Text = "Alta";
+            this.buttonAlta.Text = "Ingresar nuevo rol";
             this.buttonAlta.UseVisualStyleBackColor = true;
             this.buttonAlta.Click += new System.EventHandler(this.buttonAlta_Click);
             // 
             // buttonBaja
             // 
-            this.buttonBaja.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonBaja.Location = new System.Drawing.Point(44, 115);
+            this.buttonBaja.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonBaja.Location = new System.Drawing.Point(44, 109);
             this.buttonBaja.Name = "buttonBaja";
-            this.buttonBaja.Size = new System.Drawing.Size(118, 35);
+            this.buttonBaja.Size = new System.Drawing.Size(159, 35);
             this.buttonBaja.TabIndex = 1;
-            this.buttonBaja.Text = "Baja";
+            this.buttonBaja.Text = "Dar de baja un rol";
             this.buttonBaja.UseVisualStyleBackColor = true;
             this.buttonBaja.Click += new System.EventHandler(this.buttonBaja_Click);
             // 
             // buttonModificacion
             // 
-            this.buttonModificacion.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonModificacion.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonModificacion.Location = new System.Drawing.Point(44, 185);
             this.buttonModificacion.Name = "buttonModificacion";
-            this.buttonModificacion.Size = new System.Drawing.Size(118, 35);
+            this.buttonModificacion.Size = new System.Drawing.Size(159, 35);
             this.buttonModificacion.TabIndex = 2;
-            this.buttonModificacion.Text = "Modificacion";
+            this.buttonModificacion.Text = "Modificar un rol";
             this.buttonModificacion.UseVisualStyleBackColor = true;
             this.buttonModificacion.Click += new System.EventHandler(this.buttonModificacion_Click);
             // 
@@ -70,7 +70,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(205, 261);
+            this.ClientSize = new System.Drawing.Size(250, 261);
             this.Controls.Add(this.buttonModificacion);
             this.Controls.Add(this.buttonBaja);
             this.Controls.Add(this.buttonAlta);

@@ -30,26 +30,28 @@
         {
             this.components = new System.ComponentModel.Container();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.label8 = new System.Windows.Forms.Label();
-            this.textBoxPais = new System.Windows.Forms.TextBox();
-            this.textBoxCiudad = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.textBoxRecarga = new System.Windows.Forms.TextBox();
             this.textBoxDireccion = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
             this.textBoxTelefono = new System.Windows.Forms.TextBox();
-            this.textBoxMail = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.textBoxNombre = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.comboBoxCantEstrellas = new System.Windows.Forms.ComboBox();
+            this.textBoxMail = new System.Windows.Forms.TextBox();
             this.dateTimePickerFechaCreacion = new System.Windows.Forms.DateTimePicker();
+            this.textBoxPais = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.textBoxCiudad = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.checkedListBoxRegimenes = new System.Windows.Forms.CheckedListBox();
             this.buttonLimpiar = new System.Windows.Forms.Button();
             this.buttonAceptar = new System.Windows.Forms.Button();
             this.errorProviderHoteles = new System.Windows.Forms.ErrorProvider(this.components);
-            this.comboBoxCantEstrellas = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProviderHoteles)).BeginInit();
             this.SuspendLayout();
@@ -59,25 +61,27 @@
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 36.86956F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 63.13044F));
-            this.tableLayoutPanel1.Controls.Add(this.label8, 0, 7);
-            this.tableLayoutPanel1.Controls.Add(this.textBoxPais, 1, 6);
-            this.tableLayoutPanel1.Controls.Add(this.textBoxCiudad, 1, 5);
-            this.tableLayoutPanel1.Controls.Add(this.label7, 0, 6);
+            this.tableLayoutPanel1.Controls.Add(this.label9, 0, 5);
+            this.tableLayoutPanel1.Controls.Add(this.textBoxRecarga, 1, 5);
             this.tableLayoutPanel1.Controls.Add(this.textBoxDireccion, 1, 3);
-            this.tableLayoutPanel1.Controls.Add(this.label6, 0, 5);
             this.tableLayoutPanel1.Controls.Add(this.textBoxTelefono, 1, 2);
-            this.tableLayoutPanel1.Controls.Add(this.textBoxMail, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.label5, 0, 4);
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.textBoxNombre, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.label4, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.label2, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.label3, 0, 2);
-            this.tableLayoutPanel1.Controls.Add(this.dateTimePickerFechaCreacion, 1, 7);
             this.tableLayoutPanel1.Controls.Add(this.comboBoxCantEstrellas, 1, 4);
+            this.tableLayoutPanel1.Controls.Add(this.textBoxMail, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.dateTimePickerFechaCreacion, 1, 8);
+            this.tableLayoutPanel1.Controls.Add(this.textBoxPais, 1, 7);
+            this.tableLayoutPanel1.Controls.Add(this.label8, 0, 8);
+            this.tableLayoutPanel1.Controls.Add(this.textBoxCiudad, 1, 6);
+            this.tableLayoutPanel1.Controls.Add(this.label7, 0, 7);
+            this.tableLayoutPanel1.Controls.Add(this.label6, 0, 6);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(90, 41);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 8;
+            this.tableLayoutPanel1.RowCount = 9;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -86,44 +90,28 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(575, 210);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(575, 237);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
-            // label8
+            // label9
             // 
-            this.label8.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(40, 187);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(130, 18);
-            this.label8.TabIndex = 7;
-            this.label8.Text = "Fecha de creacion";
+            this.label9.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(44, 135);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(123, 18);
+            this.label9.TabIndex = 6;
+            this.label9.Text = "Recarga estrellas";
             // 
-            // textBoxPais
+            // textBoxRecarga
             // 
-            this.textBoxPais.Location = new System.Drawing.Point(214, 160);
-            this.textBoxPais.Name = "textBoxPais";
-            this.textBoxPais.Size = new System.Drawing.Size(307, 20);
-            this.textBoxPais.TabIndex = 7;
-            // 
-            // textBoxCiudad
-            // 
-            this.textBoxCiudad.Location = new System.Drawing.Point(214, 134);
-            this.textBoxCiudad.Name = "textBoxCiudad";
-            this.textBoxCiudad.Size = new System.Drawing.Size(307, 20);
-            this.textBoxCiudad.TabIndex = 6;
-            // 
-            // label7
-            // 
-            this.label7.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(87, 161);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(37, 18);
-            this.label7.TabIndex = 6;
-            this.label7.Text = "Pais";
+            this.textBoxRecarga.Location = new System.Drawing.Point(214, 134);
+            this.textBoxRecarga.Name = "textBoxRecarga";
+            this.textBoxRecarga.Size = new System.Drawing.Size(307, 20);
+            this.textBoxRecarga.TabIndex = 10;
             // 
             // textBoxDireccion
             // 
@@ -132,30 +120,12 @@
             this.textBoxDireccion.Size = new System.Drawing.Size(307, 20);
             this.textBoxDireccion.TabIndex = 4;
             // 
-            // label6
-            // 
-            this.label6.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(78, 135);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(54, 18);
-            this.label6.TabIndex = 5;
-            this.label6.Text = "Ciudad";
-            // 
             // textBoxTelefono
             // 
             this.textBoxTelefono.Location = new System.Drawing.Point(214, 55);
             this.textBoxTelefono.Name = "textBoxTelefono";
             this.textBoxTelefono.Size = new System.Drawing.Size(307, 20);
             this.textBoxTelefono.TabIndex = 3;
-            // 
-            // textBoxMail
-            // 
-            this.textBoxMail.Location = new System.Drawing.Point(214, 29);
-            this.textBoxMail.Name = "textBoxMail";
-            this.textBoxMail.Size = new System.Drawing.Size(307, 20);
-            this.textBoxMail.TabIndex = 2;
             // 
             // label5
             // 
@@ -166,7 +136,7 @@
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(145, 18);
             this.label5.TabIndex = 4;
-            this.label5.Text = "Cantidad de estrallas";
+            this.label5.Text = "Cantidad de estrellas";
             // 
             // label1
             // 
@@ -219,12 +189,82 @@
             this.label3.TabIndex = 2;
             this.label3.Text = "Telefono";
             // 
+            // comboBoxCantEstrellas
+            // 
+            this.comboBoxCantEstrellas.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxCantEstrellas.FormattingEnabled = true;
+            this.comboBoxCantEstrellas.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"});
+            this.comboBoxCantEstrellas.Location = new System.Drawing.Point(214, 107);
+            this.comboBoxCantEstrellas.Name = "comboBoxCantEstrellas";
+            this.comboBoxCantEstrellas.Size = new System.Drawing.Size(307, 21);
+            this.comboBoxCantEstrellas.TabIndex = 9;
+            // 
+            // textBoxMail
+            // 
+            this.textBoxMail.Location = new System.Drawing.Point(214, 29);
+            this.textBoxMail.Name = "textBoxMail";
+            this.textBoxMail.Size = new System.Drawing.Size(307, 20);
+            this.textBoxMail.TabIndex = 2;
+            // 
             // dateTimePickerFechaCreacion
             // 
-            this.dateTimePickerFechaCreacion.Location = new System.Drawing.Point(214, 186);
+            this.dateTimePickerFechaCreacion.Location = new System.Drawing.Point(214, 212);
             this.dateTimePickerFechaCreacion.Name = "dateTimePickerFechaCreacion";
             this.dateTimePickerFechaCreacion.Size = new System.Drawing.Size(307, 20);
             this.dateTimePickerFechaCreacion.TabIndex = 8;
+            this.dateTimePickerFechaCreacion.Value = new System.DateTime(2021, 1, 13, 0, 0, 0, 0);
+            // 
+            // textBoxPais
+            // 
+            this.textBoxPais.Location = new System.Drawing.Point(214, 186);
+            this.textBoxPais.Name = "textBoxPais";
+            this.textBoxPais.Size = new System.Drawing.Size(307, 20);
+            this.textBoxPais.TabIndex = 7;
+            // 
+            // label8
+            // 
+            this.label8.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Location = new System.Drawing.Point(40, 214);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(130, 18);
+            this.label8.TabIndex = 7;
+            this.label8.Text = "Fecha de creacion";
+            // 
+            // textBoxCiudad
+            // 
+            this.textBoxCiudad.Location = new System.Drawing.Point(214, 160);
+            this.textBoxCiudad.Name = "textBoxCiudad";
+            this.textBoxCiudad.Size = new System.Drawing.Size(307, 20);
+            this.textBoxCiudad.TabIndex = 6;
+            // 
+            // label7
+            // 
+            this.label7.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(87, 187);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(37, 18);
+            this.label7.TabIndex = 6;
+            this.label7.Text = "Pais";
+            // 
+            // label6
+            // 
+            this.label6.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(78, 161);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(54, 18);
+            this.label6.TabIndex = 5;
+            this.label6.Text = "Ciudad";
             // 
             // checkedListBoxRegimenes
             // 
@@ -258,21 +298,6 @@
             // 
             this.errorProviderHoteles.ContainerControl = this;
             // 
-            // comboBoxCantEstrellas
-            // 
-            this.comboBoxCantEstrellas.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxCantEstrellas.FormattingEnabled = true;
-            this.comboBoxCantEstrellas.Items.AddRange(new object[] {
-            "1",
-            "2",
-            "3",
-            "4",
-            "5"});
-            this.comboBoxCantEstrellas.Location = new System.Drawing.Point(214, 107);
-            this.comboBoxCantEstrellas.Name = "comboBoxCantEstrellas";
-            this.comboBoxCantEstrellas.Size = new System.Drawing.Size(307, 21);
-            this.comboBoxCantEstrellas.TabIndex = 9;
-            // 
             // DatosHotel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -294,9 +319,7 @@
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.TextBox textBoxMail;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBoxNombre;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
@@ -304,15 +327,19 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox textBoxPais;
-        private System.Windows.Forms.TextBox textBoxCiudad;
-        private System.Windows.Forms.TextBox textBoxDireccion;
-        private System.Windows.Forms.TextBox textBoxTelefono;
-        private System.Windows.Forms.DateTimePicker dateTimePickerFechaCreacion;
-        private System.Windows.Forms.CheckedListBox checkedListBoxRegimenes;
         private System.Windows.Forms.Button buttonLimpiar;
         private System.Windows.Forms.Button buttonAceptar;
         private System.Windows.Forms.ErrorProvider errorProviderHoteles;
-        private System.Windows.Forms.ComboBox comboBoxCantEstrellas;
+        protected System.Windows.Forms.TextBox textBoxMail;
+        protected System.Windows.Forms.TextBox textBoxNombre;
+        protected System.Windows.Forms.TextBox textBoxPais;
+        protected System.Windows.Forms.TextBox textBoxCiudad;
+        protected System.Windows.Forms.TextBox textBoxDireccion;
+        protected System.Windows.Forms.TextBox textBoxTelefono;
+        protected System.Windows.Forms.DateTimePicker dateTimePickerFechaCreacion;
+        protected System.Windows.Forms.CheckedListBox checkedListBoxRegimenes;
+        protected System.Windows.Forms.ComboBox comboBoxCantEstrellas;
+        private System.Windows.Forms.Label label9;
+        protected System.Windows.Forms.TextBox textBoxRecarga;
     }
 }

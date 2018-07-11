@@ -154,6 +154,7 @@
             // 
             // comboBoxTipoDoc
             // 
+            this.comboBoxTipoDoc.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxTipoDoc.FormattingEnabled = true;
             this.comboBoxTipoDoc.Location = new System.Drawing.Point(490, 30);
             this.comboBoxTipoDoc.Name = "comboBoxTipoDoc";
@@ -208,6 +209,7 @@
             this.Controls.Add(this.tableLayoutPanelListadoUsuario);
             this.Name = "ListadoPersona";
             this.Text = "Listado";
+            this.Load += new System.EventHandler(this.ListadoPersona_Load);
             this.tableLayoutPanelListadoUsuario.ResumeLayout(false);
             this.tableLayoutPanelListadoUsuario.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPersonas)).EndInit();

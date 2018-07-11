@@ -47,9 +47,12 @@ namespace FrbaHotel.AbmRol
         }
 
         public void cargarCheckBoxs(SqlDataReader reader)
-        {            
-            funcionalidades.Add(new Funcionalidad(reader.GetString(0), reader.GetInt32(1).ToString()));
-            checkedListBoxFuncionalidades.Items.Add(reader.GetString(0));
+        {
+            while (reader.Read())
+            {
+                funcionalidades.Add(new Funcionalidad(reader.GetString(0), reader.GetInt32(1).ToString()));
+                checkedListBoxFuncionalidades.Items.Add(reader.GetString(0));
+            }
         }
 
         private void buttonAceptar_Click(object sender, EventArgs e)
@@ -91,7 +94,7 @@ namespace FrbaHotel.AbmRol
 
         private int insertarRol()
         {
-            return DB.correrQuery(
+            return DB.ejecutarQuery(
                     "INSERT INTO LA_QUERY_DE_PAPEL.Rol (Nombre, Habilitado) " +
                     "VALUES (@nombre, @habilitado)",
                     "nombre", textBoxNombreRol.Text, "habilitado", checkBoxHabilitado.Checked);
@@ -106,7 +109,7 @@ namespace FrbaHotel.AbmRol
             {
                 id = funcionalidades.Find(funcionalidad => funcionalidad.descripcion == desc).id;
 
-                DB.correrQuery(
+                DB.ejecutarQuery(
                     "INSERT INTO LA_QUERY_DE_PAPEL.FuncionalidadxRol (Id_Rol, Id_Funcion) " +
                     "VALUES (@idRol, @idFuncion)",
                     "idRol", idRol, "idFuncion", Convert.ToInt32(id));
@@ -117,7 +120,7 @@ namespace FrbaHotel.AbmRol
         private void atenderModificacion()
         {
             //actualizo rol
-            DB.correrQuery(
+            DB.ejecutarQuery(
                 "UPDATE LA_QUERY_DE_PAPEL.Rol " +
                 "SET Nombre = @nombre, " +
                     "Habilitado = @habilitado " +
@@ -125,7 +128,7 @@ namespace FrbaHotel.AbmRol
                 "nombre", textBoxNombreRol.Text, "habilitado", checkBoxHabilitado.Checked, "idRol", idRolModif);
 
             //borro funcionalidades anteriores
-            DB.correrQuery(
+            DB.ejecutarQuery(
                 "DELETE FROM LA_QUERY_DE_PAPEL.FuncionalidadxRol " +
                 "WHERE Id_Rol = @idRol",
                 "idRol", idRolModif);
@@ -137,7 +140,7 @@ namespace FrbaHotel.AbmRol
 
         private void cargarRol()
         {
-            checkBoxHabilitado.Checked = (bool)DB.correrQueryEscalar(
+            checkBoxHabilitado.Checked = (bool)DB.ejecutarQueryEscalar(
                 "SELECT Habilitado " +
                 "FROM LA_QUERY_DE_PAPEL.Rol " +
                     "WHERE Nombre = @nombre",
@@ -151,11 +154,14 @@ namespace FrbaHotel.AbmRol
 
         public void cargarFuncionalidad(SqlDataReader reader)
         {
-            string descripcion = funcionalidades.Find(funcionalidad => funcionalidad.id == reader.GetInt32(0).ToString()).descripcion;
+            while (reader.Read())
+            {
+                string descripcion = funcionalidades.Find(funcionalidad => funcionalidad.id == reader.GetInt32(0).ToString()).descripcion;
 
-            int indice = checkedListBoxFuncionalidades.Items.IndexOf(descripcion);
+                int indice = checkedListBoxFuncionalidades.Items.IndexOf(descripcion);
 
-            checkedListBoxFuncionalidades.SetItemChecked(indice, true);
+                checkedListBoxFuncionalidades.SetItemChecked(indice, true);
+            }
         }
     }
 }

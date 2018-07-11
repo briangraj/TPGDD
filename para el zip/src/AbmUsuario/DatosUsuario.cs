@@ -26,6 +26,7 @@ namespace FrbaHotel.AbmUsuario
             alta = true;
             cargarHoteles();
             cargarRoles();
+            cargarTiposDoc();
         }
 
         public DatosUsuario(DataGridViewRow filaSeleccionada)
@@ -34,6 +35,7 @@ namespace FrbaHotel.AbmUsuario
             alta = false;
             cargarHoteles();
             cargarRoles();
+            cargarTiposDoc();
             cargarUsuario(filaSeleccionada);
             pictureBoxWarning.Image = SystemIcons.Warning.ToBitmap();
             toolTipDatosUsuario.SetToolTip(pictureBoxWarning, "Si no se deasea cambiar su password \ndeje el campo en blanco");
@@ -49,8 +51,11 @@ namespace FrbaHotel.AbmUsuario
 
         public void cargarCheckBoxs(SqlDataReader reader)
         {
-            hoteles.Add(new Hotel(reader.GetString(0), reader.GetInt32(1).ToString()));
-            checkedListBoxHoteles.Items.Add(reader.GetString(0));
+            while (reader.Read())
+            {
+                hoteles.Add(new Hotel(reader.GetString(0), reader.GetInt32(1).ToString()));
+                checkedListBoxHoteles.Items.Add(reader.GetString(0));
+            }
         }
 
         private void cargarRoles()
@@ -63,7 +68,10 @@ namespace FrbaHotel.AbmUsuario
 
         public void cargarComboBox(SqlDataReader reader)
         {
-            comboBoxRoles.Items.Add(reader.GetString(0));
+            while (reader.Read())
+            {
+                comboBoxRoles.Items.Add(reader.GetString(0));
+            }
         }
 
         private void buttonAceptar_Click(object sender, EventArgs e)
@@ -104,11 +112,11 @@ namespace FrbaHotel.AbmUsuario
         private void insertarUsuario()
         {
             int idRol = DB.buscarIdRol(comboBoxRoles.SelectedItem.ToString());
-            DB.correrQuery(
+            DB.ejecutarQuery(
                     "INSERT INTO LA_QUERY_DE_PAPEL.usuarios (Username, Password , Id_Rol, Nombre, Apellido, Tipo_Documento, Nro_Documento, Mail, Telefono, Direccion, Fecha_Nacimiento, Habilitado) " +
                     "VALUES (@username, @password, @idRol, @nombre, @apellido, @tipoDocumento, @nroDocumento, @mail, @telefono, @direccion, @fechaNacimiento, @habilitado)",
                     "username", textBoxUsername.Text, "password", Usuario.encriptar(textBoxPassword.Text), "idRol", idRol,
-                    "nombre", textBoxNombre.Text, "apellido", textBoxApellido.Text, "tipoDocumento", textBoxTipoDocumento.Text, "nroDocumento", textBoxNroDocumento.Text,
+                    "nombre", textBoxNombre.Text, "apellido", textBoxApellido.Text, "tipoDocumento", comboBoxTipoDoc.SelectedItem, "nroDocumento", textBoxNroDocumento.Text,
                     "mail", textBoxMail.Text, "telefono", textBoxTelefono.Text, "direccion", textBoxDireccion.Text, "fechaNacimiento", dateTimePickerFechaNac.Value,
                     "habilitado", checkBoxHabilitado.Checked);
         }
@@ -122,7 +130,7 @@ namespace FrbaHotel.AbmUsuario
             {
                 id = hoteles.Find(hotel => hotel.nombre == desc).id;
 
-                DB.correrQuery(
+                DB.ejecutarQuery(
                     "INSERT INTO LA_QUERY_DE_PAPEL.UsuarioxHotel (Id_Hotel, Id_Usuario) " +
                     "VALUES (@idHotel, @idUsuario)",
                     "idHotel", id, "idUsuario", idUsuario);
@@ -134,16 +142,16 @@ namespace FrbaHotel.AbmUsuario
         {
             int idRol = DB.buscarIdRol(comboBoxRoles.SelectedItem.ToString());
             
-            DB.correrQuery(
+            DB.ejecutarQuery(
                 "UPDATE LA_QUERY_DE_PAPEL.usuarios " +
                 querySet() + 
                 "WHERE Id_Usuario = @idUsuario",
                 "username", textBoxUsername.Text, "password", Usuario.encriptar(textBoxPassword.Text), "idRol", idRol,
-                "nombre", textBoxNombre.Text, "apellido", textBoxApellido.Text, "tipoDoc", textBoxTipoDocumento.Text, "nroDoc", textBoxNroDocumento.Text,
+                "nombre", textBoxNombre.Text, "apellido", textBoxApellido.Text, "tipoDoc", comboBoxTipoDoc.SelectedItem, "nroDoc", textBoxNroDocumento.Text,
                 "mail", textBoxMail.Text, "telefono", textBoxTelefono.Text, "direccion", textBoxDireccion.Text, "fechaNac", dateTimePickerFechaNac.Value,
                 "habilitado", checkBoxHabilitado.Checked, "idUsuario", idUsuarioAModificar);
 
-            DB.correrQuery(
+            DB.ejecutarQuery(
                 "DELETE FROM LA_QUERY_DE_PAPEL.UsuarioxHotel " +
                 "WHERE Id_Usuario = @idUsuario",
                 "idUsuario", idUsuarioAModificar);
@@ -170,7 +178,7 @@ namespace FrbaHotel.AbmUsuario
             textBoxUsername.Text = filaSeleccionada.Cells["Username"].Value.ToString();
             textBoxNombre.Text = filaSeleccionada.Cells["Nombre"].Value.ToString();
             textBoxApellido.Text = filaSeleccionada.Cells["Apellido"].Value.ToString();
-            textBoxTipoDocumento.Text = filaSeleccionada.Cells["Tipo_Documento"].Value.ToString();
+            comboBoxTipoDoc.SelectedIndex = comboBoxTipoDoc.Items.IndexOf(filaSeleccionada.Cells["Tipo_Documento"].Value.ToString());
             textBoxNroDocumento.Text = filaSeleccionada.Cells["Nro_Documento"].Value.ToString();
             textBoxMail.Text = filaSeleccionada.Cells["Mail"].Value.ToString();
             textBoxTelefono.Text = filaSeleccionada.Cells["Telefono"].Value.ToString();
@@ -179,7 +187,7 @@ namespace FrbaHotel.AbmUsuario
             checkBoxHabilitado.Checked = (bool)filaSeleccionada.Cells["Habilitado"].Value;
             idUsuarioAModificar = (int)filaSeleccionada.Cells["Id_Usuario"].Value;
 
-            string nombreRol = DB.correrQueryEscalar(
+            string nombreRol = DB.ejecutarQueryEscalar(
                 "SELECT Nombre " +
                 "FROM LA_QUERY_DE_PAPEL.Rol " +
                 "WHERE Id_Rol = @idRol",
@@ -201,16 +209,35 @@ namespace FrbaHotel.AbmUsuario
 
         public void cargarHotel(SqlDataReader reader)
         {
-            string nombre = hoteles.Find(hotel => hotel.id == reader.GetInt32(0).ToString()).nombre;
+            while (reader.Read())
+            {
+                string nombre = hoteles.Find(hotel => hotel.id == reader.GetInt32(0).ToString()).nombre;
 
-            int indice = checkedListBoxHoteles.Items.IndexOf(nombre);
+                int indice = checkedListBoxHoteles.Items.IndexOf(nombre);
 
-            checkedListBoxHoteles.SetItemChecked(indice, true);
+                checkedListBoxHoteles.SetItemChecked(indice, true);
+            }
         }
 
         private void buttonLimpiar_Click(object sender, EventArgs e)
         {
             Limpiador.limpiarControles(Controls);
+        }
+
+        private void cargarTiposDoc()
+        {
+            DB.ejecutarReader(
+                "SELECT distinct(Tipo_Documento) " +
+                "FROM LA_QUERY_DE_PAPEL.Persona",
+                cargarTipoDoc);
+        }
+
+        public void cargarTipoDoc(SqlDataReader reader)
+        {
+            while (reader.Read())
+            {
+                comboBoxTipoDoc.Items.Add(reader.GetString(0));
+            }
         }
     }
 }

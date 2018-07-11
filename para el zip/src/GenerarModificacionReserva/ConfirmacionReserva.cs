@@ -24,7 +24,6 @@ namespace FrbaHotel.GenerarModificacionReserva
             this.form = form;
             dateTimePickerDesde.Value = reserva.fechaInicio;
             dateTimePickerHasta.Value = reserva.fechaFin;
-            textBoxTipoHab.Text = reserva.tipoHabitacion;
             textBoxTipoReg.Text = reserva.descRegimen;
             dataGridViewReserva.DataSource = tabla;
         }
@@ -33,6 +32,27 @@ namespace FrbaHotel.GenerarModificacionReserva
         {
             form.Show();
             Close();
+        }
+
+        private void buttonConfirmar_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow fila in dataGridViewReserva.Rows)
+            {
+                reserva.habitaciones.Add(new Habitacion(reserva.usuario.idHotel, Convert.ToInt32(fila.Cells["Nro_Habitacion"].Value)));
+            }
+
+            if (reserva.esAlta)
+            {
+                ElegirTipoCliente elegir = new ElegirTipoCliente(reserva);
+                Hide();
+                elegir.Show();
+            }
+            else
+            {
+                ModificarReserva modificarReserva = new ModificarReserva(reserva);
+                Hide();
+                modificarReserva.Show();
+            }
         }
     }
 }
